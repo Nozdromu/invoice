@@ -1,0 +1,88 @@
+<html lang="en" version="4"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>A simple, clean, and responsive HTML invoice template</title>
+
+    <!-- Favicon -->
+    <!-- Invoice styling -->
+    <link type="text/css" rel="stylesheet" href="css/index.css">
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1054.0" data-gr-ext-installed="">
+
+    <div class="invoice-box">
+        <table>
+            <tbody><tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tbody><tr>
+                            <td class="title">
+                                Service Invoice
+                            </td>
+
+                            <td>
+                                Invoice #: <%=invoice%><br>
+                                Created: <%=date%><br>
+                                Due: <%=date%>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tbody><tr>
+                            <td>
+                                From:<br>
+                                Yilei Ding<br>
+                                6835 SE Cougar Mountian Way<br>
+                                Bellevue, WA 98006
+                            </td>
+
+                            <td>
+                                To:<br>
+                                <%=name%><br>
+
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>Payment Method</td>
+
+                <td>ID #</td>
+            </tr>
+
+            <tr class="details">
+                <td><%=payment%></td>
+
+                <td><%=transID%></td>
+            </tr>
+
+            <tr class="heading">
+                <td>Service</td>
+                <td>Price</td>
+            </tr>
+
+            <tr class="item">
+                <td>passenger transport</td>
+
+                <td>$<%=total%></td>
+            </tr>
+
+
+            <tr class="total">
+                <td></td>
+
+                <td>Total: $<%=total%></td>
+            </tr>
+        </tbody></table>
+    </div>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
