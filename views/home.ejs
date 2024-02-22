@@ -13,75 +13,132 @@
 <body>
   <div class="container">
     <div class="mb-3">
-      <label for="address" class="form-label">pickup address</label>
-      <input type="address" class="form-control" id="address" aria-describedby="emailHelp">
-      <div id="addresshelp" class="form-text">where pickup</div>
-    </div>
-    <div class="mb-3">
-      <label for="distance" class="form-label">distance</label>
-      <input type="number" class="form-control" id="distance" value="0">
-    </div>
-    <div class="mb-3">
-      <label for="pickup" class="form-label"> pickup-distance</label>
-      <input type="number" class="form-control" id="pickup" value="0">
-    </div>
-    <div class="mb-3">
-      <label for="datetime" class="form-label">datetime</label>
-      <input type="datetime-local" class="form-control" id="datetime">
-    </div>
-    <div class="mb-3">
-      <label for="address" class="form-label">select car type</label>
+      <label for="triptype" class="form-label">select trip type</label>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="cartype" id="cartype1" value=5 checked>
-        <label class="form-check-label" for="cartype1">
-          Sedan - Camry
+        <input class="form-check-input" type="radio" name="triptype" id="triptype1" value='dropoff' checked>
+        <label class="form-check-label" for="triptype1">
+          dropoff
         </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="cartype" id="cartype2" value=10>
-        <label class="form-check-label" for="cartype2">
-          MiniVan - Sienna
+        <input class="form-check-input" type="radio" name="triptype" id="triptype2" value="pickup">
+        <label class="form-check-label" for="triptype2">
+          pickup
         </label>
       </div>
+      <div id="filghtdiv" class="mb-3">
+        <label for="flight" class="form-label" >flight info</label>
+        <input type="text" class="form-control" id="flight" aria-describedby="emailHelp">
+        <div id="flight" class="form-text">where pickup</div>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">pickup address</label>
+        <input type="address" class="form-control" id="address" aria-describedby="emailHelp">
+        <div id="addresshelp" class="form-text">where pickup</div>
+      </div>
+      <div class="mb-3">
+        <label for="distance" class="form-label">distance</label>
+        <input type="number" class="form-control" id="distance" value="0">
+      </div>
+      <div class="mb-3">
+        <label for="pickup" class="form-label"> pickup-distance</label>
+        <input type="number" class="form-control" id="pickup" value="0">
+      </div>
+      <div class="mb-3">
+        <label for="datetime" class="form-label">datetime</label>
+        <input type="datetime-local" class="form-control" id="datetime">
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">select car type</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="cartype" id="cartype1" value=5 checked>
+          <label class="form-check-label" for="cartype1">
+            Sedan - Camry
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="cartype" id="cartype2" value=10>
+          <label class="form-check-label" for="cartype2">
+            MiniVan - Sienna
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">price</label>
+        <input type="number" class="form-control" id="price">
+      </div>
+      <button type="submit" class="btn btn-primary" onclick="makesummary()">Submit</button>
+      <div class="'md-3">
+        <label for="summary">summary</label>
+        <textarea type="text" class="form-control" id="summary" rows="3"></textarea>
+      </div>
+      </form>
     </div>
-    <div class="mb-3">
-      <label for="price" class="form-label">price</label>
-      <input type="number" class="form-control" id="price">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <div class="'md-3">
-      <label for="summary" >summary</label>
-      <textarea  type="text" class="form-control" id="summary" rows="3"></textarea>
-    </div>
-    </form>
-  </div>
-  <form>
-    <script>
-      var dis = 0;
-      var pickup = 0;
-      var dis_price = 2;
-      var pickup_price = 0.5;
-      var pickup_free = 6;
-      var type = 5;
-      var total = 0;
-      $('input[type=radio]').change(function (e) {
-        console.log(e.target.value)
-        type = parseFloat(e.target.value)
-        pricechange();
-      })
-      function pricechange() {
-        $('#price').val(dis * dis_price + (pickup<pickup_free?0:pickup-pickup_free) * pickup_price + type)
-        console.log(pickup - pickup>pickup_free?pickup_free:0)
-      }
-      $('#distance').keyup(function (e) {
-        dis = parseFloat($('#distance').val());
-        pricechange();
-      })
-      $('#pickup').keyup(function (e) {
-        pickup = parseFloat($('#pickup').val());
-        pricechange();
-      })
-    </script>
+    <form>
+      <script>
+        var dis = 0;
+        var pickup = 0;
+        var dis_price = 2;
+        var pickup_price = 0.5;
+        var pickup_free = 6;
+        var type = 5;
+        var total = 0;
+        var date=null;
+        var hour=0;
+        var apm="AM";
+        var scripts="";
+        var script1="届时我会开一辆 "
+        var script2="一般会提前5分钟左右抵达上车地点."
+        $('input[name=cartype]').change(function (e) {
+          console.log(e.target.value)
+          type = parseFloat(e.target.value)
+          if(e.target.value=='5'){
+            script1+="灰色 Toyota Camry "+script2;
+          }else{
+            script1+="黑色 Toyota Sienna "+script2;
+          }
+          pricechange();
+        })
+        function pricechange() {
+          $('#price').val(dis * dis_price + (pickup < pickup_free ? 0 : pickup - pickup_free) * pickup_price + type)
+          console.log(pickup - pickup > pickup_free ? pickup_free : 0)
+        }
+        $('#distance').keyup(function (e) {
+          dis = parseFloat($('#distance').val());
+          pricechange();
+        })
+        $('#pickup').keyup(function (e) {
+          pickup = parseFloat($('#pickup').val());
+          pricechange();
+        })
+        $('#datetime').change(function datetime(e) {
+          console.log(e.target.value)
+          date=new Date(e.target.value);
+          console.log(date);
+          hour=date.getHours();
+          if(hour>12){
+            hour-=12;
+            apm='PM';
+          }else{
+            apm="AM"
+          }
+          scripts=date.getMonth()+'月'+date.getDate()+'日 '+hour+':'+date.getMinutes()+' '+apm ;
+          console.log(scripts)
+        })
+        $('input[name=triptype]').change(function(e){
+          if(e.target.value=='dropoff'){
+            $('#filghtdiv').hide();
+          }else{
+            $('#filghtdiv').show();
+          }
+        })
+        $('#filghtdiv').hide()
+
+        function makesummary(){
+          scripts='预约 '+date.getMonth()+'月'+date.getDate()+'日 '+hour+':'+date.getMinutes()+' '+apm+' 从 '+ $('#address').val() +' 出发. ' +script1;
+          $('#summary').val(scripts)
+        }
+      </script>
 </body>
 
 </html>
