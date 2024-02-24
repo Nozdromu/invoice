@@ -32,12 +32,13 @@ app.get('/book',(req,res)=>{
     console.log(req.query);
     var newtrip=req.query;
     var datetime=new Date(newtrip.datetime);
-    newtrip.pickuptime=(datetime.getHours()>12?(datetime.getHours()-12):datetime.getHours())+':'+datetime.getMinutes()+(datetime.getHours()>12?' PM':' AM');
+    newtrip.pickuptime=datetime.toLocaleString(['en-US'],{timeStyle: 'short',hour12:true})
     newtrip.date=datetime.getMonth()+'/'+datetime.getDate()+'/'+datetime.getFullYear()
     newtrip.invoice=tripid;
     newtrip.name='none'
     newtrip.payment='none'
     newtrip.transID='none'
+    newtrip.nickname=newtrip.name
     data[newtrip.invoice]=newtrip;
     console.log(data);
     fs.writeFile("trips.json", JSON.stringify(data), function(err) {

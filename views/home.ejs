@@ -35,6 +35,10 @@
           </div>
         </div>
         <div class="mb-3">
+          <label for="name" class="form-label">name</label>
+          <input type="address" class="form-control" id="name" name="name">
+        </div>
+        <div class="mb-3">
           <label for="address" class="form-label">pickup/dropoff address</label>
           <input type="address" class="form-control" id="address" name="address">
           <input type="address" class="form-control" id="googleaddress" name="googleaddress" readonly>
@@ -85,6 +89,7 @@
 
   <script>
     var form = document.querySelector("#book")
+    var name=''
     var dis = 0;
     var pickup = 0;
     var dis_price = 2;
@@ -100,9 +105,13 @@
     var scripts = "";
     var script1 = " 届时我会开一辆 "
     var script2 = ",一般会提前5分钟左右抵达上车地点"
-    var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达. "
+    var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
     var script4 = script1 + cartype1
     var maplink = 'http://maps.google.com/?q=';
+    $('#name').keyup((e)=>{
+      name=e.target.value
+      console.log(name)
+    })
     $('input[name=cartype]').change(function (e) {
       console.log(e.target.value)
       type = parseFloat(e.target.value)
@@ -154,9 +163,9 @@
 
     function makesummary() {
       if ($('input[name=triptype]:checked').val() == 'dropoff') {
-        scripts = '预约 ' + date.getMonth() + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#address').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
+        scripts = '预约 ' + date.getMonth() + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#googleaddress').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
       } else {
-        scripts = '预约 接机 于' + date.getMonth() + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#address').val() + script4 + script3 + ' ,费用总计$' + total;
+        scripts = '预约 接机 于' + date.getMonth() + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#googleaddress').val() + script4 + script3 + ' ,费用总计$' + total;
       }
       $('#summary').val(scripts)
     }
@@ -166,18 +175,21 @@
     });
     function sendData() {
       var data = new FormData(form);
+      var x = {
+        address: $('#googleaddress').val(),
+        dis: dis,
+        pickup: pickup,
+        dis_price: dis_price,
+        pickup_price: pickup_price,
+        pickup_free: pickup_free,
+        type: type,
+        total: total,
+        datetime: date.toString(),
+        name:name
+      }
+      console.log(x)
       axios.get('/book', {
-        params: {
-          address: $('#googleaddress').val(),
-          dis: dis,
-          pickup: pickup,
-          dis_price: dis_price,
-          pickup_price: pickup_price,
-          pickup_free: pickup_free,
-          type: type,
-          total: total,
-          datetime: date
-        }
+        params: x
       }
       ).then((res) => {
         console.log(res)
@@ -194,7 +206,7 @@
         $('#googleaddress').val(res.data.address1.address)
         $('#distance').val(res.data.dropoff_dis);
         dis = parseFloat($('#distance').val());
-      
+
         $('#pickup').val(res.data.pickup_dis);
         pickup = parseFloat($('#pickup').val());
         pricechange();
