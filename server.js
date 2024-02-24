@@ -35,7 +35,6 @@ app.get('/book',(req,res)=>{
     newtrip.pickuptime=datetime.toLocaleString(['en-US'],{timeStyle: 'short',hour12:true})
     newtrip.date=datetime.getMonth()+'/'+datetime.getDate()+'/'+datetime.getFullYear()
     newtrip.invoice=tripid;
-    newtrip.name='none'
     newtrip.payment='none'
     newtrip.transID='none'
     newtrip.nickname=newtrip.name
