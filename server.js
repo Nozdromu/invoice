@@ -83,16 +83,22 @@ app.get('/price', (req, res) => {
 
 })
 
-var unfinishtrip=[]
+var unfinishtrip = []
 app.get('/trips', (req, res) => {
-    var now=Date.now();
-    var tripdatetime=0;
-    data.forEach(element => {
-        tripdatetime=new date(element.datetime);
-        if(tripdatetime>now)
-            unfinishtrip.push(element);
+    res.render('trips');
+})
+
+app.get('/gettrips', (req, res) => {
+    var now = Date.now();
+    var tripdatetime = 0;
+    unfinishtrip = []
+    Object.entries(data).forEach(element => {
+        tripdatetime = new Date(element[1].datetime);
+        if (tripdatetime > now)
+            unfinishtrip.push(element[1]);
     });
-    res.render('trips', {trips:unfinishtrip});
+    console.log(unfinishtrip)
+    res.send({ trips: unfinishtrip })
 })
 
 const server = app.listen(port, function () {
