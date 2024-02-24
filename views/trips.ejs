@@ -45,7 +45,7 @@
         var t = $('#trips');
         axios.get('/gettrips').then((res) => {
             console.log(res.data)
-            trips = res.data.trips
+            trips = res.data.trips.sort((a, b) => parseInt(a.travletime) - parseInt(b.travletime))
             trips.forEach(element => {
                 t.append(createtrip(element))
             });

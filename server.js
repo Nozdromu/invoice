@@ -94,8 +94,11 @@ app.get('/gettrips', (req, res) => {
     unfinishtrip = []
     Object.entries(data).forEach(element => {
         tripdatetime = new Date(element[1].datetime);
-        if (tripdatetime > now)
+        if (tripdatetime > now) {
+            element[1].travletime = tripdatetime.valueOf()
             unfinishtrip.push(element[1]);
+        }
+
     });
     console.log(unfinishtrip)
     res.send({ trips: unfinishtrip })
