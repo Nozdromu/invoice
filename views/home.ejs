@@ -99,6 +99,7 @@
     var date = null;
     var hour = 0;
     var apm = "AM";
+    var triptype="dropoff"
     var cartype1 = " 灰色 Toyota Camry "
     var cartype2 = " 黑色 Toyota Sienna "
     var scripts = "";
@@ -150,8 +151,10 @@
     })
     $('input[name=triptype]').change(function (e) {
       if (e.target.value == 'dropoff') {
+        triptype="dropoff"
         $('#filghtdiv').hide();
       } else {
+        triptype="pickup"
         $('#filghtdiv').show();
       }
     })
@@ -180,6 +183,7 @@
         pickup_free: pickup_free,
         type: type,
         total: total,
+        triptype:triptype,
         datetime: date.toString(),
         name:$('#name').val()
       }
