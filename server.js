@@ -27,25 +27,25 @@ app.get('/home', (req, res) => {
     res.render('home')
 })
 
-app.get('/book',(req,res)=>{
-    var tripid=Date.now();
+app.get('/book', (req, res) => {
+    var tripid = Date.now();
     console.log(req.query);
-    var newtrip=req.query;
-    var datetime=new Date(newtrip.datetime);
-    newtrip.pickuptime=datetime.toLocaleString(['en-US'],{timeStyle: 'short',hour12:true})
-    newtrip.date=datetime.getMonth()+'/'+datetime.getDate()+'/'+datetime.getFullYear()
-    newtrip.invoice=tripid;
-    newtrip.payment='none'
-    newtrip.transID='none'
-    newtrip.nickname=newtrip.name
-    data[newtrip.invoice]=newtrip;
+    var newtrip = req.query;
+    var datetime = new Date(newtrip.datetime);
+    newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
+    newtrip.date = datetime.getMonth() + '/' + datetime.getDate() + '/' + datetime.getFullYear()
+    newtrip.invoice = tripid;
+    newtrip.payment = 'none'
+    newtrip.transID = 'none'
+    newtrip.nickname = newtrip.name
+    data[newtrip.invoice] = newtrip;
     console.log(data);
-    fs.writeFile("trips.json", JSON.stringify(data), function(err) {
-        if(err) {
+    fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+        if (err) {
             return console.log(err);
         }
         console.log("The file was saved!");
-    }); 
+    });
     res.send('done')
 })
 
@@ -81,6 +81,18 @@ app.get('/price', (req, res) => {
     })
 
 
+})
+
+var unfinishtrip=[]
+app.get('/trips', (req, res) => {
+    var now=Date.now();
+    var tripdatetime=0;
+    data.forEach(element => {
+        tripdatetime=new date(element.datetime);
+        if(tripdatetime>now)
+            unfinishtrip.push(element);
+    });
+    res.render('trips', {trips:unfinishtrip});
 })
 
 const server = app.listen(port, function () {
