@@ -89,7 +89,6 @@
 
   <script>
     var form = document.querySelector("#book")
-    var name=''
     var dis = 0;
     var pickup = 0;
     var dis_price = 2;
@@ -108,10 +107,7 @@
     var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
     var script4 = script1 + cartype1
     var maplink = 'http://maps.google.com/?q=';
-    $('#name').keyup((e)=>{
-      name=e.target.value
-      console.log(name)
-    })
+
     $('input[name=cartype]').change(function (e) {
       console.log(e.target.value)
       type = parseFloat(e.target.value)
@@ -185,7 +181,7 @@
         type: type,
         total: total,
         datetime: date.toString(),
-        name:name
+        name:$('#name').val()
       }
       console.log(x)
       axios.get('/book', {
