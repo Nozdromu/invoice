@@ -161,10 +161,12 @@
     $('#filghtdiv').hide()
 
     function makesummary() {
+      console.log(date.getMonth())
+      console.log()
       if ($('input[name=triptype]:checked').val() == 'dropoff') {
-        scripts = '预约 ' + date.getMonth() + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#googleaddress').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
+        scripts = '预约 ' + (date.getMonth()+1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#googleaddress').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
       } else {
-        scripts = '预约 接机 于' + date.getMonth() + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#googleaddress').val() + script4 + script3 + ' ,费用总计$' + total;
+        scripts = '预约 接机 于' + (date.getMonth()+1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#googleaddress').val() + script4 + script3 + ' ,费用总计$' + total;
       }
       $('#summary').val(scripts)
     }
