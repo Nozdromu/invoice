@@ -85,6 +85,7 @@
       </div>
     </form>
     <button class="btn btn-primary" onclick="makesummary()">test</button>
+    <button class="btn" onclick="copysummary()">copy</button>
   </div>
 
   <script>
@@ -99,7 +100,7 @@
     var date = null;
     var hour = 0;
     var apm = "AM";
-    var triptype="dropoff"
+    var triptype = "dropoff"
     var cartype1 = " 灰色 Toyota Camry "
     var cartype2 = " 黑色 Toyota Sienna "
     var scripts = "";
@@ -108,6 +109,10 @@
     var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
     var script4 = script1 + cartype1
     var maplink = 'http://maps.google.com/?q=';
+
+    function copysummary(){
+      navigator.clipboard.writeText($('#summary').val());
+    }
 
     $('input[name=cartype]').change(function (e) {
       console.log(e.target.value)
@@ -151,10 +156,10 @@
     })
     $('input[name=triptype]').change(function (e) {
       if (e.target.value == 'dropoff') {
-        triptype="dropoff"
+        triptype = "dropoff"
         $('#filghtdiv').hide();
       } else {
-        triptype="pickup"
+        triptype = "pickup"
         $('#filghtdiv').show();
       }
     })
@@ -164,9 +169,9 @@
       console.log(date.getMonth())
       console.log()
       if ($('input[name=triptype]:checked').val() == 'dropoff') {
-        scripts = '预约 ' + (date.getMonth()+1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#googleaddress').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
+        scripts = '预约 ' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#googleaddress').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
       } else {
-        scripts = '预约 接机 于' + (date.getMonth()+1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#googleaddress').val() + script4 + script3 + ' ,费用总计$' + total;
+        scripts = '预约 接机 于' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#googleaddress').val() + script4 + script3 + ' ,费用总计$' + total;
       }
       $('#summary').val(scripts)
     }
@@ -185,9 +190,9 @@
         pickup_free: pickup_free,
         type: type,
         total: total,
-        triptype:triptype,
+        triptype: triptype,
         datetime: date.toLocaleString(),
-        name:$('#name').val()
+        name: $('#name').val()
       }
       console.log(x)
       axios.get('/book', {
