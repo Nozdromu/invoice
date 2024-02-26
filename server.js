@@ -38,6 +38,7 @@ app.get('/book', (req, res) => {
     newtrip.payment = 'none'
     newtrip.transID = 'none'
     newtrip.nickname = newtrip.name
+    newtrip.travletime = datetime.valueOf();
     data[newtrip.invoice] = newtrip;
     console.log(data);
     fs.writeFile("trips.json", JSON.stringify(data), function (err) {
@@ -89,21 +90,24 @@ app.get('/trips', (req, res) => {
 })
 
 app.get('/gettrips', (req, res) => {
-    var now = new Date(Date.now());
-    var tripdatetime = 0;
     unfinishtrip = []
     Object.entries(data).forEach(element => {
-        tripdatetime = new Date(element[1].datetime);
-        console.log(tripdatetime + " : " + now)
-        if (tripdatetime > now) {
-            console.log(tripdatetime + " : " + now + ' in')
-            element[1].travletime = tripdatetime.valueOf()
+        if (element[1].state===1) {
             unfinishtrip.push(element[1]);
         }
-
     });
     console.log(unfinishtrip)
     res.send({ trips: unfinishtrip })
+})
+
+app.get('/finish',(req,res)=>{
+    trip=req.query.tripid;
+    data[trip].state=0;
+    if(data[trip].state===0){
+        res.send({state:'done'})
+    }else{
+        res.send({state:'none'})
+    }
 })
 
 const server = app.listen(port, function () {

@@ -48,10 +48,29 @@
             var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + data.address).text(data.address)
             var type = data.type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
-            if (data.triptype === 'pickup'){
+            if (data.triptype === 'pickup') {
                 info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight).text(data.flight)))
             }
             info.append($('<div>').append(map))
+            info.append($('<div>').append($('<button class="btn btn-warning">完成订单</button>').click(() => {
+                axios.get('/finish', { params: { tripid: data.invoice } }).then((res) => {
+                    location.reload()
+                })
+            })).append($('<button class="btn btn-warning">完成订单</button>').click(() => {
+                var pickuptime = new Date(data.datetime);
+                var triptype = "dropoff"
+                var cartype1 = " 灰色 Toyota Camry "
+                var cartype2 = " 黑色 Toyota Sienna "
+                var scripts = "预约 ";
+                var script1 = " 届时我会开一辆 "
+                var script2 = ",一般会提前5分钟左右抵达上车地点"
+                var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
+                var script4 = script1 + cartype1
+
+                if(data.triptype==="dropoff"){
+                    scripts+pickuptime.toDateString([],{datetype:"short",timetype:"short"})
+                }
+            })))
             coll_div.append(info)
             return (item);
         }
