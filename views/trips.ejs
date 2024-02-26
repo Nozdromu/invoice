@@ -48,6 +48,9 @@
             var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + data.address).text(data.address)
             var type = data.type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
+            if (data.triptype === 'pickup'){
+                info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight).text(data.flight)))
+            }
             info.append($('<div>').append(map))
             coll_div.append(info)
             return (item);
