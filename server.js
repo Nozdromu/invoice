@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
     res.render('index', data[inv]);
 });
 app.get('/reload', (req, res) => {
-    data = JSON.parse(fs.readFileSync('data.json', 'utf8'));
+    data = JSON.parse(fs.readFileSync('trips.json', 'utf8'));
     res.send(data);
 })
 app.get('/home', (req, res) => {
