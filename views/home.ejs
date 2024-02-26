@@ -86,6 +86,7 @@
     </form>
     <button class="btn btn-primary" onclick="makesummary()">test</button>
     <button class="btn" onclick="copysummary()">copy</button>
+    <button class="btn" onclick="showfee()">fee info</button>
   </div>
 
   <script>
@@ -112,6 +113,9 @@
 
     function copysummary(){
       navigator.clipboard.writeText($('#summary').val());
+    }
+    function showfee(){
+      $('#summary').val('具体费用就是出发地到机场最快路程的距离✖️2加上5，需要minivan的话再加5，然后从我家出发 距离出发地(接机的话是目的地)6 miles以外每miles收0.5接的费用。接送费用目前相同')
     }
 
     $('input[name=cartype]').change(function (e) {
