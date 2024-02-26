@@ -39,6 +39,7 @@ app.get('/book', (req, res) => {
     newtrip.transID = 'none'
     newtrip.nickname = newtrip.name
     newtrip.travletime = datetime.valueOf();
+    newtrip.state=1
     data[newtrip.invoice] = newtrip;
     console.log(data);
     fs.writeFile("trips.json", JSON.stringify(data), function (err) {
@@ -104,6 +105,12 @@ app.get('/finish',(req,res)=>{
     trip=req.query.tripid;
     data[trip].state=0;
     if(data[trip].state===0){
+        fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("The file was saved!");
+        });
         res.send({state:'done'})
     }else{
         res.send({state:'none'})
