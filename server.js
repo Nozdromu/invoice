@@ -33,7 +33,7 @@ app.get('/book', (req, res) => {
     var newtrip = req.query;
     var datetime = new Date(newtrip.datetime);
     newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
-    newtrip.date = datetime.toLocaleDateString(['en-US'],{dateStyle:'short'})
+    newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
     newtrip.invoice = tripid;
     newtrip.payment = 'none'
     newtrip.transID = 'none'
@@ -89,12 +89,14 @@ app.get('/trips', (req, res) => {
 })
 
 app.get('/gettrips', (req, res) => {
-    var now = Date.now();
+    var now = new Date(Date.now());
     var tripdatetime = 0;
     unfinishtrip = []
     Object.entries(data).forEach(element => {
         tripdatetime = new Date(element[1].datetime);
+        console.log(tripdatetime + " : " + now)
         if (tripdatetime > now) {
+            console.log(tripdatetime + " : " + now + ' in')
             element[1].travletime = tripdatetime.valueOf()
             unfinishtrip.push(element[1]);
         }
