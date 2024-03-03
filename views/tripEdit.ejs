@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <form id="book">
+      <div class="mb-3">
+        <label for="triptype" class="form-label">select trip type</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="triptype" id="triptype1" value='dropoff' checked>
+          <label class="form-check-label" for="triptype1">
+            dropoff
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="triptype" id="triptype2" value="pickup">
+          <label class="form-check-label" for="triptype2">
+            pickup
+          </label>
+        </div>
+        <div id="filghtdiv" class="mb-3">
+          <div>
+            <label for="flight" class="form-label">flight info</label>
+            <input type="text" class="form-control" id="flight" name="flight">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">name</label>
+          <input type="address" class="form-control" id="name" name="name">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">pickup/dropoff address</label>
+          <input type="address" class="form-control" id="address" name="address">
+          <input type="address" class="form-control" id="googleaddress" name="googleaddress" readonly>
+          <div id="addresshelp" class="form-text">where pickup or dropoff</div>
+          <a id="map">to map</a>
+          <button class="btn btn-primary" onclick="get_dis()">get dis</button>
+        </div>
+        <div class="mb-3">
+          <label for="distance" class="form-label">distance</label>
+          <input type="number" class="form-control" id="distance" value="0" name="distance">
+        </div>
+        <div class="mb-3">
+          <label for="pickup" class="form-label"> pickup-distance</label>
+          <input type="number" class="form-control" id="pickup" value="0" name="pickup">
+        </div>
+        <div class="mb-3">
+          <label for="datetime" class="form-label">datetime</label>
+          <input type="datetime-local" class="form-control" id="datetime" name="datetime">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">select car type</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="cartype" id="cartype1" value=5 checked>
+            <label class="form-check-label" for="cartype1">
+              Sedan - Camry
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="cartype" id="cartype2" value=10>
+            <label class="form-check-label" for="cartype2">
+              MiniVan - Sienna
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">price</label>
+          <input type="text" class="form-control" id="price" name="price">
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <div class="'md-3">
+          <label for="summary">summary</label>
+          <textarea type="text" class="form-control" id="summary" rows="3"></textarea>
+        </div>
+      </div>
+    </form>
+    <button class="btn btn-primary" onclick="makesummary()">test</button>
+    <button class="btn" onclick="copysummary()">copy</button>
+    <button class="btn" onclick="showfee()">fee info</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const trip = urlParams.get('trip');
+    var trip_info={}
+    axios.get('/gettrip', { params: { trip: trip } }).then((res) => {
+      console.log(res.data);
+      var data = res.data
+      $('#flight').val(data.flight);
+      $('#name').val(data.name);
+      $('#address').val(data.address);
+      $('#googleaddress').val(data.address);
+      $('#distance').val(data.dis);
+      $('#pickup').val(data.pickup);
+      var t = (new Date(data.datetime + ' UTC')).toISOString().substring(0, 16)
+      //.toLocaleString( {timeZone:'UTC',dateStyle:"full",timeStyle:"short",hour12:false}).replaceAll('/','-').replaceAll(', ','T')
+      $('#datetime').val(t);
+      console.log(t)
+      //$('#datetime').val("2017-06-01 19:00:00")
+      $('#price').val(data.total);
+      $("[name=cartype]").val([data.type])
+      $("[name=triptype]").val([data.triptype])
+      trip_info=data;
+      // $('#').val();
+    })
+    var form = document.querySelector("#book")
+    var dis = 0;
+    var pickup = 0;
+    var dis_price = 2;
+    var pickup_price = 0.5;
+    var pickup_free = 6;
+    var type = 5;
+    var total = 0;
+    var date = null;
+    var hour = 0;
+    var apm = "AM";
+    var triptype = "dropoff"
+    var cartype1 = " 灰色 Toyota Camry "
+    var cartype2 = " 黑色 Toyota Sienna "
+    var scripts = "";
+    var script1 = " 届时我会开一辆 "
+    var script2 = ",一般会提前5分钟左右抵达上车地点"
+    var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
+    var script4 = script1 + cartype1
+    var maplink = 'http://maps.google.com/?q=';
+
+    function copysummary() {
+      navigator.clipboard.writeText($('#summary').val());
+    }
+    function showfee() {
+      $('#summary').val('具体费用就是出发地到机场最快路程的距离✖️2加上5，需要minivan的话再加5，然后从我家出发 距离出发地(接机的话是目的地)6 miles以外每miles收0.5接的费用。接送费用目前相同')
+    }
+
+    $('input[name=cartype]').change(function (e) {
+      console.log(e.target.value)
+      type = parseFloat(e.target.value)
+      if (e.target.value == '5') {
+        script4 = script1 + cartype1;
+      } else {
+        script4 = script1 + cartype2;
+      }
+      pricechange();
+    })
+    function pricechange() {
+      total = dis * dis_price + (pickup < pickup_free ? 0 : pickup - pickup_free) * pickup_price + type
+      $('#price').val(total)
+    }
+    $('#map').click(function () {
+      console.log(maplink + $('#address').val().replaceAll(" ", "+"))
+      window.open(maplink + $('#address').val().replaceAll(" ", "+"), '_blank').focus();
+    })
+    $('#distance').keyup(function (e) {
+      dis = parseFloat($('#distance').val());
+      pricechange();
+    })
+    $('#pickup').keyup(function (e) {
+      pickup = parseFloat($('#pickup').val());
+      pricechange();
+    })
+    $('#datetime').change(function datetime(e) {
+      console.log(e.target.value)
+      date = new Date(e.target.value);
+      console.log(date);
+      hour = date.getHours();
+      if (hour > 12) {
+        hour -= 12;
+        apm = 'PM';
+      } else {
+        apm = "AM"
+      }
+      scripts = date.getMonth() + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm;
+      console.log(scripts)
+    })
+    $('input[name=triptype]').change(function (e) {
+      if (e.target.value == 'dropoff') {
+        triptype = "dropoff"
+        $('#filghtdiv').hide();
+      } else {
+        triptype = "pickup"
+        $('#filghtdiv').show();
+      }
+    })
+    $('#filghtdiv').hide()
+
+    function makesummary() {
+      console.log(date.getMonth())
+      console.log()
+      if ($('input[name=triptype]:checked').val() == 'dropoff') {
+        scripts = '预约 ' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#googleaddress').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
+      } else {
+        scripts = '预约 接机 于' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#googleaddress').val() + script4 + script3 + ' ,费用总计$' + total;
+      }
+      $('#summary').val(scripts)
+    }
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      sendData();
+    });
+    function sendData() {
+      var data = new FormData(form);
+      trip_info.address= $('#googleaddress').val(),
+      trip_info.dis= $('#distance').val(),
+      trip_info.pickup= $('#pickup').val(),
+      trip_info.dis_price= dis_price,
+      trip_info.pickup_price= pickup_price,
+      trip_info.pickup_free= pickup_free,
+      trip_info.type= $('input[name=cartype]:checked').val(),
+      trip_info.total= $('#price').val(),
+      trip_info.triptype= $('input[name=triptype]:checked').val(),
+      trip_info.datetime= (new Date($('#datetime').val())).toLocaleString({timestyle:'short',hour12:false}),
+      trip_info.flight= $('#flight').val(),
+      trip_info.name= $('#name').val()
+      // var x = {
+      //   address: $('#googleaddress').val(),
+      //   dis: $('#distance').val(),
+      //   pickup: $('#pickup').val(),
+      //   dis_price: dis_price,
+      //   pickup_price: pickup_price,
+      //   pickup_free: pickup_free,
+      //   type: $('input[name=cartype]:checked').val(),
+      //   total: $('#price').val(),
+      //   triptype: $('input[name=triptype]:checked').val(),
+      //   datetime: $('#datetime').val(),
+      //   flight: $('#flight').val(),
+      //   name: $('#name').val()
+      // }
+      console.log(trip_info)
+      axios.get('/edit', {
+        params: trip_info
+      }
+      ).then((res) => {
+        console.log(res)
+      })
+
+      // $.post('/book', data, (res) => {
+      //   console.log(res);
+      // })
+    }
+    // function get_dis() {
+    //   axios.get('/price', { params: { start: $('#address').val(), end: "17801 International Blvd, SeaTac, WA 98158" } }).then((res) => {
+    //     console.log(res)
+
+    //     $('#googleaddress').val(res.data.address1.address)
+    //     $('#distance').val(res.data.dropoff_dis);
+    //     dis = parseFloat($('#distance').val());
+
+    //     $('#pickup').val(res.data.pickup_dis);
+    //     pickup = parseFloat($('#pickup').val());
+    //     pricechange();
+    //   })
+    // }
+  </script>
+</body>
+
+</html>

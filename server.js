@@ -14,6 +14,16 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 console.log(process.env.google_map_api_key)
 
+// for(var element in data){
+//     if (data[element].travletime === undefined) {
+//         data[element].travletime = (new Date(data[element].datetime||data[element].date)).valueOf()
+//     }
+// }
+
+// data.keys().forEach((key) => {
+
+// })
+
 app.get('/', (req, res) => {
     console.log(req);
     var inv = req.query.invoice;
@@ -23,6 +33,16 @@ app.get('/reload', (req, res) => {
     data = JSON.parse(fs.readFileSync('trips.json', 'utf8'));
     res.send(data);
 })
+
+// app.get('/savefile', (req, res) => {
+//     fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+//         if (err) {
+//             return console.log(err);
+//         }
+//         console.log("The file was saved!");
+//     });
+//     res.send(data);
+// })
 app.get('/home', (req, res) => {
     res.render('home')
 })
@@ -34,21 +54,21 @@ app.get('/book', (req, res) => {
     var datetime = new Date(newtrip.datetime);
     newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
     newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
+    newtrip.travletime = datetime.valueOf();
     newtrip.invoice = tripid;
     newtrip.payment = 'none'
     newtrip.transID = 'none'
     newtrip.nickname = newtrip.name
-    newtrip.travletime = datetime.valueOf();
-    newtrip.state=1
+    newtrip.state = 1
     data[newtrip.invoice] = newtrip;
     console.log(data);
-    fs.writeFile("trips.json", JSON.stringify(data), function (err) {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("The file was saved!");
-    });
-    res.send('done')
+    // fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+    //     if (err) {
+    //         return console.log(err);
+    //     }
+    //     console.log("The file was saved!");
+    // });
+    // res.send('done')
 })
 
 app.get('/price', (req, res) => {
@@ -93,7 +113,7 @@ app.get('/trips', (req, res) => {
 app.get('/gettrips', (req, res) => {
     unfinishtrip = []
     Object.entries(data).forEach(element => {
-        if (element[1].state===1) {
+        if (element[1].state === 1) {
             unfinishtrip.push(element[1]);
         }
     });
@@ -101,20 +121,38 @@ app.get('/gettrips', (req, res) => {
     res.send({ trips: unfinishtrip })
 })
 
-app.get('/finish',(req,res)=>{
-    trip=req.query.tripid;
-    data[trip].state=0;
-    if(data[trip].state===0){
+app.get('/finish', (req, res) => {
+    trip = req.query.tripid;
+    data[trip].state = 0;
+    if (data[trip].state === 0) {
         fs.writeFile("trips.json", JSON.stringify(data), function (err) {
             if (err) {
                 return console.log(err);
             }
             console.log("The file was saved!");
         });
-        res.send({state:'done'})
-    }else{
-        res.send({state:'none'})
+        res.send({ state: 'done' })
+    } else {
+        res.send({ state: 'none' })
     }
+})
+app.get('/gettrip', (req, res) => {
+    console.log(req.query.trip);
+    res.send(data[req.query.trip]);
+})
+
+app.get('/edittrip', (req, res) => {
+    res.render('tripEdit')
+})
+app.get('/edit', (req, res) => {
+    console.log(req.query)
+    var newtrip = req.query;
+    var datetime = new Date(newtrip.datetime);
+    newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
+    newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
+    newtrip.travletime = datetime.valueOf();
+    console.log(newtrip)
+    res.send('done')
 })
 
 const server = app.listen(port, function () {
