@@ -62,13 +62,13 @@ app.get('/book', (req, res) => {
     newtrip.state = 1
     data[newtrip.invoice] = newtrip;
     console.log(data);
-    // fs.writeFile("trips.json", JSON.stringify(data), function (err) {
-    //     if (err) {
-    //         return console.log(err);
-    //     }
-    //     console.log("The file was saved!");
-    // });
-    // res.send('done')
+    fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("The file was saved!");
+    });
+    res.send('done')
 })
 
 app.get('/price', (req, res) => {
@@ -151,7 +151,14 @@ app.get('/edit', (req, res) => {
     newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
     newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
     newtrip.travletime = datetime.valueOf();
+    data[newtrip.invoice] = newtrip
     console.log(newtrip)
+    fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("The file was saved!");
+    });
     res.send('done')
 })
 
