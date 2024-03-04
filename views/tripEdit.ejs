@@ -92,7 +92,7 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const trip = urlParams.get('trip');
-    var trip_info={}
+    var trip_info = {}
     axios.get('/gettrip', { params: { trip: trip } }).then((res) => {
       console.log(res.data);
       var data = res.data
@@ -110,7 +110,8 @@
       $('#price').val(data.total);
       $("[name=cartype]").val([data.type])
       $("[name=triptype]").val([data.triptype])
-      trip_info=data;
+      trip_info = data;
+      date = new Date(data.datetime)
       // $('#').val();
     })
     var form = document.querySelector("#book")
@@ -193,8 +194,6 @@
     $('#filghtdiv').hide()
 
     function makesummary() {
-      console.log(date.getMonth())
-      console.log()
       if ($('input[name=triptype]:checked').val() == 'dropoff') {
         scripts = '预约 ' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + hour + ':' + date.getMinutes() + ' ' + apm + ' 从 ' + $('#googleaddress').val() + ' 出发. ' + script4 + script2 + ' ,费用总计$' + total;
       } else {
@@ -208,18 +207,18 @@
     });
     function sendData() {
       var data = new FormData(form);
-      trip_info.address= $('#googleaddress').val(),
-      trip_info.dis= $('#distance').val(),
-      trip_info.pickup= $('#pickup').val(),
-      trip_info.dis_price= dis_price,
-      trip_info.pickup_price= pickup_price,
-      trip_info.pickup_free= pickup_free,
-      trip_info.type= $('input[name=cartype]:checked').val(),
-      trip_info.total= $('#price').val(),
-      trip_info.triptype= $('input[name=triptype]:checked').val(),
-      trip_info.datetime= (new Date($('#datetime').val())).toLocaleString({timestyle:'short',hour12:false}),
-      trip_info.flight= $('#flight').val(),
-      trip_info.name= $('#name').val()
+      trip_info.address = $('#googleaddress').val(),
+        trip_info.dis = $('#distance').val(),
+        trip_info.pickup = $('#pickup').val(),
+        trip_info.dis_price = dis_price,
+        trip_info.pickup_price = pickup_price,
+        trip_info.pickup_free = pickup_free,
+        trip_info.type = $('input[name=cartype]:checked').val(),
+        trip_info.total = $('#price').val(),
+        trip_info.triptype = $('input[name=triptype]:checked').val(),
+        trip_info.datetime = (new Date($('#datetime').val())).toLocaleString({ timestyle: 'short', hour12: false }),
+        trip_info.flight = $('#flight').val(),
+        trip_info.name = $('#name').val()
       // var x = {
       //   address: $('#googleaddress').val(),
       //   dis: $('#distance').val(),
