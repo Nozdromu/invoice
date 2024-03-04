@@ -200,6 +200,7 @@
       trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });
       trip_info.flight = flight.val();
       trip_info.name = _name.val();
+      trip_info.nickname=_name.val();
       axios.get('/edit', {
         params: trip_info
       }
