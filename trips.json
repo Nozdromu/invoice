@@ -288,16 +288,17 @@
         "type": "5",
         "total": "69.5",
         "triptype": "dropoff",
-        "datetime": "2024/3/4 08:30:00",
-        "name": "HK.",
+        "datetime": "3/4/2024, 8:30:00 AM",
+        "name": "HX.",
         "pickuptime": "8:30 AM",
         "date": "3/4/24",
-        "invoice": 1708917504057,
+        "invoice": "1708917504057",
         "payment": "none",
         "transID": "none",
-        "nickname": "HK.",
-        "state": 1,
-        "travletime": 1709569800000
+        "nickname": "HX.",
+        "state": "1",
+        "travletime": 1709569800000,
+        "flight": ""
     },
     "1708964361865": {
         "address": "5997 153rd Ave SE, Bellevue, WA 98006, USA",
