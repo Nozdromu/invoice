@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="pdf">
+        <form action="./letter">
+            <select id="select" name="letter" class="form-select" aria-label="Default select example">
+                <option value="a">Letter A</option>
+                <option value="b">Letter B</option>
+                <option value="c">Letter C</option>
+                <option value="d">Letter D</option>
+                <option value="e">Letter E</option>
+                <option value="f">Letter F</option>
+                <option value="g">Letter G</option>
+                <option value="h">Letter H</option>
+                <option value="i">Letter I</option>
+                <option value="j">Letter J</option>
+                <option value="k">Letter K</option>
+                <option value="l">Letter L</option>
+                <option value="m">Letter M</option>
+                <option value="n">Letter N</option>
+                <option value="o">Letter O</option>
+                <option value="p">Letter P</option>
+                <option value="q">Letter Q</option>
+                <option value="r">Letter R</option>
+                <option value="s">Letter S</option>
+                <option value="t">Letter T</option>
+                <option value="u">Letter U</option>
+                <option value="v">Letter V</option>
+                <option value="w">Letter W</option>
+                <option value="x">Letter X</option>
+                <option value="y">Letter Y</option>
+                <option value="z">Letter Z</option>
+            </select>
+            <input type="submit">
+        </form>
+
+        <!-- <button type="button" class="btn" onclick="submit()">Submit</button> -->
+    </div>
+    <embed>
+    <script>
+        var submit = () => {
+            console.log('clidked')
+            axios.post('/letter', { params: { letter: $('#select').val() } }).then((res) => {
+                // $('#pdf').append($('<embed>').attr('src',res.data.src))
+                console.log(res);
+            })
+        }
+
+    </script>
+</body>
+
+</html>

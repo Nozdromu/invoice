@@ -162,6 +162,15 @@ app.get('/edit', (req, res) => {
     res.send('done')
 })
 
+app.get('/letter',(req,res)=>{
+    var l=req.query.letter;
+    console.log(req.query)
+    res.sendFile('public/letter/'+l+'.pdf',{ root: __dirname})
+})
+app.get('/l',(req,res)=>{
+    res.render('letter');
+})
+
 const server = app.listen(port, function () {
     console.log('listening to port: ' + port)
     console.log(data)
