@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <form id="book">
+      <div class="mb-3">
+        <label for="triptype" class="form-label">select trip type</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="triptype" id="triptype1" value='dropoff' checked>
+          <label class="form-check-label" for="triptype1">
+            dropoff
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="triptype" id="triptype2" value="pickup">
+          <label class="form-check-label" for="triptype2">
+            pickup
+          </label>
+        </div>
+        <div id="filghtdiv" class="mb-3">
+          <div>
+            <label for="flight" class="form-label">flight info</label>
+            <input type="text" class="form-control" id="flight" name="flight">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">name</label>
+          <input type="address" class="form-control" id="name" name="name">
+        </div>
+        <div class="mb-3">
+          <label for="nickname" class="form-label">nickname</label>
+          <input type="address" class="form-control" id="nickname" name="nickname">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">pickup address</label>
+          <div class="input-group mb-3">
+            <div class="input-group-text">
+              <input class="form-check-input" type="checkbox" name="aaa" id="checkaddress"
+                aria-label="Checkbox for following text input">
+              <label class="form-check-label" for="aaa"> airport</label>
+            </div>
+            <input type="address" class="form-control" id="address" name="address">
+          </div>
+          <input type="address" class="form-control" id="googleaddress" name="googleaddress" readonly>
+          <label for="dropoffaddress" class="form-label">dropoff address</label>
+          <div class="input-group mb-3">
+            <div class="input-group-text">
+              <input class="form-check-input" type="checkbox" name="aaaa" id="checkdropoffaddress"
+                aria-label="Checkbox for following text input">
+              <label class="form-check-label" for="aaaa"> airport</label>
+            </div>
+            <input type="address" class="form-control" id="dropoffaddress" name="dropoffaddress">
+          </div>
+
+          <input type="address" class="form-control" id="dropoffgoogleaddress" name="dropoffgoogleaddress" readonly>
+          <div id="addresshelp" class="form-text">where pickup or dropoff</div>
+          <a id="map">to map</a>
+          <input type="button" class="btn btn-primary" onclick="get_dis()">get dis</input>
+        </div>
+        <div class="mb-3">
+          <label for="distance" class="form-label">distance</label>
+          <input type="number" class="form-control" id="distance" value="0" name="distance">
+        </div>
+        <div class="mb-3">
+          <label for="pickup" class="form-label"> pickup-distance</label>
+          <input type="number" class="form-control" id="pickup" value="0" name="pickup">
+        </div>
+        <div class="mb-3">
+          <label for="datetime" class="form-label">datetime</label>
+          <input type="datetime-local" class="form-control" id="datetime" name="datetime">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">select car type</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="cartype" id="cartype1" value=5 checked>
+            <label class="form-check-label" for="cartype1">
+              Sedan - Camry
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="cartype" id="cartype2" value=10>
+            <label class="form-check-label" for="cartype2">
+              MiniVan - Sienna
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">price</label>
+          <input type="text" class="form-control" id="price" name="price">
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <div class="'md-3">
+          <label for="summary">summary</label>
+          <textarea type="text" class="form-control" id="summary" rows="3"></textarea>
+        </div>
+      </div>
+    </form>
+    <button class="btn btn-primary" onclick="makesummary()">test</button>
+    <button class="btn" onclick="copysummary()">copy</button>
+    <button class="btn" onclick="showfee()">fee info</button>
+  </div>
+
+  <script>
+
+    var trip_info = {}
+    var flight = $('#flight');
+    var _name = $('#name');
+    var _nickname = $('#nickname');
+    var address = $('#address');
+    var dropoffaddress = $('#dropoffaddress')
+    var googleaddress = $('#googleaddress');
+    var dropoffgoogleaddress = $('#dropoffgoogleaddress');
+    var distance = $('#distance');
+    var pickup = $('#pickup');
+    var datetime = $('#datetime');
+    var price = $('#price')
+    var cartype = $('input[name=cartype]');
+    var triptype = $('input[name=triptype]')
+    var dis_price = 2;
+    var pickup_price = 0.5;
+    var pickup_free = 6;
+    var form = document.querySelector("#book")
+    var airportaddress = '17801 International Blvd, SeaTac, WA 98158'
+    var car = {
+      5: " 灰色 Toyota Camry ",
+      10: " 黑色 Toyota Sienna "
+    }
+    var scripts = "";
+    var script1 = " 届时我会开一辆 "
+    var script2 = " ,一般会提前5分钟左右抵达上车地点"
+    var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
+    var maplink = 'http://maps.google.com/?q=';
+
+    var getprice = () => {
+      var _total = 0;
+      var pickup_total = pickup.val() - pickup_free
+      _total = dis_price * distance.val() + (pickup_total > 0 ? pickup_total : 0) * pickup_price + parseInt(cartype().val());
+      price.val(_total)
+    }
+
+    distance.keyup(getprice);
+    pickup.keyup(getprice);
+    cartype.change(getprice);
+    triptype.change(function (e) {
+      if (e.target.value == 'dropoff') {
+        $('#filghtdiv').hide();
+      } else {
+        $('#filghtdiv').show();
+      }
+    })
+
+    cartype = (() => { return $('input[name=cartype]:checked') });
+    triptype = (() => { return $('input[name=triptype]:checked') });
+
+    if (triptype().val() === 'dropoff')
+      $('#filghtdiv').hide()
+
+    var copysummary = () => {
+      navigator.clipboard.writeText($('#summary').val());
+    }
+    var showfee = () => {
+      $('#summary').val('具体费用就是出发地到机场最快路程的距离✖️2加上5，需要minivan的话再加5，然后从我家出发 距离出发地(接机的话是目的地)6 miles以外每miles收0.5接的费用。接送费用目前相同')
+    }
+
+
+    $('#map').click(function () {
+      window.open(maplink + $('#address').val().replaceAll(" ", "+"), '_blank').focus();
+    })
+
+    var makesummary = () => {
+      var d = new Date(datetime.val());
+      if (triptype().val() == 'dropoff') {
+        scripts = '预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + $('#googleaddress').val() + ' 出发. 届时我会开一辆 ' + car[cartype().val()] + script2 + ' ,费用总计$' + price.val();
+      } else {
+        scripts = '预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + $('#flight').val() + ' 送往 ' + $('#googleaddress').val() + '. 届时我会开一辆 ' + car[cartype().val()] + script3 + ' ,费用总计$' + price.val();
+      }
+      $('#summary').val(scripts)
+    }
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      sendData();
+    });
+    function sendData() {
+      trip_info.address = googleaddress.val();
+      trip_info.dropoffaddress = dropoffgoogleaddress.val()
+      trip_info.dis = distance.val();
+      trip_info.pickup = pickup.val();
+      trip_info.dis_price = dis_price;
+      trip_info.pickup_price = pickup_price;
+      trip_info.pickup_free = pickup_free;
+      trip_info.type = cartype().val();
+      trip_info.total = price.val();
+      trip_info.triptype = triptype().val();
+      trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });
+      trip_info.flight = flight.val();
+      trip_info.name = _name.val().length === 0 ? nickname.val() : _name.val();
+      trip_info.nickname = nickname.val();
+      axios.get('/book', {
+        params: trip_info
+      }
+      ).then((res) => {
+        console.log(res)
+      })
+    }
+    function get_dis() {
+      var datasend = {
+        start: address.val(),
+        end: dropoffaddress.val()
+      }
+      axios.get('/price', { params: datasend }).then((res) => {
+        console.log(res)
+
+        googleaddress.val(res.data.address1.address)
+        dropoffgoogleaddress.val(res.data.address2.address)
+        distance.val(res.data.dropoff_dis);
+        pickup.val(res.data.pickup_dis);
+        getprice();
+      })
+    }
+
+    var airport = (name) => {
+      if ($('#check' + name).is(":checked"))
+        $('#' + name).val(airportaddress);
+      else
+        $('#' + name).val('')
+    }
+    $('#checkaddress').click(() => { airport('address') })
+    $('#checkdropoffaddress').click(() => { airport('dropoffaddress') })
+  </script>
+</body>
+
+</html>

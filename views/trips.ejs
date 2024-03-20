@@ -37,7 +37,14 @@
             var button = $('<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"  aria-expanded="false" >')
             button.attr('data-bs-target', '#' + data.invoice);
             button.attr('aria-controls', data.invoice);
-            button.text(data.nickname + ' ' + data.triptype + " " + data.date + " " + data.pickuptime);
+            var btdiv={}
+            if (data.triptype === 'dropoff') {
+                btdiv = $('<h6>' + data.nickname + ' ' + data.date + " " + data.pickuptime + '</h6>').append($('<span class="badge text-bg-success">' + data.triptype + '</span>'))
+            } else {
+                btdiv = $('<h6>' + data.nickname + ' ' + data.date + " " + data.pickuptime + '</h6>').append($('<span class="badge text-bg-warning">' + data.triptype + '</span>'))
+            }
+
+            button.append(btdiv)
             var coll_div = $('<div class="accordion-collapse collapse">')
             coll_div.attr('id', data.invoice);
             coll_div.attr('data-bs-parent', 'trips')
@@ -53,8 +60,8 @@
             }
             info.append($('<div>').append(map))
             var activeRow = $('<div class="row justify-content-start">')
-            activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">编辑订单</button>').click(()=>{
-                window.location.href = '/edittrip?trip='+data.invoice
+            activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">编辑订单</button>').click(() => {
+                window.location.href = '/edittrip?trip=' + data.invoice
             })));
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">完成订单</button>').click(() => {
                 axios.get('/finish', { params: { tripid: data.invoice } }).then((res) => {
