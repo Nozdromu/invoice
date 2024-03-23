@@ -14,42 +14,63 @@
 </head>
 
 <body>
-    <div id="pdf">
-        <form action="./letter">
-            <select id="select" name="letter" class="form-select" aria-label="Default select example">
-                <option value="a">Letter A</option>
-                <option value="b">Letter B</option>
-                <option value="c">Letter C</option>
-                <option value="d">Letter D</option>
-                <option value="e">Letter E</option>
-                <option value="f">Letter F</option>
-                <option value="g">Letter G</option>
-                <option value="h">Letter H</option>
-                <option value="i">Letter I</option>
-                <option value="j">Letter J</option>
-                <option value="k">Letter K</option>
-                <option value="l">Letter L</option>
-                <option value="m">Letter M</option>
-                <option value="n">Letter N</option>
-                <option value="o">Letter O</option>
-                <option value="p">Letter P</option>
-                <option value="q">Letter Q</option>
-                <option value="r">Letter R</option>
-                <option value="s">Letter S</option>
-                <option value="t">Letter T</option>
-                <option value="u">Letter U</option>
-                <option value="v">Letter V</option>
-                <option value="w">Letter W</option>
-                <option value="x">Letter X</option>
-                <option value="y">Letter Y</option>
-                <option value="z">Letter Z</option>
-            </select>
-            <input type="submit">
-        </form>
+    <div id="pdf" class="container" style="height: 100vh">
+        <div class="row" style="height: 100%;">
+            <div class="col-sm-9 align-self-center">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="./letter">
+                            <div class="mb-3">
+                                <select id="select" name="letter" class="form-select"
+                                    aria-label="Default select example">
+                                    <option value="a">Letter A</option>
+                                    <option value="b">Letter B</option>
+                                    <option value="c">Letter C</option>
+                                    <option value="d">Letter D</option>
+                                    <option value="e">Letter E</option>
+                                    <option value="f">Letter F</option>
+                                    <option value="g">Letter G</option>
+                                    <option value="h">Letter H</option>
+                                    <option value="i">Letter I</option>
+                                    <option value="j">Letter J</option>
+                                    <option value="k">Letter K</option>
+                                    <option value="l">Letter L</option>
+                                    <option value="m">Letter M</option>
+                                    <option value="n">Letter N</option>
+                                    <option value="o">Letter O</option>
+                                    <option value="p">Letter P</option>
+                                    <option value="q">Letter Q</option>
+                                    <option value="r">Letter R</option>
+                                    <option value="s">Letter S</option>
+                                    <option value="t">Letter T</option>
+                                    <option value="u">Letter U</option>
+                                    <option value="v">Letter V</option>
+                                    <option value="w">Letter W</option>
+                                    <option value="x">Letter X</option>
+                                    <option value="y">Letter Y</option>
+                                    <option value="z">Letter Z</option>
+                                </select>
+                            </div>
+                            <div class=""></div>
+                            <div class="row justify-content-end mb-3 ">
+                                <div class="col-4"><button class="btn btn-primary" type="submit">Submit form</button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
 
         <!-- <button type="button" class="btn" onclick="submit()">Submit</button> -->
     </div>
-    <embed>
     <script>
         var submit = () => {
             console.log('clidked')
