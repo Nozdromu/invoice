@@ -1,4 +1,6 @@
-<html lang="en" version="4"><head>
+<html lang="en" version="4">
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,79 +15,96 @@
 
     <div class="invoice-box">
         <table>
-            <tbody><tr class="top">
-                <td colspan="2">
-                    <table>
-                        <tbody><tr>
-                            <td class="title">
-                                Service Invoice
-                            </td>
+            <tbody>
+                <tr class="top">
+                    <td colspan="2">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="title">
+                                        Service Invoice
+                                    </td>
 
-                            <td>
-                                Invoice #: <%=invoice%><br>
-                                Created: <%=date%><br>
-                                Due: <%=date%>
-                            </td>
-                        </tr>
-                    </tbody></table>
-                </td>
-            </tr>
+                                    <td>
+                                        Invoice #: <%=invoice%><br>
+                                            Created: <%=date%><br>
+                                                Due: <%=date%>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
 
-            <tr class="information">
-                <td colspan="2">
-                    <table>
-                        <tbody><tr>
-                            <td>
-                                From:<br>
-                                Yilei Ding<br>
-                                6835 SE Cougar Mountian Way<br>
-                                Bellevue, WA 98006
-                            </td>
+                <tr class="information">
+                    <td colspan="2">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        From:<br>
+                                        Yilei Ding<br>
+                                        6835 SE Cougar Mountian Way<br>
+                                        Bellevue, WA 98006
+                                    </td>
 
-                            <td>
-                                To:<br>
-                                <%=name%><br>
-                                <%=address%><br>
-                            </td>
-                        </tr>
-                    </tbody></table>
-                </td>
-            </tr>
+                                    <td>
+                                        To:<br>
+                                        <%=name%><br>
+                                            <%=address%><br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
 
-            <tr class="heading">
-                <td>Payment Method</td>
+                <tr class="heading">
+                    <td>Payment Method</td>
 
-                <td>ID #</td>
-            </tr>
+                    <td>ID #</td>
+                </tr>
 
-            <tr class="details">
-                <td><%=payment%></td>
+                <tr class="details">
+                    <td>
+                        <%=payment%>
+                    </td>
 
-                <td><%=transID%></td>
-            </tr>
+                    <td>
+                        <%=transID%>
+                    </td>
+                </tr>
 
-            <tr class="heading">
-                <td>Service</td>
-                <td>Price</td>
-            </tr>
+                <tr class="heading">
+                    <td>Service</td>
+                    <td>Price</td>
+                </tr>
 
-            <tr class="item">
-                <td>passenger transport to SEATAC airport<br>
-                    service on <%=datetime%>
-                    
-                </td>
+                <tr class="item">
+                    <%=if(triptype=="dropoff")%>
+                        <td>passenger transport to SEATAC airport<br>
+                            %>
+                            <%=else%>
+                        <td>passenger transport from SEATAC airport<br>
+                            service on <%=datetime%>
+                        </td>
 
-                <td>$<%=total%></td>
-            </tr>
+                        <td>$<%=total%>
+                        </td>
+                </tr>
 
 
-            <tr class="total">
-                <td></td>
+                <tr class="total">
+                    <td></td>
 
-                <td>Total: $<%=total%></td>
-            </tr>
-        </tbody></table>
+                    <td>Total: $<%=total%>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+
+</html>
