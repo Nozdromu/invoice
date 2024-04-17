@@ -113,7 +113,7 @@ app.get('/trips', (req, res) => {
 app.get('/gettrips', (req, res) => {
     unfinishtrip = []
     Object.entries(data).forEach(element => {
-        if (element[1].state*1 === 1) {
+        if (element[1].state * 1 === 1) {
             unfinishtrip.push(element[1]);
         }
     });
@@ -162,13 +162,16 @@ app.get('/edit', (req, res) => {
     res.send('done')
 })
 
-app.get('/letter',(req,res)=>{
-    var l=req.query.letter;
+app.get('/letter', (req, res) => {
+    var l = req.query.letter;
     console.log(req.query)
-    res.sendFile('public/letter/'+l+'.pdf',{ root: __dirname})
+    res.sendFile('public/letter/' + l + '.pdf', { root: __dirname })
 })
-app.get('/l',(req,res)=>{
+app.get('/l', (req, res) => {
     res.render('letter');
+})
+app.get('/math', (req, res) => {
+    res.render('math')
 })
 
 const server = app.listen(port, function () {
