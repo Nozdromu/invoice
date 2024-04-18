@@ -1,0 +1,11 @@
+@media print {
+    body {
+      visibility: hidden;
+    }
+    #question {
+      visibility: visible;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }

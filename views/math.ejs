@@ -6,27 +6,158 @@
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="css/math.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
-    <div id="body">
+    <div id="body" class="container text-left">
+        <div class="row justify-content-start">
+            <div class="col col-auto">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Min</span>
+                    <input type="text" class="form-control" value="1" id="min" aria-label="min"
+                        aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col col-auto">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Max</span>
+                    <input type="text" class="form-control" value="10" id="max" aria-label="max"
+                        aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col col-auto"><input type="button" value="timer" class="button"></div>
+            <div class="col col-auto" id="timer"></div>
+        </div>
+        <div class="row justify-content-start">
+            <div class="col col-auto">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Num</span>
+                    <input type="text" class="form-control" value="21" id="num" aria-label="num"
+                        aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <!-- <div >
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">type</span>
+                    <input type="text" class="form-control" value="+" id="type" aria-label="type"
+                        aria-describedby="basic-addon1">
+                </div>
+            </div> -->
+            <div class="col col-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="type" type="checkbox" id="inlineCheckbox1" value="0" checked>
+                    <label class="form-check-label" for="inlineCheckbox1">+</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="type" type="checkbox" id="inlineCheckbox2" value="1">
+                    <label class="form-check-label" for="inlineCheckbox2">-</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="type" type="checkbox" id="inlineCheckbox3" value="2">
+                    <label class="form-check-label" for="inlineCheckbox3">* </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="type" type="checkbox" id="inlineCheckbox3" value="3">
+                    <label class="form-check-label" for="inlineCheckbox3">/ </label>
+                </div>
+            </div>
+            <div class="col col-auto"><input type="button" value="empty"></div>
+            <div class="col col-auto"><input type="button" value="get"></div>
+            <div class="col col-auto"><input type="button" value="show answer"></div>
+            <div class="col col-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="double" type="checkbox" id="inlineCheckbox3" value="3">
+                    <label class="form-check-label" for="inlineCheckbox3">double</label>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="question" style="max-width:210mm ;max-height:270mm;width: 210mm; height: 270mm;">
+
+        </div>
     </div>
     <script>
+        // var start = new Date;
+
+        // setInterval(function () {
+        //     $('#timer').text(Math.round((new Date - start) / 1000) + " Seconds");
+        // }, 1000);
+        function checkboxclick(e) {
+            checkboxlist[e.target.value] = !checkboxlist[e.target.value]
+        }
+        $('input[name="type"]').click(checkboxclick)
+        var checkboxlist = [true, false, false, false];
+        var typelist = ['+', '-', '*', '/'];
         function getRandomInt(min, max) {
             const minCeiled = Math.ceil(min);
             const maxFloored = Math.floor(max);
             return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
         }
         function getP(min, max, sign) {
+            if (sign === '/')
+                sign = '÷'
             var a = getRandomInt(min, max);
             var b = getRandomInt(min, max);
-            return a + ' ' + sign + ' ' + b + ' = ' + (a + b)
+            var answer = 0;
+            switch (sign) {
+                case '+':
+                    answer = a + b;
+                    break;
+                case '-':
+                    answer = a - b;
+                    break;
+                case '*':
+                    answer = a * b;
+                    break;
+                case '÷':
+                    answer = a / b;
+                    break;
+                default:
+                    break;
+            }
+            return $('<div class="row justify-content-start">').append($('<div class="col col-auto">' + a + ' ' + sign + ' ' + b + ' = ' + '</div>')).append($('<div class="col col-auto">' + answer + '</div>').attr('name', 'answer'))
         }
-        for (let index = 0; index < array.length; index++) {
-            $('#body').append($('<div>' + getP(0, 10, '+') + '<div>'));
-        }
+
+        var answers;
+        var answershow = true;
+        $("input[value='empty']").click(() => {
+            $('#question').empty()
+        })
+        $("input[value='get']").click(() => {
+            if (checkboxlist.find(e => e === true)) {
+                var ri = 0;
+                for (let index = 0; index < $('#num').val(); index++) {
+                    ri = getRandomInt(0, 4)
+                    if (checkboxlist[ri]) {
+                        $('#question').append($('<div class="col-4"></div>').append(getP($('#min').val(), $('#max').val(), typelist[ri])));
+                        if (index !== 0 && (index + 1) % 3 === 0)
+                            if ($('input[name="double"]').is(":checked")) {
+                                $('#question').append($('<div class="col-12"></div>'))
+                                $('#question').append($('<div class="col-12"></div>'))
+                                $('#question').append($('<div class="col-12"></div>'))
+                                $('#question').append($('<div class="col-12"></div>'))
+                            }
+                    }
+                    else {
+                        index--
+                    }
+                }
+                $('#question').append($('<hr>'))
+                answers = $("div[name='answer']")
+                answers.hide()
+            }
+        })
+        $("input[value='show answer']").click(() => {
+            if (answershow) {
+                answers.show();
+                answershow = false;
+            } else {
+                answers.hide();
+                answershow = true
+            }
+        })
     </script>
 </body>
 
