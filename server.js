@@ -112,13 +112,13 @@ app.get('/trips', (req, res) => {
 
 app.get('/gettrips', (req, res) => {
     unfinishtrip = []
-    Object.entries(data).forEach(element => {
-        if (element[1].state * 1 === 1) {
-            unfinishtrip.push(element[1]);
-        }
-    });
-    console.log(unfinishtrip)
-    res.send({ trips: unfinishtrip })
+    // Object.entries(data).forEach(element => {
+    //     if (element[1].state * 1 === 1) {
+    //         unfinishtrip.push(element[1]);
+    //     }
+    // });
+    // console.log(unfinishtrip)
+    res.send({ trips: data })
 })
 
 app.get('/finish', (req, res) => {
