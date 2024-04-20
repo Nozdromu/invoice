@@ -83,6 +83,9 @@
                     scripts + pickuptime.toDateString([], { datetype: "short", timetype: "short" })
                 }
             })))
+            activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">invoice</button>').click(() => {
+                window.location.href = '/?invoice=' + data.invoice
+            })))
             info.append(activeRow)
             coll_div.append(info)
             return (item);
