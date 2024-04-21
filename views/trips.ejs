@@ -14,6 +14,20 @@
 
 <body>
     <div classname="container">
+        <div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="trip" id="unfinished" value="1" checked>
+                <label class="form-check-label" for="unfinished">
+                    未完成预约
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="trip" id="finished" value="0">
+                <label class="form-check-label" for="finished">
+                    已完成预约
+                </label>
+            </div>
+        </div>
         <div class="accordion accordion-flush" id="trips">
 
         </div>
@@ -25,19 +39,24 @@
         var t = $('#trips');
         axios.get('/gettrips').then((res) => {
             console.log(res.data)
-            trips = res.data.trips.sort((a, b) => parseInt(a.travletime) - parseInt(b.travletime))
+            trips = res.data.trips.sort((a, b) => new Date(a.travletime) - new Date(b.travletime))
             trips.forEach(element => {
                 t.append(createtrip(element))
             });
+            $('div[name="0"]').hide()
+        })
+        $('input[name=trip]').change((e) => {
+            $('div[class="accordion-item"]').hide()
+            $('div[name="' + e.target.value + '"]').show()
         })
 
         var createtrip = (data) => {
-            var item = $('<div class="accordion-item">');
+            var item = $('<div name=' + data.state + ' class="accordion-item">');
             var head = $('<h2 class="accordion-header">');
             var button = $('<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"  aria-expanded="false" >')
             button.attr('data-bs-target', '#' + data.invoice);
             button.attr('aria-controls', data.invoice);
-            var btdiv={}
+            var btdiv = {}
             if (data.triptype === 'dropoff') {
                 btdiv = $('<h6>' + data.nickname + ' ' + data.date + " " + data.pickuptime + '</h6>').append($('<span class="badge text-bg-success">' + data.triptype + '</span>'))
             } else {
