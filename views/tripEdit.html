@@ -20,101 +20,129 @@
   <div class="container">
     <textarea hidden class="summaryTaxtarea"></textarea>
     <form id="book" class="g-3 needs-validation" novalidate>
-      <div class="row mb-3">
-        <div class="col mb-3">
-          <label for="name" class="form-label">name</label>
-          <input type="address" class="form-control" id="name" name="name" required>
+      <div class="row">
+        <div class="col  mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="name" name="name" required>
+            <label for="name" class="form-label">Name</label>
+          </div>
+
         </div>
         <div class="col mb-3">
-          <label for="datetime" class="form-label">datetime</label>
-          <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
+          <div class="form-floating">
+            <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
+            <label for="datetime" class="form-label">Datetime</label>
+          </div>
         </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="address" class="form-label">pickup/dropoff address</label>
-        <div class="input-group mb-3">
-          <input type="address" class="form-control" id="address" name="address" required>        
-
-          <button class="btn btn-primary" onclick="get_dis()" type="button">get dis</button>
-        </div>
-        <label for="googleaddress" class="form-label">Google address</label>
-        <input name="googleaddress" type="address" class="form-control" id="googleaddress" name="googleaddress" readonly required>
-
       </div>
       <div class="row">
-        <div class="col">
-          <div class="mb-3">
-            <label for="distance" class="form-label">distance</label>
+        <div class="col  mb-3">
+          <div class="form-floating">
+            <select class="form-select" id="triptype" aria-label="Trip type">
+              <option value="dropoff" selected>dropoff</option>
+              <option value="pickup">pickup</option>
+            </select>
+            <label for="triptype">Trip type</label>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <div class="form-floating">
+            <select class="form-select" id="cartype" aria-label="Car type">
+              <option value="5" selected>Sedan - Camry</option>
+              <option value="10">MiniVan - Sienna</option>
+            </select>
+            <label for="cartype">Car type</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mb-3">
+          <div class="input-group">
+            <div class="form-floating">
+              <input type="address" class="form-control" id="address" name="address" required>
+              <label for="address" class="form-label">Pickup address</label>
+            </div>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">AP</button>
+            <ul class="dropdown-menu">
+              <li><button type="button" class="dropdown-item" onclick="ulclick_departure(this)">SEA</button></li>
+              <li><button type="button" class="dropdown-item" onclick="ulclick_departure(this)">PAE</button></li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="col-12 mb-3">
+          <div class="form-floating">
+            <input name="googleaddress" type="address" class="form-control" id="googleaddress" name="googleaddress"
+              readonly required>
+            <label for="googleaddress" class="form-label">Address(google)</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mb-3 ">
+          <div class="input-group">
+            <div class="form-floating">
+              <input type="address" class="form-control" id="destination" name="destination" required>
+              <label for="destination" class="form-label">Destination address</label>
+            </div>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">AP</button>
+            <ul class="dropdown-menu">
+              <li><button type="button" class="dropdown-item" onclick="ulclick_destination(this)">SEA</button></li>
+              <li><button type="button" class="dropdown-item" onclick="ulclick_destination(this)">PAE</button></li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="col-12 mb-3">
+          <div class="form-floating">
+            <input type="address" class="form-control" id="googledestination" name="googledestination" readonly
+              required>
+            <label for="googledestination" class="form-label">Destination address(google)</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-3 d-grid gap-2"><button type="button" class="btn btn-primary">Calculate</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-3">
+          <div class="form-floating">
             <input type="number" class="form-control" id="distance" value="0" name="distance" required>
+            <label for="distance" class="form-label">Distance</label>
           </div>
         </div>
-        <div class="col">
-          <div class="mb-3">
-            <label for="pickup" class="form-label"> pickup-distance</label>
+        <div class="col mb-3">
+          <div class="form-floating">
             <input type="number" class="form-control" id="pickup" value="0" name="pickup" required>
+            <label for="pickup" class="form-label"> Pickup-distance</label>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col">
-          <div class="mb-3">
-            <label for="address" class="form-label">select car type</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="cartype" id="cartype1" value=5 checked>
-              <label class="form-check-label" for="cartype1">
-                Sedan - Camry
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="cartype" id="cartype2" value=10>
-              <label class="form-check-label" for="cartype2">
-                MiniVan - Sienna
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <label for="triptype" class="form-label">select trip type</label>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="triptype" id="triptype1" value='dropoff' checked>
-            <label class="form-check-label" for="triptype1">
-              dropoff
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="triptype" id="triptype2" value="pickup">
-            <label class="form-check-label" for="triptype2">
-              pickup
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="mb-3">
-            <label for="price" class="form-label">price</label>
+        <div class="col mb-3">
+          <div class="form-floating">
             <input type="text" class="form-control" id="price" name="price" required>
+            <label for="price" class="form-label">Price</label>
           </div>
         </div>
         <div class="col">
-          <div id="filghtdiv" class="mb-3">
-            <div>
-              <label for="flight" class="form-label">flight info</label>
-              <input type="text" class="form-control" id="flight" name="flight">
-            </div>
+          <div id="filghtdiv" class="form-floating">
+            <input type="text" class="form-control" id="flight" name="flight">
+            <label for="flight" class="form-label">Flight info</label>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <button class="btn btn-primary" type="submit">Submit</button>
-
         </div>
         <div class="col">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Launch demo modal
-          </button>
+          </button> -->
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -186,12 +214,14 @@
     var _name = $('#name');
     var address = $('#address');
     var googleaddress = $('#googleaddress');
+    var destination = $('#destination');
+    var googledestination = $('#googledestination');
     var distance = $('#distance');
     var pickup = $('#pickup');
     var datetime = $('#datetime');
     var price = $('#price')
-    var cartype = $('input[name=cartype]');
-    var triptype = $('input[name=triptype]')
+    var cartype = $('#cartype');
+    var triptype = $('#triptype')
     var summaryBtn = $('#summaryBtn')
     var dis_price = 2;
     var pickup_price = 0.5;
@@ -204,7 +234,7 @@
     var getprice = () => {
       var _total = 0;
       var pickup_total = pickup.val() - pickup_free
-      _total = dis_price * distance.val() + (pickup_total > 0 ? pickup_total : 0) * pickup_price + parseInt(cartype().val());
+      _total = dis_price * distance.val() + (pickup_total > 0 ? pickup_total : 0) * pickup_price + parseInt(cartype.val());
       price.val(_total)
     }
 
@@ -219,6 +249,23 @@
       }
     })
 
+    var ulclick_destination = (e) => {
+      console.log(e.firstChild.data)
+      if (e.firstChild.data === 'SEA') {
+        destination.val('17801 International Blvd, Seattle, WA 98158')
+      } else {
+        destination.val('3220 100th St SW, Everett, WA 98204')
+      }
+    }
+    var ulclick_departure = (e) => {
+      console.log(e.firstChild.data)
+      if (e.firstChild.data === 'SEA') {
+        address.val('17801 International Blvd, Seattle, WA 98158')
+      } else {
+        address.val('3220 100th St SW, Everett, WA 98204')
+      }
+    }
+
     if (trip !== null) {
       api_url = 'edit'
       axios.get('/gettrip', { params: { trip: trip } }).then((res) => {
@@ -232,8 +279,8 @@
         var t = (new Date(data.datetime + ' UTC')).toISOString().substring(0, 16)
         datetime.val(t);
         price.val(data.total);
-        cartype.val([data.type])
-        triptype.val([data.triptype])
+        cartype.val(data.type)
+        triptype.val(data.triptype)
         trip_info = data;
         date = new Date(data.datetime)
         summary = res.data.summary
@@ -241,17 +288,12 @@
         $('#invoiceP').text('http://' + window.location.host + '/?invoice=' + trip_info.invoice)
         $('#invoiceP').attr('href', 'http://' + window.location.host + '/?invoice=' + trip_info.invoice)
 
-        cartype = (() => { return $('input[name=cartype]:checked') });
-        triptype = (() => { return $('input[name=triptype]:checked') });
-
-        if (triptype().val() === 'dropoff')
+        if (triptype.val() === 'dropoff')
           $('#filghtdiv').hide()
       })
     } else {
-      cartype = (() => { return $('input[name=cartype]:checked') });
-      triptype = (() => { return $('input[name=triptype]:checked') });
 
-      if (triptype().val() === 'dropoff')
+      if (triptype.val() === 'dropoff')
         $('#filghtdiv').hide()
     }
 

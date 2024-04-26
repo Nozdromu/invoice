@@ -94,11 +94,8 @@ app.get('/trips', (req, res) => {
 app.get('/gettrips', (req, res) => {
     unfinishtrip = []
     Object.entries(data).forEach(element => {
-        // if (element[1].state * 1 === 1) {
         unfinishtrip.push(element[1]);
-        // }
     });
-    // console.log(unfinishtrip)
     res.send({ trips: unfinishtrip })
 })
 
@@ -120,13 +117,10 @@ app.get('/finish', (req, res) => {
 app.get('/gettrip', (req, res) => {
     console.log(req.query.trip);
     res.send({ statu: 'done', trip: data[req.query.trip], summary: makesummary(data[req.query.trip]) })
-
-    // res.send(data[req.query.trip]);
 })
 
 app.get('/edittrip', (req, res) => {
-    //res.render('tripEdit')
-    res.sendFile('views/tripEdit.html', {root: __dirname })
+    res.sendFile('views/tripEdit.html', { root: __dirname })
 })
 app.get('/edit', (req, res) => {
     console.log(req.query)
@@ -175,9 +169,9 @@ var makesummary = (trip) => {
     var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
     var d = new Date(trip.datetime);
     if (trip.triptype == 'dropoff') {
-        scripts = '与'+trip.nickname+'的预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + trip.address + ' 出发. 届时我会开一辆 ' + car[trip.type] + script2 + ' ,费用总计$' + trip.total;
+        scripts = '与' + trip.nickname + '的预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + trip.address + ' 出发. 届时我会开一辆 ' + car[trip.type] + script2 + ' ,费用总计$' + trip.total;
     } else {
-        scripts = '与'+trip.nickname+'的预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + trip.flight + ' 送往 ' + trip.address + '. 届时我会开一辆 ' + car[trip.type] + script3 + ' ,费用总计$' + trip.total;
+        scripts = '与' + trip.nickname + '的预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + trip.flight + ' 送往 ' + trip.address + '. 届时我会开一辆 ' + car[trip.type] + script3 + ' ,费用总计$' + trip.total;
     }
     return scripts
 }

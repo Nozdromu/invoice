@@ -1759,28 +1759,6 @@
         "nickname": "萌圈儿",
         "state": 1
     },
-    "1714102944550": {
-        "address": "17725 2nd Ave W, Bothell, WA 98012, USA",
-        "dis": "8",
-        "pickup": "24",
-        "dis_price": "2",
-        "pickup_price": "0.5",
-        "pickup_free": "6",
-        "type": "5",
-        "total": "30",
-        "triptype": "dropoff",
-        "datetime": "Invalid Date",
-        "flight": "",
-        "name": "",
-        "pickuptime": "Invalid Date",
-        "date": "Invalid Date",
-        "travletime": null,
-        "invoice": 1714102944550,
-        "payment": "none",
-        "transID": "none",
-        "nickname": "",
-        "state": 1
-    },
     "1714105230782": {
         "address": "22615 35th Drive SE, Bothell, WA 98021, USA",
         "dis": "31",
