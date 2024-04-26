@@ -10,23 +10,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/copy.js"></script>
 </head>
 
 <body>
     <div classname="container">
-        <div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="trip" id="unfinished" value="1" checked>
-                <label class="form-check-label" for="unfinished">
-                    未完成预约
-                </label>
+        <textarea hidden class="summaryTaxtarea">具体费用就是出发地到机场最快路程的距离✖️2加上5，需要minivan的话再加5。然后从Lakemont出发 距离出发地(接机的话是目的地)6 miles以内免接程费，超出部分每miles收0.5接的费用。接送费用目前相同</textarea>
+        <div class="row">
+            <div class="col">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="trip" id="unfinished" value="1" checked>
+                    <label class="form-check-label" for="unfinished">
+                        未完成预约
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="trip" id="finished" value="0">
+                    <label class="form-check-label" for="finished">
+                        已完成预约
+                    </label>
+                </div>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="trip" id="finished" value="0">
-                <label class="form-check-label" for="finished">
-                    已完成预约
-                </label>
+            <div class="col">
+                <button class="btn btn-primary" type="button" onclick="feeInfo()">复制收费信息</button>
             </div>
+
         </div>
         <div class="accordion accordion-flush" id="trips">
 
@@ -49,6 +57,10 @@
             $('div[class="accordion-item"]').hide()
             $('div[name="' + e.target.value + '"]').show()
         })
+
+        var feeInfo=()=>{
+            copyToClipboard('.summaryTaxtarea')
+        }
 
         var createtrip = (data) => {
             var item = $('<div name=' + data.state + ' class="accordion-item">');
