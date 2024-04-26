@@ -90,27 +90,6 @@
   </div>
 
   <script>
-    // var form = document.querySelector("#book")
-    // var dis = 0;
-    // var pickup = 0;
-    // var dis_price = 2;
-    // var pickup_price = 0.5;
-    // var pickup_free = 6;
-    // var type = 5;
-    // var total = 0;
-    // var date = null;
-    // var hour = 0;
-    // var apm = "AM";
-    // var triptype = "dropoff"
-    // var cartype1 = " 灰色 Toyota Camry "
-    // var cartype2 = " 黑色 Toyota Sienna "
-    // var scripts = "";
-    // var script1 = " 届时我会开一辆 "
-    // var script2 = ",一般会提前5分钟左右抵达上车地点"
-    // var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
-    // var script4 = script1 + cartype1
-    // var maplink = 'http://maps.google.com/?q=';
-
     var trip_info = {}
     var flight = $('#flight');
     var _name = $('#name');
@@ -189,20 +168,6 @@
     });
     function sendData() {
       var data = new FormData(form);
-      // var x = {
-      //   address: $('#googleaddress').val(),
-      //   dis: dis,
-      //   pickup: pickup,
-      //   dis_price: dis_price,
-      //   pickup_price: pickup_price,
-      //   pickup_free: pickup_free,
-      //   type: type,
-      //   total: total,
-      //   triptype: triptype,
-      //   datetime: date.toLocaleString(),
-      //   flight: $('#flight').val(),
-      //   name: $('#name').val()
-      // }
       trip_info.address = googleaddress.val();
       trip_info.dis = distance.val();
       trip_info.pickup = pickup.val();
@@ -221,15 +186,9 @@
       ).then((res) => {
         console.log(res)
       })
-
-      // $.post('/book', data, (res) => {
-      //   console.log(res);
-      // })
     }
     function get_dis() {
       axios.get('/price', { params: { start: $('#address').val(), end: "17801 International Blvd, SeaTac, WA 98158" } }).then((res) => {
-        console.log(res)
-
         googleaddress.val(res.data.address1.address)
         distance.val(res.data.dropoff_dis);
         pickup.val(res.data.pickup_dis);

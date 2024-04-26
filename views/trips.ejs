@@ -88,19 +88,11 @@
                 })
             })))
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">复制预约信息</button>').click(() => {
-                var pickuptime = new Date(data.datetime);
-                var triptype = "dropoff"
-                var cartype1 = " 灰色 Toyota Camry "
-                var cartype2 = " 黑色 Toyota Sienna "
-                var scripts = "预约 ";
-                var script1 = " 届时我会开一辆 "
-                var script2 = ",一般会提前5分钟左右抵达上车地点"
-                var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
-                var script4 = script1 + cartype1
+                axios.get('getsummary', { params: { invoice: trip_info.invoice } }).then((res) => {
+                    navigator.clipboard.writeText(summary);
 
-                if (data.triptype === "dropoff") {
-                    scripts + pickuptime.toDateString([], { datetype: "short", timetype: "short" })
-                }
+                })
+
             })))
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">invoice</button>').click(() => {
                 window.location.href = '/?invoice=' + data.invoice

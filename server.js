@@ -12,17 +12,7 @@ const map = new Client({});
 // Set EJS as templating engine 
 app.set('views', './views');
 app.set('view engine', 'ejs');
-console.log(process.env.google_map_api_key)
 
-// for(var element in data){
-//     if (data[element].travletime === undefined) {
-//         data[element].travletime = (new Date(data[element].datetime||data[element].date)).valueOf()
-//     }
-// }
-
-// data.keys().forEach((key) => {
-
-// })
 
 app.get('/', (req, res) => {
     console.log(req);
@@ -34,17 +24,8 @@ app.get('/reload', (req, res) => {
     res.send(data);
 })
 
-// app.get('/savefile', (req, res) => {
-//     fs.writeFile("trips.json", JSON.stringify(data), function (err) {
-//         if (err) {
-//             return console.log(err);
-//         }
-//         console.log("The file was saved!");
-//     });
-//     res.send(data);
-// })
 app.get('/home', (req, res) => {
-    res.render('home')
+    res.render('tripEdit')
 })
 
 app.get('/book', (req, res) => {
@@ -68,7 +49,7 @@ app.get('/book', (req, res) => {
         }
         console.log("The file was saved!");
     });
-    res.send('done')
+    res.send({ statu: 'done', trip: newtrip, summary: makesummary(newtrip) })
 })
 
 app.get('/price', (req, res) => {
@@ -114,7 +95,7 @@ app.get('/gettrips', (req, res) => {
     unfinishtrip = []
     Object.entries(data).forEach(element => {
         // if (element[1].state * 1 === 1) {
-            unfinishtrip.push(element[1]);
+        unfinishtrip.push(element[1]);
         // }
     });
     // console.log(unfinishtrip)
@@ -138,11 +119,14 @@ app.get('/finish', (req, res) => {
 })
 app.get('/gettrip', (req, res) => {
     console.log(req.query.trip);
-    res.send(data[req.query.trip]);
+    res.send({ statu: 'done', trip: data[req.query.trip], summary: makesummary(data[req.query.trip]) })
+
+    // res.send(data[req.query.trip]);
 })
 
 app.get('/edittrip', (req, res) => {
-    res.render('tripEdit')
+    //res.render('tripEdit')
+    res.sendFile('views/tripEdit.html', {root: __dirname })
 })
 app.get('/edit', (req, res) => {
     console.log(req.query)
@@ -159,7 +143,7 @@ app.get('/edit', (req, res) => {
         }
         console.log("The file was saved!");
     });
-    res.send('done')
+    res.send({ statu: 'done', trip: newtrip, summary: makesummary(newtrip) })
 })
 
 app.get('/letter', (req, res) => {
@@ -173,6 +157,30 @@ app.get('/l', (req, res) => {
 app.get('/math', (req, res) => {
     res.render('math')
 })
+app.get('/getsummary', (req, res) => {
+    var tripid = req.query.invoice;
+    var tripInfo = data[tripid];
+    console.log(req.query)
+    var summary = makesummary(tripInfo);
+    res.send(summary);
+})
+
+var makesummary = (trip) => {
+    var car = {
+        5: " 灰色 Toyota Camry ",
+        10: " 黑色 Toyota Sienna "
+    }
+    var scripts = "";
+    var script2 = " ,一般会提前5分钟左右抵达上车地点"
+    var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
+    var d = new Date(trip.datetime);
+    if (trip.triptype == 'dropoff') {
+        scripts = '与'+trip.nickname+'的预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + trip.address + ' 出发. 届时我会开一辆 ' + car[trip.type] + script2 + ' ,费用总计$' + trip.total;
+    } else {
+        scripts = '与'+trip.nickname+'的预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + trip.flight + ' 送往 ' + trip.address + '. 届时我会开一辆 ' + car[trip.type] + script3 + ' ,费用总计$' + trip.total;
+    }
+    return scripts
+}
 
 const server = app.listen(port, function () {
     console.log('listening to port: ' + port)
