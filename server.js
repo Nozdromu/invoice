@@ -14,6 +14,34 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 
+
+var unfinishtrip = []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.get('/', (req, res) => {
     console.log(req);
     var inv = req.query.invoice;
@@ -86,7 +114,7 @@ app.get('/price', (req, res) => {
 
 })
 
-var unfinishtrip = []
+
 app.get('/trips', (req, res) => {
     res.render('trips');
 })
