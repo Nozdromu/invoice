@@ -232,17 +232,3 @@ const server = app.listen(port, function () {
     console.log('listening to port: ' + port)
     console.log(data)
 });
-
-// https
-//   .createServer(
-// 		// Provide the private and public key to the server by reading each
-// 		// file's content with the readFileSync() method.
-//     {
-//       key: fs.readFileSync("privkey.pem"),
-//       cert: fs.readFileSync("cert.pem"),
-//     },
-//     app
-//   )
-//   .listen(port, () => {
-//     console.log("serever is runing at port 4000");
-//   });
