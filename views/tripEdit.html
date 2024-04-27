@@ -326,7 +326,7 @@
 
 
     var copysummary = () => {
-      copyToClipboard(summary + '\n' + invoiceLink)
+      copyToClipboard($('.summaryTaxtarea').val())
     }
 
     var copyInvoice = () => {
@@ -334,6 +334,7 @@
     }
 
     var makesummary = () => {
+      $('.summaryTaxtarea').text(summary)
       $('#summaryP').text(summary)
       summaryBtn.prop('disabled', false)
     }
@@ -396,12 +397,6 @@
     }
 
   </script>
-</body>
-
-</html>
-}
-
-</script>
 </body>
 
 </html>

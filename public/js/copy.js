@@ -38,9 +38,6 @@ function copyToClipboard(text) {
     document.execCommand('copy')
     document.body.removeChild(input)
 
-
-    // execute copy command
-    // document.execCommand('copy');
     navigator.clipboard.writeText(text)
 }
 
