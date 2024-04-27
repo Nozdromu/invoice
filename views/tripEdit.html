@@ -52,8 +52,6 @@
         <div class="col  mb-3">
           <div class="form-floating">
             <select class="form-select" id="triptype" aria-label="Trip type">
-              <option value="dropoff" selected>dropoff</option>
-              <option value="pickup">pickup</option>
               <option value="0">Airport-Dept</option>
               <option value="1">Airport-Arrival</option>
               <option value="2">pickup</option>
@@ -244,12 +242,12 @@
     var cartype = $('#cartype');
     var triptype = $('#triptype')
     var summaryBtn = $('#summaryBtn')
+    var invoiceLink = ""
     var dis_price = 2;
     var pickup_price = 0.5;
     var pickup_free = 6;
     var form = document.querySelector("#book")
     var messagebtn = $('#message')
-
     var maplink = 'http://maps.google.com/?q=';
 
 
@@ -312,8 +310,9 @@
         date = new Date(data.datetime)
         summary = res.data.summary
         makesummary();
-        $('#invoiceP').text('http://' + window.location.host + '/?invoice=' + trip_info.invoice)
-        $('#invoiceP').attr('href', 'http://' + window.location.host + '/?invoice=' + trip_info.invoice)
+        invoiceLink = 'http://' + window.location.host + '/?invoice=' + trip_info.invoice
+        $('#invoiceP').text(invoiceLink)
+        $('#invoiceP').attr('href', invoiceLink)
 
         if (triptype.val() === 'dropoff')
           $('#filghtdiv').hide()
@@ -326,15 +325,15 @@
 
 
 
-    var showfee = () => {
-      $('#summary').val('具体费用就是出发地到机场最快路程的距离✖️2加上5，需要minivan的话再加5。然后从Lakemont出发 距离出发地(接机的话是目的地)6 miles以内免接程费，超出部分每miles收0.5接的费用。接送费用目前相同')
+    var copysummary = () => {
+      copyToClipboard(summary + '\n' + invoiceLink)
     }
 
-    var copysummary = () => {
-      copyToClipboard('.summaryTaxtarea')
+    var copyInvoice = () => {
+
     }
+
     var makesummary = () => {
-      $('.summaryTaxtarea').text(summary)
       $('#summaryP').text(summary)
       summaryBtn.prop('disabled', false)
     }
@@ -370,8 +369,9 @@
         if (res.data.statu === 'done') {
           summary = res.data.summary
           makesummary();
-          console.log('http://' + window.location.host + '/?invoice=' + trip_info.invoice)
-          $('#invoiceP').attr('href', 'http://' + window.location.host + '/?invoice=' + trip_info.invoice)
+          invoiceLink = 'http://' + window.location.host + '/?invoice=' + trip_info.invoice
+          $('#invoiceP').text(invoiceLink)
+          $('#invoiceP').attr('href', invoiceLink)
           messagebtn.click();
         }
       })
