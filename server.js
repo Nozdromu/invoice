@@ -83,6 +83,10 @@ app.get('/book', (req, res) => {
 app.get('/price', (req, res) => {
     var data = req.query;
     console.log(data);
+    // var origin="";
+    // var pickup="";
+    // var destination=""
+    // if(data.type===0)
     map.directions({ params: { key: process.env.google_map_api_key, destination: data.end, origin: '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA', waypoints: [data.start] } }).then((mapres) => {
         console.log(mapres)
         var map_info = {
@@ -196,7 +200,7 @@ var makesummary = (trip) => {
     var script2 = " ,一般会提前5分钟左右抵达上车地点"
     var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
     var d = new Date(trip.datetime);
-    if (trip.triptype == 'dropoff') {
+    if (trip.triptype == '1') {
         scripts = '与' + trip.nickname + '的预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + trip.address + ' 出发. 届时我会开一辆 ' + car[trip.type] + script2 + ' ,费用总计$' + trip.total;
     } else {
         scripts = '与' + trip.nickname + '的预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + trip.flight + ' 送往 ' + trip.address + '. 届时我会开一辆 ' + car[trip.type] + script3 + ' ,费用总计$' + trip.total;

@@ -25,7 +25,7 @@ var trip = () => {
     var pickup_distance_free = ''
     var total = ''
 
-    var payment = 'nill'
+    var payment = 'null'
     var transID = 'null'
     var state = 0
 }

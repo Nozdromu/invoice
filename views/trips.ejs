@@ -44,6 +44,7 @@
 
     <script>
         var trips = []
+        var _triptype=["Airport-Dept","Airport-Arrival","pickup","dropoff"]
         var t = $('#trips');
         axios.get('/gettrips').then((res) => {
             console.log(res.data)
@@ -69,10 +70,10 @@
             button.attr('data-bs-target', '#' + data.invoice);
             button.attr('aria-controls', data.invoice);
             var btdiv = {}
-            if (data.triptype === 'dropoff') {
-                btdiv = $('<h6>' + data.nickname + ' ' + data.date + " " + data.pickuptime + '</h6>').append($('<span class="badge text-bg-success">' + data.triptype + '</span>'))
+            if (data.triptype === '0') {
+                btdiv = $('<h6>' + data.nickname + ' ' + data.date + " " + data.pickuptime + '</h6>').append($('<span class="badge text-bg-success">' + _triptype[data.triptype] + '</span>'))
             } else {
-                btdiv = $('<h6>' + data.nickname + ' ' + data.date + " " + data.pickuptime + '</h6>').append($('<span class="badge text-bg-warning">' + data.triptype + '</span>'))
+                btdiv = $('<h6>' + data.nickname + ' ' + data.date + " " + data.pickuptime + '</h6>').append($('<span class="badge text-bg-warning">' + _triptype[data.triptype] + '</span>'))
             }
 
             button.append(btdiv)
@@ -86,7 +87,7 @@
             var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + data.address).text(data.address)
             var type = data.type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
-            if (data.triptype === 'pickup') {
+            if (data.triptype === '1') {
                 info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight).text(data.flight)))
             }
             info.append($('<div>').append(map))

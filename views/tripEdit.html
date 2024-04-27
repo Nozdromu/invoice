@@ -21,7 +21,7 @@
     <textarea hidden class="summaryTaxtarea"></textarea>
     <form id="book" class="g-3 needs-validation" novalidate>
       <div class="row">
-        <div class="col  mb-3">
+        <div class="col-auto  mb-3">
           <div class="form-floating">
             <input type="text" class="form-control" id="name" name="name" required>
             <label for="name" class="form-label">Name</label>
@@ -41,8 +41,18 @@
             <select class="form-select" id="triptype" aria-label="Trip type">
               <option value="dropoff" selected>dropoff</option>
               <option value="pickup">pickup</option>
+              <option value="0">Airport-Dept</option>
+              <option value="1">Airport-Arrival</option>
+              <option value="2">pickup</option>
+              <option value="3">dropoff</option>
             </select>
             <label for="triptype">Trip type</label>
+          </div>
+        </div>
+        <div class="col-auto mb-3">
+          <div id="filghtdiv" class="form-floating">
+            <input type="text" class="form-control" id="flight" name="flight">
+            <label for="flight" class="form-label">Flight info</label>
           </div>
         </div>
         <div class="col mb-3">
@@ -77,6 +87,11 @@
               readonly required>
             <label for="googleaddress" class="form-label">Address(google)</label>
           </div>
+        </div>
+      </div>
+      <div class="row justify-content-end">
+        <div class="col-auto mb-3"><button type="button" class="btn btn-outline-dark"
+            onclick="get_dis()">switch</button>
         </div>
       </div>
       <div class="row">
@@ -121,20 +136,15 @@
             <label for="pickup" class="form-label"> Pickup-distance</label>
           </div>
         </div>
-      </div>
-      <div class="row">
         <div class="col mb-3">
           <div class="form-floating">
             <input type="text" class="form-control" id="price" name="price" required>
             <label for="price" class="form-label">Price</label>
           </div>
         </div>
-        <div class="col">
-          <div id="filghtdiv" class="form-floating">
-            <input type="text" class="form-control" id="flight" name="flight">
-            <label for="flight" class="form-label">Flight info</label>
-          </div>
-        </div>
+      </div>
+      <div class="row">
+
       </div>
       <div class="row">
         <div class="col">
@@ -142,7 +152,7 @@
         </div>
         <div class="col">
           <button type="button" class="btn btn-primary" id="message" data-bs-toggle="modal"
-            data-bs-target="#exampleModal">
+            data-bs-target="#exampleModal" hidden>
             Launch demo modal
           </button>
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -245,7 +255,7 @@
     pickup.keyup(getprice);
     cartype.change(getprice);
     triptype.change(function (e) {
-      if (e.target.value == 'dropoff') {
+      if (e.target.value == 'dropoff' || e.target.value == "0") {
         $('#filghtdiv').hide();
       } else {
         $('#filghtdiv').show();
@@ -259,6 +269,7 @@
       } else {
         destination.val('3220 100th St SW, Everett, WA 98204')
       }
+      triptype.val("0").trigger("change");
     }
     var ulclick_departure = (e) => {
       console.log(e.firstChild.data)
@@ -267,6 +278,7 @@
       } else {
         address.val('3220 100th St SW, Everett, WA 98204')
       }
+      triptype.val("1").trigger("change");
     }
 
     if (trip !== null) {
@@ -284,6 +296,8 @@
         price.val(data.total);
         cartype.val(data.type)
         triptype.val(data.triptype)
+        destination.val(data.destination)
+        googledestination.val(data.destination)
         trip_info = data;
         date = new Date(data.datetime)
         summary = res.data.summary
