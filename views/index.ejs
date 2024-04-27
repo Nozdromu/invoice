@@ -53,7 +53,7 @@
                                     <td>
                                         To:<br>
                                         <%=name%><br>
-                                            <%=address%><br>
+                                            <%=triptype==="1"?destination:pickup_address%><br>
                                     </td>
                                 </tr>
                             </tbody>
@@ -83,13 +83,13 @@
                 </tr>
 
                 <tr class="item">
-                    <%if(triptype=="dropoff"){%>
+                    <%if(triptype=="0"){%>
                         <td>passenger transport to SEATAC airport<br>
                             %>
                             <%}else{%>
                         <td>passenger transport from SEATAC airport<br>
                             <%}%>
-                            service on <%=datetime%>
+                                service on <%=datetime%>
                         </td>
 
                         <td>$<%=total%>

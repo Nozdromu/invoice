@@ -83,8 +83,12 @@
             item.append(head);
             item.append(coll_div);
             head.append(button);
+            var showaddress=data.pickup_address;
+            if(data.triptype==="1"){
+                showaddress=data.destination
+            }
             var info = $('<div class="accordion-body container text-center">');
-            var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + data.address).text(data.address)
+            var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + showaddress).text(showaddress)
             var type = data.type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
             if (data.triptype === '1') {
