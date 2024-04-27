@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { default: axios } = require('axios');
+const https = require("https");
 const express = require('express');
 const app = express();
 const { Client } = require('@googlemaps/google-maps-services-js')
@@ -226,7 +227,7 @@ var makesummary = (trip) => {
     return scripts
 }
 
-const server = app.listen(port, function () {
+https.createServer(app).listen(port, function () {
     console.log('listening to port: ' + port)
     console.log(data)
 });

@@ -1,4 +1,4 @@
-function copyToClipboard(text) {
+async function copyToClipboard(text) {
 
     // resolve the element
     // el = (typeof el === 'string') ? document.querySelector(el) : el;
@@ -37,8 +37,12 @@ function copyToClipboard(text) {
     input.select()
     document.execCommand('copy')
     document.body.removeChild(input)
-
-    navigator.clipboard.writeText(text)
+    alert(text)
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (error) {
+        alert(error.message);
+    }
 }
 
 var fee_info = "具体费用就是出发地到机场最快路程的距离✖️2加上5，需要minivan的话再加5。然后从Lakemont出发 距离出发地(接机的话是目的地)6 miles以内免接程费，超出部分每miles收0.5接的费用。接送费用目前相同"
