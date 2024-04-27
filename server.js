@@ -227,7 +227,8 @@ var makesummary = (trip) => {
     return scripts
 }
 
-https.createServer(app).listen(port, function () {
+
+const server = app.listen(port, function () {
     console.log('listening to port: ' + port)
     console.log(data)
 });
