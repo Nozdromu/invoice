@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 
 var unfinishtrip = []
 
-
+Object.keys()
 
 
 
@@ -53,7 +53,7 @@ app.get('/reload', (req, res) => {
 })
 
 app.get('/home', (req, res) => {
-    res.render('tripEdit')
+    res.sendFile('views/tripEdit.html', { root: __dirname })
 })
 
 app.get('/book', (req, res) => {
@@ -83,30 +83,39 @@ app.get('/book', (req, res) => {
 app.get('/price', (req, res) => {
     var data = req.query;
     console.log(data);
-    // var origin="";
-    // var pickup="";
-    // var destination=""
-    // if(data.type===0)
-    map.directions({ params: { key: process.env.google_map_api_key, destination: data.end, origin: '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA', waypoints: [data.start] } }).then((mapres) => {
+    var origin = '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA';
+    var pickup = data.start;
+    var destination = data.end
+    if (data.type === "1") {
+        pickup = data.end
+        destination = data.start
+    }
+    map.directions({ params: { key: process.env.google_map_api_key, destination: destination, origin: origin, waypoints: [pickup] } }).then((mapres) => {
         console.log(mapres)
+        var G_pickup = {
+            address: mapres.data.routes[0].legs[0].end_address,
+            lat: mapres.data.routes[0].legs[1].end_location.lat,
+            lng: mapres.data.routes[0].legs[1].end_location.lng,
+            pickup_dis: Math.round(mapres.data.routes[0].legs[0].distance.value / 1609.344),
+            dropoff_dis: Math.round(mapres.data.routes[0].legs[1].distance.value / 1609.344)
+        }
+        var G_destination = {
+            address: mapres.data.routes[0].legs[1].end_address,
+            lat: mapres.data.routes[0].legs[1].end_location.lat,
+            lng: mapres.data.routes[0].legs[1].end_location.lng,
+            pickup_dis: Math.round(mapres.data.routes[0].legs[0].distance.value / 1609.344),
+            dropoff_dis: Math.round(mapres.data.routes[0].legs[1].distance.value / 1609.344)
+        }
         var map_info = {
-            address1: {
-                address: mapres.data.routes[0].legs[0].end_address,
-                lat: mapres.data.routes[0].legs[0].end_location.lat,
-                lng: mapres.data.routes[0].legs[0].end_location.lng,
-                pickup_dis: Math.round(mapres.data.routes[0].legs[0].distance.value / 1609.344),
-                dropoff_dis: Math.round(mapres.data.routes[0].legs[1].distance.value / 1609.344)
-            },
-            address2: {
-                address: mapres.data.routes[0].legs[1].end_address,
-                lat: mapres.data.routes[0].legs[1].end_location.lat,
-                lng: mapres.data.routes[0].legs[1].end_location.lng,
-                pickup_dis: Math.round(mapres.data.routes[0].legs[0].distance.value / 1609.344),
-                dropoff_dis: Math.round(mapres.data.routes[0].legs[1].distance.value / 1609.344)
-            },
+            address1: G_pickup,
+            address2: G_destination,
             pickup_dis: Math.round(mapres.data.routes[0].legs[0].distance.value / 1609.344),
             dropoff_dis: Math.round(mapres.data.routes[0].legs[1].distance.value / 1609.344),
             esttime: mapres.data.routes[0].legs[1].duration.text
+        }
+        if (data.type === "1") {
+            map_info.address1 = G_destination;
+            map_info.address2 = G_pickup
         }
         res.send(map_info)
 

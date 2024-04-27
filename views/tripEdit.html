@@ -91,7 +91,7 @@
       </div>
       <div class="row justify-content-end">
         <div class="col-auto mb-3"><button type="button" class="btn btn-outline-dark"
-            onclick="get_dis()">switch</button>
+            onclick="switch_address()">switch</button>
         </div>
       </div>
       <div class="row">
@@ -350,6 +350,7 @@
       trip_info.flight = flight.val();
       trip_info.name = _name.val();
       trip_info.nickname = _name.val();
+      trip_info.destination = googledestination.val();
       axios.get(api_url, {
         params: trip_info
       }
@@ -366,7 +367,7 @@
       })
     }
     function get_dis() {
-      axios.get('/price', { params: { start: $('#address').val(), end: $('#destination').val() } }).then((res) => {
+      axios.get('/price', { params: { start: $('#address').val(), end: $('#destination').val(), type: $('#triptype').val() } }).then((res) => {
         googleaddress.val(res.data.address1.address)
         distance.val(res.data.dropoff_dis);
         pickup.val(res.data.pickup_dis);
@@ -375,7 +376,22 @@
       })
     }
 
+    var switch_address = () => {
+      var a = address.val();
+      var b = googleaddress.val();
+      address.val(destination.val())
+      googleaddress.val(googledestination.val())
+      destination.val(a);
+      googledestination.val(b)
+    }
+
   </script>
+</body>
+
+</html>
+}
+
+</script>
 </body>
 
 </html>
