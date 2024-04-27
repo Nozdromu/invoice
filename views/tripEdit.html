@@ -21,13 +21,26 @@
     <textarea hidden class="summaryTaxtarea"></textarea>
     <form id="book" class="g-3 needs-validation" novalidate>
       <div class="row">
-        <div class="col-3  mb-3">
+        <div class="col  mb-3">
           <div class="form-floating">
             <input type="text" class="form-control" id="name" name="name" required>
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="form-label">Nickame</label>
           </div>
-
         </div>
+        <div class="col  mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="billname" name="billname" required>
+            <label for="billname" class="form-label">Billname</label>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <div id="filghtdiv" class="form-floating">
+            <input type="text" class="form-control" id="flight" name="flight">
+            <label for="flight" class="form-label">Flight info</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col mb-3">
           <div class="form-floating">
             <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
@@ -49,12 +62,7 @@
             <label for="triptype">Trip type</label>
           </div>
         </div>
-        <div class="col mb-3">
-          <div id="filghtdiv" class="form-floating">
-            <input type="text" class="form-control" id="flight" name="flight">
-            <label for="flight" class="form-label">Flight info</label>
-          </div>
-        </div>
+
         <div class="col mb-3">
           <div class="form-floating">
             <select class="form-select" id="cartype" aria-label="Car type">
@@ -224,6 +232,7 @@
     var trip_info = {}
     var flight = $('#flight');
     var _name = $('#name');
+    var billname = $('#billname');
     var pickup_address = $('#address');
     var googleaddress = $('#googleaddress');
     var destination = $('#destination');
@@ -286,7 +295,8 @@
       axios.get('/gettrip', { params: { trip: trip } }).then((res) => {
         var data = res.data.trip
         flight.val(data.flight);
-        _name.val(data.name);
+        _name.val(data.nickname);
+        billname.val(data.name)
         pickup_address.val(data.pickup_address);
         googleaddress.val(data.pickup_address);
         distance.val(data.dis);
@@ -348,7 +358,7 @@
       trip_info.triptype = triptype.val();
       trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });
       trip_info.flight = flight.val();
-      trip_info.name = _name.val();
+      trip_info.name = billname.val();
       trip_info.nickname = _name.val();
       trip_info.destination = googledestination.val();
       axios.get(api_url, {
