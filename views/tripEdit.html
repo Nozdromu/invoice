@@ -21,13 +21,26 @@
     <textarea hidden class="summaryTaxtarea"></textarea>
     <form id="book" class="g-3 needs-validation" novalidate>
       <div class="row">
-        <div class="col-3  mb-3">
+        <div class="col  mb-3">
           <div class="form-floating">
             <input type="text" class="form-control" id="name" name="name" required>
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="form-label">Nickame</label>
           </div>
-
         </div>
+        <div class="col  mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="billname" name="billname" required>
+            <label for="billname" class="form-label">Billname</label>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <div id="filghtdiv" class="form-floating">
+            <input type="text" class="form-control" id="flight" name="flight">
+            <label for="flight" class="form-label">Flight info</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col mb-3">
           <div class="form-floating">
             <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
@@ -39,8 +52,6 @@
         <div class="col  mb-3">
           <div class="form-floating">
             <select class="form-select" id="triptype" aria-label="Trip type">
-              <option value="dropoff" selected>dropoff</option>
-              <option value="pickup">pickup</option>
               <option value="0">Airport-Dept</option>
               <option value="1">Airport-Arrival</option>
               <option value="2">pickup</option>
@@ -49,12 +60,7 @@
             <label for="triptype">Trip type</label>
           </div>
         </div>
-        <div class="col mb-3">
-          <div id="filghtdiv" class="form-floating">
-            <input type="text" class="form-control" id="flight" name="flight">
-            <label for="flight" class="form-label">Flight info</label>
-          </div>
-        </div>
+
         <div class="col mb-3">
           <div class="form-floating">
             <select class="form-select" id="cartype" aria-label="Car type">
@@ -224,6 +230,7 @@
     var trip_info = {}
     var flight = $('#flight');
     var _name = $('#name');
+    var billname = $('#billname');
     var pickup_address = $('#address');
     var googleaddress = $('#googleaddress');
     var destination = $('#destination');
@@ -235,12 +242,12 @@
     var cartype = $('#cartype');
     var triptype = $('#triptype')
     var summaryBtn = $('#summaryBtn')
+    var invoiceLink = ""
     var dis_price = 2;
     var pickup_price = 0.5;
     var pickup_free = 6;
     var form = document.querySelector("#book")
     var messagebtn = $('#message')
-
     var maplink = 'http://maps.google.com/?q=';
 
 
@@ -286,7 +293,8 @@
       axios.get('/gettrip', { params: { trip: trip } }).then((res) => {
         var data = res.data.trip
         flight.val(data.flight);
-        _name.val(data.name);
+        _name.val(data.nickname);
+        billname.val(data.name)
         pickup_address.val(data.pickup_address);
         googleaddress.val(data.pickup_address);
         distance.val(data.dis);
@@ -302,8 +310,9 @@
         date = new Date(data.datetime)
         summary = res.data.summary
         makesummary();
-        $('#invoiceP').text('http://' + window.location.host + '/?invoice=' + trip_info.invoice)
-        $('#invoiceP').attr('href', 'http://' + window.location.host + '/?invoice=' + trip_info.invoice)
+        invoiceLink = 'http://' + window.location.host + '/?invoice=' + trip_info.invoice
+        $('#invoiceP').text(invoiceLink)
+        $('#invoiceP').attr('href', invoiceLink)
 
         if (triptype.val() === 'dropoff')
           $('#filghtdiv').hide()
@@ -316,15 +325,15 @@
 
 
 
-    var showfee = () => {
-      $('#summary').val('具体费用就是出发地到机场最快路程的距离✖️2加上5，需要minivan的话再加5。然后从Lakemont出发 距离出发地(接机的话是目的地)6 miles以内免接程费，超出部分每miles收0.5接的费用。接送费用目前相同')
+    var copysummary = () => {
+      copyToClipboard(summary + '\n' + invoiceLink)
     }
 
-    var copysummary = () => {
-      copyToClipboard('.summaryTaxtarea')
+    var copyInvoice = () => {
+
     }
+
     var makesummary = () => {
-      $('.summaryTaxtarea').text(summary)
       $('#summaryP').text(summary)
       summaryBtn.prop('disabled', false)
     }
@@ -348,7 +357,7 @@
       trip_info.triptype = triptype.val();
       trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });
       trip_info.flight = flight.val();
-      trip_info.name = _name.val();
+      trip_info.name = billname.val();
       trip_info.nickname = _name.val();
       trip_info.destination = googledestination.val();
       axios.get(api_url, {
@@ -360,8 +369,9 @@
         if (res.data.statu === 'done') {
           summary = res.data.summary
           makesummary();
-          console.log('http://' + window.location.host + '/?invoice=' + trip_info.invoice)
-          $('#invoiceP').attr('href', 'http://' + window.location.host + '/?invoice=' + trip_info.invoice)
+          invoiceLink = 'http://' + window.location.host + '/?invoice=' + trip_info.invoice
+          $('#invoiceP').text(invoiceLink)
+          $('#invoiceP').attr('href', invoiceLink)
           messagebtn.click();
         }
       })

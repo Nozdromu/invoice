@@ -218,7 +218,7 @@ var makesummary = (trip) => {
     var script2 = " ,一般会提前5分钟左右抵达上车地点"
     var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
     var d = new Date(trip.datetime);
-    if (trip.triptype == '1') {
+    if (trip.triptype == '0') {
         scripts = '与' + trip.nickname + '的预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + trip.pickup_address + ' 出发. 届时我会开一辆 ' + car[trip.type] + script2 + ' ,费用总计$' + trip.total;
     } else {
         scripts = '与' + trip.nickname + '的预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + trip.flight + ' 送往 ' + trip.destination + '. 届时我会开一辆 ' + car[trip.type] + script3 + ' ,费用总计$' + trip.total;
