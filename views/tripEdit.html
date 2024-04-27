@@ -223,6 +223,18 @@
         }, false)
       })
     })()
+
+    console.log(window.isSecureContext);
+
+    if (window.isSecureContext) {
+      alert(
+        'The context is secure, can use navigator.clipboard',
+      );
+    } else {
+      alert('The context is NOT secure');
+    }
+
+
     const urlParams = new URLSearchParams(window.location.search);
     const trip = urlParams.get('trip');
     var summary = "";

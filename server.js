@@ -228,9 +228,22 @@ var makesummary = (trip) => {
 }
 
 
+const options = {
+    key: fs.readFileSync('./cert/localhost.key'),
+    cert: fs.readFileSync('./cert/localhost.crt')
+};
+
+const keys={
+    key: fs.readFileSync('./cert/privkey.pem'),
+    cert: fs.readFileSync('./cert/cert.pem')
+}
+
+const server = https.createServer(keys, app);
+server.listen(port, () => {
+    console.log('listening to port: ' + port)
+})
 
 
-https.createServer(app).listen(port);
 
 
 
