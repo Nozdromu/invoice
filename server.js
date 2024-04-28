@@ -17,35 +17,160 @@ app.set('view engine', 'ejs');
 
 
 var unfinishtrip = []
+var juli = {
+    week: {
+        4: {
+            name: 'julia 补习',
+            pick: "6:25 PM",
+            back: "7:55 PM",
+            address1: "5997 153rd Ave SE, Bellevue, WA 98006",
+            address2: "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027",
+        },
+        6: {
+            name: 'julia 补习',
+            pick: "10:20 AM",
+            back: "1:10 PM",
+            address1: "5997 153rd Ave SE, Bellevue, WA 98006",
+            address2: "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027",
+        }
+    }
+}
 
-// Object.keys(data).forEach((key) => {
-//     if (data[key].triptype === "1") {
-//         var _address = data[key].pickup_address;
-//         data[key].pickup_address = data[key].destination;
-//         data[key].destination = _address
+var book = (newtrip, isSave) => {
+    var tripid = Date.now();
+    var rt = data[tripid]
+    while (rt !== undefined) {
+        tripid += 1;
+        rt = data[tripid]
+    }
+
+    var datetime = new Date(newtrip.datetime);
+    newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
+    newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
+    newtrip.travletime = datetime.valueOf();
+    newtrip.invoice = tripid;
+    newtrip.payment = 'none'
+    newtrip.transID = 'none'
+    newtrip.nickname = newtrip.name
+    newtrip.state = 1
+    var ttt = data[newtrip.invoice];
+    data[newtrip.invoice] = newtrip;
+    console.log(newtrip)
+    if (isSave)
+        fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("The file was saved!");
+        });
+}
+
+
+// var dd = new Date(Date.now())
+// var x = 0;
+// var t = () => {
+//     return {
+//         invoice: '',
+
+//         name: '',
+//         nickname: '',
+
+//         travletime: '',
+//         datetime: '',
+//         date: '',
+//         pickuptime: '',
+
+//         triptype: '',
+//         flight: '',
+
+//         departure: '',
+//         destination: '',
+
+//         vehicle_type: '5',
+
+//         distance: 0,
+//         pickup_distance: 0,
+//         distance_price: 0,
+//         pickup_distance_price: 0,
+//         pickup_distance_free: 0,
+//         total: 0,
+
+//         payment: 'null',
+//         transID: 'null',
+//         state: 0,
 //     }
-//     if (data[key].triptype === undefined) {
-//         data[key].triptype === "0"
+// }
+// Date.prototype.addDays = function (days) {
+//     var date = new Date(this.valueOf());
+//     date.setDate(date.getDate() + days);
+//     return date;
+// }
+
+// for (var i = 0; i < 90; i++) {
+//     x = dd.getDay()
+//     if (x == 5) {
+//         tripT = t();
+//         dd.setHours(18)
+//         dd.setMinutes(25)
+//         tripT.name = 'julia 补习';
+//         tripT.billname = 'julia 补习';
+//         tripT.triptype = "3";
+//         tripT.datetime = dd;
+//         tripT.departure = "5997 153rd Ave SE, Bellevue, WA 98006"
+//         tripT.destination = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
+//         book(tripT, false);
+
+
+
+//         tripT = t();
+//         dd.setHours(19)
+//         dd.setMinutes(55)
+//         tripT.name = 'julia 补习';
+//         tripT.billname = 'julia 补习';
+//         tripT.triptype = "2";
+//         tripT.datetime = dd;
+//         tripT.destination = "5997 153rd Ave SE, Bellevue, WA 98006"
+//         tripT.departure = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
+//         book(tripT, false);
 //     }
-// })
+//     if (x == 0) {
+//         tripT = t();
+//         dd.setHours(10)
+//         dd.setMinutes(20)
+//         tripT.name = 'julia 补习';
+//         tripT.billname = 'julia 补习';
+//         tripT.triptype = "3";
+//         tripT.datetime = dd;
+//         tripT.departure = "5997 153rd Ave SE, Bellevue, WA 98006"
+//         tripT.destination = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
+//         book(tripT, false);
 
 
 
+//         tripT = t();
+//         dd.setHours(13)
+//         dd.setMinutes(10)
+//         tripT.name = 'julia 补习';
+//         tripT.billname = 'julia 补习';
+//         tripT.triptype = "2";
+//         tripT.datetime = dd;
+//         tripT.destination = "5997 153rd Ave SE, Bellevue, WA 98006"
+//         tripT.departure = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
+//         book(tripT, false);
 
+//     }
+//     dd = dd.addDays(1)
+//     // } else if (x == 6) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+//     // }
+// }
+// fs.writeFile("trips.json", JSON.stringify(data), function (err) {
+//     if (err) {
+//         return console.log(err);
+//     }
+//     console.log("The file was saved!");
+// });
+// console.log(data);
 
 
 
@@ -67,28 +192,11 @@ app.get('/home', (req, res) => {
 })
 
 app.get('/book', (req, res) => {
-    var tripid = Date.now();
-    console.log(req.query);
     var newtrip = req.query;
-    var datetime = new Date(newtrip.datetime);
-    newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
-    newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
-    newtrip.travletime = datetime.valueOf();
-    newtrip.invoice = tripid;
-    newtrip.payment = 'none'
-    newtrip.transID = 'none'
-    newtrip.nickname = newtrip.name
-    newtrip.state = 1
-    data[newtrip.invoice] = newtrip;
-    console.log(data);
-    fs.writeFile("trips.json", JSON.stringify(data), function (err) {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("The file was saved!");
-    });
+    book(newtrip, true);
     res.send({ statu: 'done', trip: newtrip, summary: makesummary(newtrip) })
 })
+
 
 app.get('/price', (req, res) => {
     var data = req.query;
@@ -227,6 +335,10 @@ var makesummary = (trip) => {
     return scripts
 }
 
+const server = app.listen(port, function () {
+    console.log('listening to port: ' + port)
+    //console.log(data)
+});
 
 // const options = {
 //     key: fs.readFileSync('./cert/localhost.key'),
@@ -258,10 +370,6 @@ var makesummary = (trip) => {
 
 
 
-const server = app.listen(port, function () {
-    console.log('listening to port: ' + port)
-    console.log(data)
-});
 
 
 
