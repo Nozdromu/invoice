@@ -55,7 +55,7 @@
         var feeInfo = () => {
             copyToClipboard(fee_info)
         }
-
+        var week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"]
         var createtrip = (data) => {
             var item = $('<div name=' + data.state + ' class="accordion-item">');
             var head = $('<h2 class="accordion-header">');
@@ -63,18 +63,20 @@
             button.attr('data-bs-target', '#' + data.invoice);
             button.attr('aria-controls', data.invoice);
             var d = new Date(data.date);
-            var week = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+
             var ul = $('<div class="row" style="width:100%">');
             var tag = $('<span class="badge text-bg-success">' + _triptype[data.triptype] + '</span>')
-            var time = $('<h6>' + week[d.getDay()] + ' ' + data.date + "<br>" + data.pickuptime + '</h6>')
+            var time = $('<h6>' + week[d.getUTCDay()] + ' ' + data.date + "<br>" + data.pickuptime + '</h6>')
             var name = $('<h6>' + data.nickname + '</h6>')
 
 
 
             if (data.triptype === '0') {
                 tag = $('<span class="badge text-bg-success">' + _triptype[data.triptype] + '</span>')
-            } else {
+            } else if (data.triptype === '1') {
                 tag = $('<span class="badge text-bg-warning">' + _triptype[data.triptype] + '</span>')
+            } else {
+                tag = $('<span class="badge text-bg-danger">' + _triptype[data.triptype] + '</span>')
             }
             var li_tag = $('<div class="col">').append(tag);
             var li_time = $('<div class="col">').append(time)
@@ -100,8 +102,8 @@
             item.append(head);
             item.append(coll_div);
             head.append(button);
-            var showaddress = data.pickup_address;
-            if (data.triptype === "1") {
+            var showaddress = data.pickup_address || data.departure;
+            if (data.triptype === "1" || data.triptype === "3") {
                 showaddress = data.destination
             }
             var info = $('<div class="accordion-body container text-center">');
