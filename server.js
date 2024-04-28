@@ -228,31 +228,40 @@ var makesummary = (trip) => {
 }
 
 
-const options = {
-    key: fs.readFileSync('./cert/localhost.key'),
-    cert: fs.readFileSync('./cert/localhost.crt')
-};
+// const options = {
+//     key: fs.readFileSync('./cert/localhost.key'),
+//     cert: fs.readFileSync('./cert/localhost.crt')
+// };
 
-const keys={
-    key: fs.readFileSync('./cert/privkey.pem'),
-    cert: fs.readFileSync('./cert/cert.pem')
-}
-
-const server = https.createServer(keys, app);
-server.listen(port, () => {
-    console.log('listening to port: ' + port)
-})
-
-
-
-
-
-
-
-// const server = app.listen(port, function () {
-//     console.log('listening to port: ' + port)
-//     console.log(data)
+// const keys = {
+//     key: fs.readFileSync('./cert/privkey.pem'),
+//     cert: fs.readFileSync('./cert/cert.pem')
+// }
+// app.use((req, res, next) => {
+//     if (req.secure) {
+//         // If a request is already secure (HTTPS), move to the next middleware
+//         next();
+//     } else {
+//         // Redirect HTTP to HTTPS
+//         res.redirect(`https://${req.headers.host}${req.url}`);
+//     }
 // });
+
+// const server = https.createServer(keys, app);
+// server.listen(port, () => {
+//     console.log('listening to port: ' + port)
+// })
+
+
+
+
+
+
+
+const server = app.listen(port, function () {
+    console.log('listening to port: ' + port)
+    console.log(data)
+});
 
 
 
