@@ -331,7 +331,7 @@
         date = new Date(data.datetime)
         summary = res.data.summary
         makesummary();
-        invoiceLink = 'http://' + window.location.host + '/?invoice=' + trip_info.invoice
+        invoiceLink = 'https://' + window.location.host + '/?invoice=' + trip_info.invoice
         $('#invoiceP').text(invoiceLink)
         $('#invoiceA').attr('href', invoiceLink)
 
@@ -391,7 +391,7 @@
         if (res.data.statu === 'done') {
           summary = res.data.summary
           makesummary();
-          invoiceLink = 'http://' + window.location.host + '/?invoice=' + trip_info.invoice
+          invoiceLink = 'https://' + window.location.host + '/?invoice=' + trip_info.invoice
           $('#invoiceP').text(invoiceLink)
           $('#invoiceA').attr('href', invoiceLink)
           messagebtn.click();
