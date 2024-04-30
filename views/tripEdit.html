@@ -413,8 +413,10 @@
       axios.get('/price', { params: { start: pickup_address.val(), end: destination.val(), type: triptype.val() } }).then((res) => {
         googleaddress.val(res.data.address1.address)
         distance.val(res.data.dropoff_dis);
-        pickup_address.val(res.data.pickup_dis);
+        pickup_address.val(res.data.address1.address);
+        pickup_dis.val(res.data.pickup_dis)
         googledestination.val(res.data.address2.address)
+        destination.val(res.data.address2.address)
         getprice();
       })
     }
