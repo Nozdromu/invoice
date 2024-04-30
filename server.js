@@ -49,7 +49,7 @@ var book = (newtrip, isSave) => {
     newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
     newtrip.travletime = datetime.valueOf();
     newtrip.invoice = tripid;
-    newtrip.payment = 'none'
+    newtrip.payment = 'Not yet paid'
     newtrip.transID = 'none'
     newtrip.nickname = newtrip.name
     newtrip.state = 1
