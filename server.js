@@ -335,15 +335,15 @@ var makesummary = (trip) => {
     return scripts
 }
 
-const server = app.listen(port, function () {
-    console.log('listening to port: ' + port)
-    //console.log(data)
-});
+// const server = app.listen(port, function () {
+//     console.log('listening to port: ' + port)
+//     //console.log(data)
+// });
 
-// const options = {
-//     key: fs.readFileSync('./cert/localhost.key'),
-//     cert: fs.readFileSync('./cert/localhost.crt')
-// };
+const options = {
+    key: fs.readFileSync('./cert/localhost.key'),
+    cert: fs.readFileSync('./cert/localhost.crt')
+};
 
 // const keys = {
 //     key: fs.readFileSync('./cert/privkey.pem'),
@@ -359,10 +359,10 @@ const server = app.listen(port, function () {
 //     }
 // });
 
-// const server = https.createServer(keys, app);
-// server.listen(port, () => {
-//     console.log('listening to port: ' + port)
-// })
+const server = https.createServer(options, app);
+server.listen(port, () => {
+    console.log('listening to port: ' + port)
+})
 
 
 

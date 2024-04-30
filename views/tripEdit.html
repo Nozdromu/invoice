@@ -193,8 +193,6 @@
 
                   <button type="button" class="btn btn-primary" onclick="copysummary()">复制预约信息</button>
 
-                  <button type="button" class="btn btn-primary">复制收据链接</button>
-
                   <a href="/trips" class="btn btn-primary">前往预约汇总</a>
 
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -233,7 +231,7 @@
       })
     })()
 
-    console.log(window.isSecureContext);
+    //console.log(window.isSecureContext);
 
     // if (window.isSecureContext) {
     //   alert(
@@ -242,6 +240,16 @@
     // } else {
     //   alert('The context is NOT secure');
     // }
+
+    var xx = () => {
+      var s1 = "预约信息:\n" + $('#summaryP').text() + '\n\n'
+      var s2 = "收据链接:\n" + $('#invoiceP').text() + '\n\n'
+      var s3 = "联系方式:\n" + "Yilei Ding\n4254998842\n\n"
+      var s4 = "支付方式:\nPayPal Venmo Zelle Cash\n完成行程后支付即可，不需要定金。有任何变更请及时联系"
+      var s = s1 + s2 + s3 + s4;
+      copyToClipboard(s);
+    }
+
 
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -278,6 +286,7 @@
       _total = dis_price * distance.val() + (pickup_total > 0 ? pickup_total : 0) * pickup_price + parseInt(cartype.val());
       price.val(_total)
     }
+
 
     distance.keyup(getprice);
     pickup.keyup(getprice);
@@ -347,12 +356,14 @@
 
 
     var copysummary = () => {
-      copyToClipboard($('.summaryTaxtarea').val())
+      var s1 = "预约信息:\n" + $('#summaryP').text() + '\n\n'
+      var s2 = "收据链接:\n" + $('#invoiceP').text() + '\n\n'
+      var s3 = "联系方式:\n" + "Yilei Ding\n4254998842\n\n"
+      var s4 = "支付方式:\nPayPal Venmo Zelle Cash\n完成行程后支付即可，不需要定金。有任何变更请及时联系"
+      var s = s1 + s2 + s3 + s4;
+      copyToClipboard(s);
     }
 
-    var copyInvoice = () => {
-
-    }
 
     var makesummary = () => {
       $('.summaryTaxtarea').text(summary)

@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" name="type" type="checkbox" id="inlineCheckbox3" value="2">
-                    <label class="form-check-label" for="inlineCheckbox3">* </label>
+                    <label class="form-check-label" for="inlineCheckbox3">×</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" name="type" type="checkbox" id="inlineCheckbox3" value="3">
@@ -89,7 +89,7 @@
         }
         $('input[name="type"]').click(checkboxclick)
         var checkboxlist = [true, false, false, false];
-        var typelist = ['+', '-', '*', '/'];
+        var typelist = ['+', '-', '×', '/'];
         function getRandomInt(min, max) {
             const minCeiled = Math.ceil(min);
             const maxFloored = Math.floor(max);
@@ -108,7 +108,7 @@
                 case '-':
                     answer = a - b;
                     break;
-                case '*':
+                case '×':
                     answer = a * b;
                     break;
                 case '÷':
