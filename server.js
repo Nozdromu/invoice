@@ -3,6 +3,8 @@ const { default: axios } = require('axios');
 const https = require("https");
 const express = require('express');
 const mysql = require('mysql2');
+const utf8 = require('utf8');
+var os = require('os');
 const app = express();
 const { Client } = require('@googlemaps/google-maps-services-js')
 var fs = require('fs');
@@ -14,6 +16,10 @@ const map = new Client({});
 // Set EJS as templating engine 
 app.set('views', './views');
 app.set('view engine', 'ejs');
+
+var networkInterfaces = os.networkInterfaces();
+
+console.log(networkInterfaces);
 
 const connection = mysql.createPool({
     host: process.env.mysql_host,
@@ -32,10 +38,10 @@ const promiseconnection = connection.promise();
 // })
 
 async function addrecord(data) {
-    const [rows, fields] = await promiseconnection.query("call new_book(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
+    const [rows, fields,err] = await promiseconnection.query("call new_book(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
         data.invoice,
         data.billname,
-        data.nickname,
+        utf8.encode(data.nickname),
         data.travel_time,
         data.datetime,
         data.date,
