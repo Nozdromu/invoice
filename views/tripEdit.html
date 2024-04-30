@@ -35,8 +35,8 @@
         </div>
         <div class="col mb-3">
           <div id="filghtdiv" class="form-floating">
-            <input type="text" class="form-control" id="flight" name="flight">
-            <label for="flight" class="form-label">Flight info</label>
+            <input type="text" class="form-control" id="flight_num" name="flight_num">
+            <label for="flight_num" class="form-label">flight info</label>
           </div>
         </div>
       </div>
@@ -51,13 +51,13 @@
       <div class="row">
         <div class="col  mb-3">
           <div class="form-floating">
-            <select class="form-select" id="triptype" aria-label="Trip type">
+            <select class="form-select" id="trip_type" aria-label="Trip type">
               <option value="0">Airport-Dept</option>
               <option value="1">Airport-Arrival</option>
-              <option value="2">pickup</option>
+              <option value="2">pickup_distance</option>
               <option value="3">dropoff</option>
             </select>
-            <label for="triptype">Trip type</label>
+            <label for="trip_type">Trip type</label>
           </div>
         </div>
 
@@ -76,7 +76,7 @@
           <div class="input-group">
             <div class="form-floating">
               <input type="address" class="form-control" id="address" name="address" required>
-              <label for="address" class="form-label">Pickup address</label>
+              <label for="address" class="form-label">pickup_distance address</label>
             </div>
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
               aria-expanded="false">AP</button>
@@ -104,8 +104,8 @@
         <div class="col-12 mb-3 ">
           <div class="input-group">
             <div class="form-floating">
-              <input type="address" class="form-control" id="destination" name="destination" required>
-              <label for="destination" class="form-label">Destination address</label>
+              <input type="address" class="form-control" id="destination_address" name="destination_address" required>
+              <label for="destination_address" class="form-label">destination_address address</label>
             </div>
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
               aria-expanded="false">AP</button>
@@ -120,7 +120,7 @@
           <div class="form-floating">
             <input type="address" class="form-control" id="googledestination" name="googledestination" readonly
               required>
-            <label for="googledestination" class="form-label">Destination address(google)</label>
+            <label for="googledestination" class="form-label">destination_address address(google)</label>
           </div>
         </div>
       </div>
@@ -138,8 +138,8 @@
         </div>
         <div class="col mb-3">
           <div class="form-floating">
-            <input type="number" class="form-control" id="pickup" value="0" name="pickup" required>
-            <label for="pickup" class="form-label"> Pickup-distance</label>
+            <input type="number" class="form-control" id="pickup_distance" value="0" name="pickup_distance" required>
+            <label for="pickup_distance" class="form-label"> pickup_distance-distance</label>
           </div>
         </div>
         <div class="col-3 mb-3">
@@ -257,24 +257,24 @@
     var summary = "";
     var api_url = 'book'
     var trip_info = {}
-    var flight = $('#flight');
+    var flight_num = $('#flight_num');
     var _name = $('#name');
     var billname = $('#billname');
-    var pickup_address = $('#address');
+    var departure_address = $('#address');
     var googleaddress = $('#googleaddress');
-    var destination = $('#destination');
+    var destination_address = $('#destination_address');
     var googledestination = $('#googledestination');
     var distance = $('#distance');
-    var pickup = $('#pickup');
+    var pickup_distance = $('#pickup_distance');
     var datetime = $('#datetime');
     var price = $('#price')
     var cartype = $('#cartype');
-    var triptype = $('#triptype')
+    var trip_type = $('#trip_type')
     var summaryBtn = $('#summaryBtn')
     var invoiceLink = ""
     var dis_price = 2;
-    var pickup_price = 0.5;
-    var pickup_free = 6;
+    var pickup_distance_price = 0.5;
+    var pickup_distance_free = 6;
     var form = document.querySelector("#book")
     var messagebtn = $('#message')
     var maplink = 'http://maps.google.com/?q=';
@@ -282,16 +282,16 @@
 
     var getprice = () => {
       var _total = 0;
-      var pickup_total = pickup.val() - pickup_free
-      _total = dis_price * distance.val() + (pickup_total > 0 ? pickup_total : 0) * pickup_price + parseInt(cartype.val());
+      var pickup_total = pickup_distance.val() - pickup_distance_free
+      _total = dis_price * distance.val() + (pickup_total > 0 ? pickup_total : 0) * pickup_distance_price + parseInt(cartype.val());
       price.val(_total)
     }
 
 
     distance.keyup(getprice);
-    pickup.keyup(getprice);
+    pickup_distance.keyup(getprice);
     cartype.change(getprice);
-    triptype.change(function (e) {
+    trip_type.change(function (e) {
       if (e.target.value == 'dropoff' || e.target.value == "0") {
         $('#filghtdiv').hide();
       } else {
@@ -302,40 +302,40 @@
     var ulclick_destination = (e) => {
       console.log(e.firstChild.data)
       if (e.firstChild.data === 'SEA') {
-        destination.val('17801 International Blvd, Seattle, WA 98158')
+        destination_address.val('17801 International Blvd, Seattle, WA 98158')
       } else {
-        destination.val('3220 100th St SW, Everett, WA 98204')
+        destination_address.val('3220 100th St SW, Everett, WA 98204')
       }
-      triptype.val("0").trigger("change");
+      trip_type.val("0").trigger("change");
     }
     var ulclick_departure = (e) => {
       console.log(e.firstChild.data)
       if (e.firstChild.data === 'SEA') {
-        pickup_address.val('17801 International Blvd, Seattle, WA 98158')
+        departure_address.val('17801 International Blvd, Seattle, WA 98158')
       } else {
-        pickup_address.val('3220 100th St SW, Everett, WA 98204')
+        departure_address.val('3220 100th St SW, Everett, WA 98204')
       }
-      triptype.val("1").trigger("change");
+      trip_type.val("1").trigger("change");
     }
 
     if (trip !== null) {
       api_url = 'edit'
       axios.get('/gettrip', { params: { trip: trip } }).then((res) => {
         var data = res.data.trip
-        flight.val(data.flight);
+        flight_num.val(data.flight_num);
         _name.val(data.nickname);
-        billname.val(data.name)
-        pickup_address.val(data.pickup_address);
-        googleaddress.val(data.pickup_address);
-        distance.val(data.dis);
-        pickup.val(data.pickup);
+        billname.val(data.billname)
+        departure_address.val(data.departure_address);
+        googleaddress.val(data.departure_address);
+        distance.val(data.distance);
+        pickup_distance.val(data.pickup_distance);
         var t = (new Date(data.datetime + ' UTC')).toISOString().substring(0, 16)
         datetime.val(t);
         price.val(data.total);
         cartype.val(data.type)
-        triptype.val(data.triptype)
-        destination.val(data.destination)
-        googledestination.val(data.destination)
+        trip_type.val(data.trip_type)
+        destination_address.val(data.destination_address)
+        googledestination.val(data.destination_address)
         trip_info = data;
         date = new Date(data.datetime)
         summary = res.data.summary
@@ -344,12 +344,12 @@
         $('#invoiceP').text(invoiceLink)
         $('#invoiceA').attr('href', invoiceLink)
 
-        if (triptype.val() === 'dropoff')
+        if (trip_type.val() === 'dropoff')
           $('#filghtdiv').hide()
       })
     } else {
 
-      if (triptype.val() === 'dropoff')
+      if (trip_type.val() === 'dropoff')
         $('#filghtdiv').hide()
     }
 
@@ -379,20 +379,20 @@
     }
 
     var sendData = () => {
-      trip_info.pickup_address = googleaddress.val();
-      trip_info.dis = distance.val();
-      trip_info.pickup = pickup.val();
+      trip_info.departure_address = googleaddress.val();
+      trip_info.distance = distance.val();
+      trip_info.pickup_distance = pickup_distance.val();
       trip_info.dis_price = dis_price;
-      trip_info.pickup_price = pickup_price;
-      trip_info.pickup_free = pickup_free;
+      trip_info.pickup_distance_price = pickup_distance_price;
+      trip_info.pickup_distance_free = pickup_distance_free;
       trip_info.type = cartype.val();
       trip_info.total = price.val();
-      trip_info.triptype = triptype.val();
+      trip_info.trip_type = trip_type.val();
       trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });
-      trip_info.flight = flight.val();
-      trip_info.name = billname.val();
+      trip_info.flight_num = flight_num.val();
+      trip_info.billname = billname.val();
       trip_info.nickname = _name.val();
-      trip_info.destination = googledestination.val();
+      trip_info.destination_address = googledestination.val();
       axios.get(api_url, {
         params: trip_info
       }
@@ -410,23 +410,23 @@
       })
     }
     function get_dis() {
-      axios.get('/price', { params: { start: pickup_address.val(), end: destination.val(), type: triptype.val() } }).then((res) => {
+      axios.get('/price', { params: { start: departure_address.val(), end: destination_address.val(), type: trip_type.val() } }).then((res) => {
         googleaddress.val(res.data.address1.address)
         distance.val(res.data.dropoff_dis);
-        pickup_address.val(res.data.address1.address);
-        pickup.val(res.data.pickup_dis)
+        departure_address.val(res.data.address1.address);
+        pickup_distance.val(res.data.pickup_dis)
         googledestination.val(res.data.address2.address)
-        destination.val(res.data.address2.address)
+        destination_address.val(res.data.address2.address)
         getprice();
       })
     }
 
     var switch_address = () => {
-      var a = pickup_address.val();
+      var a = departure_address.val();
       var b = googleaddress.val();
-      pickup_address.val(destination.val())
+      departure_address.val(destination_address.val())
       googleaddress.val(googledestination.val())
-      destination.val(a);
+      destination_address.val(a);
       googledestination.val(b)
     }
 

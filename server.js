@@ -2,6 +2,7 @@ require('dotenv').config();
 const { default: axios } = require('axios');
 const https = require("https");
 const express = require('express');
+const mysql = require('mysql2');
 const app = express();
 const { Client } = require('@googlemaps/google-maps-services-js')
 var fs = require('fs');
@@ -14,20 +15,66 @@ const map = new Client({});
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
+const connection = mysql.createPool({
+    host: process.env.mysql_host,
+    user: process.env.mysql_user,
+    password: process.env.mysql_password,
+    database: process.env.mysql_database
+});
+const promiseconnection = connection.promise();
+// connection.query('select*from trip_table', (err, results, fields) => {
+//     if (err) {
+//         console.log(err)
+//     } else {
+//         console.log(results)
+//     }
 
+// })
+
+async function addrecord(data) {
+    const [rows, fields] = await promiseconnection.query("call new_book(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
+        data.invoice,
+        data.billname,
+        data.nickname,
+        data.travel_time,
+        data.datetime,
+        data.date,
+        data.pickup_time,
+        data.trip_type,
+        data.flight_num,
+        data.vehicle_type,
+        data.departure_address,
+        data.destination_address,
+        data.distance,
+        data.pickup_distance,
+        data.distance_price,
+        data.pickup_distance_price,
+        data.pickup_distance_free,
+        data.total,
+        data.payment_type,
+        data.transID,
+        data.state,
+        ""
+    ])
+    return rows
+}
+
+Object.keys(data).forEach((key) => {
+    let a = addrecord(data[key]);
+})
 
 var unfinishtrip = []
 var juli = {
     week: {
         4: {
-            name: 'julia 补习',
+            billname: 'julia 补习',
             pick: "6:25 PM",
             back: "7:55 PM",
             address1: "5997 153rd Ave SE, Bellevue, WA 98006",
             address2: "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027",
         },
         6: {
-            name: 'julia 补习',
+            billname: 'julia 补习',
             pick: "10:20 AM",
             back: "1:10 PM",
             address1: "5997 153rd Ave SE, Bellevue, WA 98006",
@@ -45,13 +92,13 @@ var book = (newtrip, isSave) => {
     }
 
     var datetime = new Date(newtrip.datetime);
-    newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
+    newtrip.pickup_time = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
     newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
-    newtrip.travletime = datetime.valueOf();
+    newtrip.travel_time = datetime.valueOf();
     newtrip.invoice = tripid;
-    newtrip.payment = 'Not yet paid'
+    newtrip.payment_type = 'Not yet paid'
     newtrip.transID = 'none'
-    newtrip.nickname = newtrip.name
+    newtrip.nickname = newtrip.nickname
     newtrip.state = 1
     var ttt = data[newtrip.invoice];
     data[newtrip.invoice] = newtrip;
@@ -72,19 +119,19 @@ var book = (newtrip, isSave) => {
 //     return {
 //         invoice: '',
 
-//         name: '',
+//         billname: '',
 //         nickname: '',
 
-//         travletime: '',
+//         travel_time: '',
 //         datetime: '',
 //         date: '',
-//         pickuptime: '',
+//         pickup_time: '',
 
-//         triptype: '',
-//         flight: '',
+//         trip_type: '',
+//         flight_num: '',
 
 //         departure: '',
-//         destination: '',
+//         destination_address: '',
 
 //         vehicle_type: '5',
 
@@ -95,7 +142,7 @@ var book = (newtrip, isSave) => {
 //         pickup_distance_free: 0,
 //         total: 0,
 
-//         payment: 'null',
+//         payment_type: 'null',
 //         transID: 'null',
 //         state: 0,
 //     }
@@ -112,12 +159,12 @@ var book = (newtrip, isSave) => {
 //         tripT = t();
 //         dd.setHours(18)
 //         dd.setMinutes(25)
-//         tripT.name = 'julia 补习';
 //         tripT.billname = 'julia 补习';
-//         tripT.triptype = "3";
+//         tripT.billname = 'julia 补习';
+//         tripT.trip_type = "3";
 //         tripT.datetime = dd;
 //         tripT.departure = "5997 153rd Ave SE, Bellevue, WA 98006"
-//         tripT.destination = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
+//         tripT.destination_address = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
 //         book(tripT, false);
 
 
@@ -125,11 +172,11 @@ var book = (newtrip, isSave) => {
 //         tripT = t();
 //         dd.setHours(19)
 //         dd.setMinutes(55)
-//         tripT.name = 'julia 补习';
 //         tripT.billname = 'julia 补习';
-//         tripT.triptype = "2";
+//         tripT.billname = 'julia 补习';
+//         tripT.trip_type = "2";
 //         tripT.datetime = dd;
-//         tripT.destination = "5997 153rd Ave SE, Bellevue, WA 98006"
+//         tripT.destination_address = "5997 153rd Ave SE, Bellevue, WA 98006"
 //         tripT.departure = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
 //         book(tripT, false);
 //     }
@@ -137,12 +184,12 @@ var book = (newtrip, isSave) => {
 //         tripT = t();
 //         dd.setHours(10)
 //         dd.setMinutes(20)
-//         tripT.name = 'julia 补习';
 //         tripT.billname = 'julia 补习';
-//         tripT.triptype = "3";
+//         tripT.billname = 'julia 补习';
+//         tripT.trip_type = "3";
 //         tripT.datetime = dd;
 //         tripT.departure = "5997 153rd Ave SE, Bellevue, WA 98006"
-//         tripT.destination = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
+//         tripT.destination_address = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
 //         book(tripT, false);
 
 
@@ -150,11 +197,11 @@ var book = (newtrip, isSave) => {
 //         tripT = t();
 //         dd.setHours(13)
 //         dd.setMinutes(10)
-//         tripT.name = 'julia 补习';
 //         tripT.billname = 'julia 补习';
-//         tripT.triptype = "2";
+//         tripT.billname = 'julia 补习';
+//         tripT.trip_type = "2";
 //         tripT.datetime = dd;
-//         tripT.destination = "5997 153rd Ave SE, Bellevue, WA 98006"
+//         tripT.destination_address = "5997 153rd Ave SE, Bellevue, WA 98006"
 //         tripT.departure = "1505 NW Gilman Blvd Suite 6, Issaquah, WA 98027"
 //         book(tripT, false);
 
@@ -202,13 +249,13 @@ app.get('/price', (req, res) => {
     var data = req.query;
     console.log(data);
     var origin = '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA';
-    var pickup = data.start;
-    var destination = data.end
+    var pickup_distance = data.start;
+    var destination_address = data.end
     if (data.type === "1") {
-        pickup = data.end
-        destination = data.start
+        pickup_distance = data.end
+        destination_address = data.start
     }
-    map.directions({ params: { key: process.env.google_map_api_key, destination: destination, origin: origin, waypoints: [pickup] } }).then((mapres) => {
+    map.directions({ params: { key: process.env.google_map_api_key, destination_address: destination_address, origin: origin, waypoints: [pickup_distance] } }).then((mapres) => {
         console.log(mapres)
         var G_pickup = {
             address: mapres.data.routes[0].legs[0].end_address,
@@ -217,7 +264,7 @@ app.get('/price', (req, res) => {
             pickup_dis: Math.round(mapres.data.routes[0].legs[0].distance.value / 1609.344),
             dropoff_dis: Math.round(mapres.data.routes[0].legs[1].distance.value / 1609.344)
         }
-        var G_destination = {
+        var G_destination_address = {
             address: mapres.data.routes[0].legs[1].end_address,
             lat: mapres.data.routes[0].legs[1].end_location.lat,
             lng: mapres.data.routes[0].legs[1].end_location.lng,
@@ -226,13 +273,13 @@ app.get('/price', (req, res) => {
         }
         var map_info = {
             address1: G_pickup,
-            address2: G_destination,
+            address2: G_destination_address,
             pickup_dis: Math.round(mapres.data.routes[0].legs[0].distance.value / 1609.344),
             dropoff_dis: Math.round(mapres.data.routes[0].legs[1].distance.value / 1609.344),
             esttime: mapres.data.routes[0].legs[1].duration.text
         }
         if (data.type === "1") {
-            map_info.address1 = G_destination;
+            map_info.address1 = G_destination_address;
             map_info.address2 = G_pickup
         }
         res.send(map_info)
@@ -285,9 +332,9 @@ app.get('/edit', (req, res) => {
     console.log(req.query)
     var newtrip = req.query;
     var datetime = new Date(newtrip.datetime);
-    newtrip.pickuptime = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
+    newtrip.pickup_time = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
     newtrip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
-    newtrip.travletime = datetime.valueOf();
+    newtrip.travel_time = datetime.valueOf();
     data[newtrip.invoice] = newtrip
     console.log(newtrip)
     fs.writeFile("trips.json", JSON.stringify(data), function (err) {
@@ -327,10 +374,10 @@ var makesummary = (trip) => {
     var script2 = " ,一般会提前5分钟左右抵达上车地点"
     var script3 = " ,抵达后请通知我,在完成所有程序后告知我你们所在出口 (arrval 门号),之后预计5分钟内我就可以到达 "
     var d = new Date(trip.datetime);
-    if (trip.triptype == '0') {
-        scripts = '与' + trip.nickname + '的预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + trip.pickup_address + ' 出发. 届时我会开一辆 ' + car[trip.type] + script2 + ' ,费用总计$' + trip.total;
+    if (trip.trip_type == '0') {
+        scripts = '与' + trip.nickname + '的预约 ' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + ' 从 ' + trip.departure_address + ' 出发. 届时我会开一辆 ' + car[trip.type] + script2 + ' ,费用总计$' + trip.total;
     } else {
-        scripts = '与' + trip.nickname + '的预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + trip.flight + ' 送往 ' + trip.destination + '. 届时我会开一辆 ' + car[trip.type] + script3 + ' ,费用总计$' + trip.total;
+        scripts = '与' + trip.nickname + '的预约 接机 于' + d.toLocaleString(['zh-CN'], { hourCycle: "h11", dateStyle: "full", timeStyle: "short" }) + '抵达的航班 ' + trip.flight_num + ' 送往 ' + trip.destination_address + '. 届时我会开一辆 ' + car[trip.type] + script3 + ' ,费用总计$' + trip.total;
     }
     return scripts
 }

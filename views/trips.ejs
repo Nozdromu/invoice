@@ -41,7 +41,7 @@
         var t = $('#trips');
         axios.get('/gettrips').then((res) => {
             console.log(res.data)
-            trips = res.data.trips.sort((a, b) => new Date(a.travletime) - new Date(b.travletime))
+            trips = res.data.trips.sort((a, b) => new Date(a.travel_time) - new Date(b.travel_time))
             trips.forEach(element => {
                 t.append(createtrip(element))
             });
@@ -65,18 +65,18 @@
             var d = new Date(data.date);
 
             var ul = $('<div class="row" style="width:100%">');
-            var tag = $('<span class="badge text-bg-success">' + _triptype[data.triptype] + '</span>')
-            var time = $('<h6>' + week[d.getUTCDay()] + ' ' + data.date + "<br>" + data.pickuptime + '</h6>')
+            var tag = $('<span class="badge text-bg-success">' + _triptype[data.trip_type] + '</span>')
+            var time = $('<h6>' + week[d.getUTCDay()] + ' ' + data.date + "<br>" + data.pickup_time + '</h6>')
             var name = $('<h6>' + data.nickname + '</h6>')
 
 
 
-            if (data.triptype === '0') {
-                tag = $('<span class="badge text-bg-success">' + _triptype[data.triptype] + '</span>')
-            } else if (data.triptype === '1') {
-                tag = $('<span class="badge text-bg-warning">' + _triptype[data.triptype] + '</span>')
+            if (data.trip_type === '0') {
+                tag = $('<span class="badge text-bg-success">' + _triptype[data.trip_type] + '</span>')
+            } else if (data.trip_type === '1') {
+                tag = $('<span class="badge text-bg-warning">' + _triptype[data.trip_type] + '</span>')
             } else {
-                tag = $('<span class="badge text-bg-danger">' + _triptype[data.triptype] + '</span>')
+                tag = $('<span class="badge text-bg-danger">' + _triptype[data.trip_type] + '</span>')
             }
             var li_tag = $('<div class="col">').append(tag);
             var li_time = $('<div class="col">').append(time)
@@ -102,16 +102,16 @@
             item.append(head);
             item.append(coll_div);
             head.append(button);
-            var showaddress = data.pickup_address || data.departure;
-            if (data.triptype === "1" || data.triptype === "3") {
-                showaddress = data.destination
+            var showaddress = data.departure_address || data.departure;
+            if (data.trip_type === "1" || data.trip_type === "3") {
+                showaddress = data.destination_address
             }
             var info = $('<div class="accordion-body container text-center">');
             var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + showaddress).text(showaddress)
             var type = data.type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
-            if (data.triptype === '1') {
-                info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight).text(data.flight)))
+            if (data.trip_type === '1') {
+                info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight_num).text(data.flight_num)))
             }
             info.append($('<div>').append(map))
             var activeRow = $('<div class="row justify-content-start">')
