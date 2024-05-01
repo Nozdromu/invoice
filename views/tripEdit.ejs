@@ -193,7 +193,7 @@
 
                   <button type="button" class="btn btn-primary" onclick="copysummary()">复制预约信息</button>
 
-                  <a href="/trips" class="btn btn-primary">前往预约汇总</a>
+                  <a href="/" class="btn btn-primary">前往预约汇总</a>
 
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -231,15 +231,7 @@
       })
     })()
 
-    //console.log(window.isSecureContext);
-
-    // if (window.isSecureContext) {
-    //   alert(
-    //     'The context is secure, can use navigator.clipboard',
-    //   );
-    // } else {
-    //   alert('The context is NOT secure');
-    // }
+ 
 
     var xx = () => {
       var s1 = "预约信息:\n" + $('#summaryP').text() + '\n\n'
@@ -332,7 +324,7 @@
         var t = (new Date(data.datetime + ' UTC')).toISOString().substring(0, 16)
         datetime.val(t);
         price.val(data.total);
-        cartype.val(data.type)
+        cartype.val(data.vehicle_type)
         trip_type.val(data.trip_type)
         destination_address.val(data.destination_address)
         googledestination.val(data.destination_address)
@@ -382,10 +374,10 @@
       trip_info.departure_address = googleaddress.val();
       trip_info.distance = distance.val();
       trip_info.pickup_distance = pickup_distance.val();
-      trip_info.dis_price = dis_price;
+      trip_info.distance_price = dis_price;
       trip_info.pickup_distance_price = pickup_distance_price;
       trip_info.pickup_distance_free = pickup_distance_free;
-      trip_info.type = cartype.val();
+      trip_info.vehicle_type = cartype.val();
       trip_info.total = price.val();
       trip_info.trip_type = trip_type.val();
       trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });

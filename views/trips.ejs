@@ -26,7 +26,7 @@
                 <button class="btn btn-primary" type="button" onclick="feeInfo()">复制收费信息</button>
             </div>
             <div class="col-auto">
-                <a class="btn btn-primary" href="/home">新预约</a>
+                <a class="btn btn-primary" href="/trip">新预约</a>
             </div>
         </div>
         <div class="accordion accordion-flush" id="trips">
@@ -41,7 +41,7 @@
         var t = $('#trips');
         axios.get('/gettrips').then((res) => {
             console.log(res.data)
-            trips = res.data.trips.sort((a, b) => new Date(a.travel_time) - new Date(b.travel_time))
+            trips = res.data.trips.sort((a, b) => { return a.travel_time - b.travel_time })
             trips.forEach(element => {
                 t.append(createtrip(element))
             });
@@ -71,9 +71,9 @@
 
 
 
-            if (data.trip_type === '0') {
+            if (data.trip_type === 0) {
                 tag = $('<span class="badge text-bg-success">' + _triptype[data.trip_type] + '</span>')
-            } else if (data.trip_type === '1') {
+            } else if (data.trip_type === 1) {
                 tag = $('<span class="badge text-bg-warning">' + _triptype[data.trip_type] + '</span>')
             } else {
                 tag = $('<span class="badge text-bg-danger">' + _triptype[data.trip_type] + '</span>')
@@ -108,19 +108,25 @@
             }
             var info = $('<div class="accordion-body container text-center">');
             var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + showaddress).text(showaddress)
-            var type = data.type == 5 ? 'Camry' : 'Sienna'
+            var type = data.vehicle_type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
-            if (data.trip_type === '1') {
+            if (data.trip_type === 1) {
                 info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight_num).text(data.flight_num)))
             }
             info.append($('<div>').append(map))
             var activeRow = $('<div class="row justify-content-start">')
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">编辑订单</button>').click(() => {
-                window.location.href = '/edittrip?trip=' + data.invoice
+                window.location.href = '/trip?trip=' + data.invoice
             })));
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">完成订单</button>').click(() => {
-                axios.get('/finish', { params: { tripid: data.invoice } }).then((res) => {
-                    location.reload()
+                axios.get('/finish', { params: { invoice: data.invoice, state: 0 } }).then((res) => {
+                    if (res.data.state === "success") {
+                        alert('change success')
+                        location.reload()
+                    } else {
+                        console.log(res.data.message)
+                    }
+
                 })
             })))
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">复制预约信息</button>').click(() => {
