@@ -4,7 +4,8 @@
   "description": "for invoice",
   "main": "server.js",
   "scripts": {
-    "test": "node test"
+    "test": "node test",
+    "pro":"PORT=80 node server.js"
   },
   "author": "yilei",
   "license": "ISC",
