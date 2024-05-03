@@ -16,7 +16,7 @@ const { exec } = require('child_process')
 
 
 /////////////////////////////////////////////////////////
-//  set database
+//  set database ?
 
 const mysql = require('mysql2');
 const connection = mysql.createPool({
