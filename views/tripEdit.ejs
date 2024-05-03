@@ -332,7 +332,7 @@
         date = new Date(data.datetime)
         summary = res.data.summary
         makesummary();
-        invoiceLink = 'https://' + window.location.host + '/?invoice=' + trip_info.invoice
+        invoiceLink = window.location.host + '/?invoice=' + trip_info.invoice
         $('#invoiceP').text(invoiceLink)
         $('#invoiceA').attr('href', invoiceLink)
 
