@@ -5,7 +5,8 @@
     <link rel="icon" href="./xixi.png">
     <link rel="apple-touch-icon" href="./xixi.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Service Invoice</title>
 
     <!-- Favicon -->
@@ -27,10 +28,7 @@
                                         Service Invoice
                                     </td>
 
-                                    <td>
-                                        Invoice #: <%=invoice%><br>
-                                            Created: <%=date%><br>
-                                                Due: <%=date%>
+                                    <td id="ICD">
                                     </td>
                                 </tr>
                             </tbody>
@@ -50,10 +48,8 @@
                                         Bellevue, WA 98006
                                     </td>
 
-                                    <td>
-                                        To:<br>
-                                        <%=name%><br>
-                                            <%=triptype==="1"?destination_address:departure_address%><br>
+                                    <td id="BA">
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -68,12 +64,12 @@
                 </tr>
 
                 <tr class="details">
-                    <td>
-                        <%=payment%>
+                    <td id="PT">
+                        payment type
                     </td>
 
-                    <td>
-                        <%=transID%>
+                    <td id="TI">
+                        trans id
                     </td>
                 </tr>
 
@@ -83,31 +79,47 @@
                 </tr>
 
                 <tr class="item">
-                    <%if(triptype=="0"){%>
-                        <td>passenger transport to SEATAC airport<br>
-                            %>
-                            <%}else{%>
-                        <td>passenger transport from SEATAC airport<br>
-                            <%}%>
-                                service on <%=datetime%>
-                        </td>
 
-                        <td>$<%=total%>
-                        </td>
+                    <td id="SD"></td>
+
+                    <td id="TT"></td>
+
                 </tr>
 
 
                 <tr class="total">
                     <td></td>
 
-                    <td>Total: $<%=total%>
+                    <td id="TTT">
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const invoice = urlParams.get('invoice');
+        var trip_info;
+        $.get('gettrip', { trip: invoice }, (data, statu) => {
+            console.log(data);
+            trip_info = data.trip;
+            $('#ICD').html('Invoice #: ' + trip_info.invoice + "<br>Created: " + trip_info.date + '<br>Due: ' + trip_info.date);
+            // $('#BA').html('To:<br>' + trip_info.billname || trip_info.name + '<br>' + trip_info.trip_type === 1 ? trip_info.destination_address : trip_info.departure_address + '<br>');
+            var s = 'To:<br>' + trip_info.billname || trip_info.name;
+            s += '<br>'
+            s += trip_info.trip_type === 1 ? trip_info.destination_address : trip_info.departure_address + '<br>'
+            $('#BA').html(s);
+            $('#PT').html(trip_info.payment_type);
+            $('#TI').html(trip_info.transID);
+            s = "passenger transport<br> From: " + trip_info.departure_address + '<br>To: ' + trip_info.destination_address
+            s += '<br>Service on ' + trip_info.date;
+            $('#SD').html(s);
+            $('#TT').html('$' + trip_info.total);
+            $('#TTT').html('$' + trip_info.total);
+        })
+    </script>
 
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+</body>
 
 </html>

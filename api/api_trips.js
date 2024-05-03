@@ -105,6 +105,7 @@
         res.send({ trips: trips })
     }
 
+
     var get_price = (req, res) => {
         var data = req.query;
         var origin = '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA';

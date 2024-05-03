@@ -137,7 +137,7 @@
 
             })))
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">invoice</button>').click(() => {
-                window.location.href = '/?invoice=' + data.invoice
+                window.location.href = '/invoice?invoice=' + data.invoice
             })))
             info.append(activeRow)
             coll_div.append(info)

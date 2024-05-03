@@ -2,7 +2,7 @@
 
     var invoice = (req, res) => {
         var inv = req.query.invoice;
-        res.render('index', data[inv]);
+        res.render('index');
     }
 
     var alltrips = (req, res) => {

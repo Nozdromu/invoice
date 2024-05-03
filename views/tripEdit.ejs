@@ -394,7 +394,7 @@
         if (res.data.statu === 'done') {
           summary = res.data.summary
           makesummary();
-          invoiceLink = 'https://' + window.location.host + '/?invoice=' + trip_info.invoice
+          invoiceLink = window.location.host + '/invoice?invoice=' + trip_info.invoice
           $('#invoiceP').text(invoiceLink)
           $('#invoiceA').attr('href', invoiceLink)
           messagebtn.click();
