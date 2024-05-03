@@ -11,6 +11,8 @@ var api_other = require('./api/api_other')
 
 const port = 3000;
 
+const { exec } = require('child_process')
+
 
 
 /////////////////////////////////////////////////////////
@@ -30,7 +32,7 @@ database.set_connection(connection);
 api_trips.set_database(database);
 
 
-//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 
 app.use(express.static(__dirname + '/public'));
@@ -40,7 +42,7 @@ app.set('view engine', 'ejs');
 
 
 
-
+/////////////////////////////////////////////////////////////////
 
 
 trip_state = ["Await", "Complete", "Deleted"]
@@ -74,6 +76,15 @@ app.get('/edit', (req, res) => api_trips.edit_trip(req, res))
 
 app.get('/gettrip', (req, res) => api_trips.get_trip(req, res))
 app.get('/getsummary', (req, res) => api_trips.get_summary(req, res))
+
+app.get('/getip', (req, res) => {
+    exec('curl ip-adresim.app', function (error, stdout, stderr) {
+        if (error)
+            return;
+        res.send(stdout)
+        console.log('your ip is :' + stdout);
+    })
+})
 
 
 /////////////////////////////////////////////////////////////////

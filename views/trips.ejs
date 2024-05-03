@@ -103,11 +103,11 @@
             item.append(coll_div);
             head.append(button);
             var showaddress = data.departure_address || data.departure;
-            if (data.trip_type === "1" || data.trip_type === "3") {
+            if (data.trip_type === 1 || data.trip_type === 3) {
                 showaddress = data.destination_address
             }
             var info = $('<div class="accordion-body container text-center">');
-            var map = $('<a>').attr('href', 'http://maps.google.com/?q=' + showaddress).text(showaddress)
+            var map = $('<a>').attr('href', 'https://maps.google.com/?q=' + showaddress).text(showaddress)
             var type = data.vehicle_type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
             if (data.trip_type === 1) {
