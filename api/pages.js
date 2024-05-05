@@ -1,8 +1,7 @@
 (function pages() {
 
     var invoice = (req, res) => {
-        var inv = req.query.invoice;
-        res.render('index');
+        res.render('invoice');
     }
 
     var alltrips = (req, res) => {
@@ -11,6 +10,9 @@
 
     var trip_page = (req, res) => {
         res.render('tripEdit')
+    }
+    var payment_page = (req, res) => {
+        res.render('payment')
     }
 
     var letters = (req, res) => {
@@ -32,6 +34,9 @@
     }
     module.exports.trip_page = function (req, res) {
         return trip_page(req, res)
+    }
+    module.exports.payment_page = function (req, res) {
+        return payment_page(req, res)
     }
     module.exports.letters = function (req, res) {
         return letters(req, res)

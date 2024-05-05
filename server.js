@@ -37,7 +37,8 @@ api_trips.set_database(database);
 
 app.use(express.static(__dirname + '/public'));
 app.set('views', './views');
-app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 
 
@@ -53,39 +54,35 @@ payment_state = ["Unpaid", "Paid"]
 //  pages
 
 // trip page
-app.get('/', (req, res) => pages.alltrips(req, res));
-app.get('/invoice', (req, res) => pages.invoice(req, res))
-app.get('/trip', (req, res) => pages.trip_page(req, res))
+app.get('/', pages.alltrips);
+app.get('/invoice', pages.invoice)
+app.get('/trip', pages.trip_page)
+app.get('/payment', pages.payment_page)
 
 // other page
-app.get('/letter', (req, res) => api_other.letter(req, res))
-app.get('/l', (req, res) => pages.letters(req, res))
-app.get('/math', (req, res) => pages.math(req, res))
 
+app.get('/l', pages.letters)
+app.get('/math', pages.math)
 
 /////////////////////////////////////////////////////////////////
 //  trip api
-app.get('/gettrips', (req, res) => api_trips.get_all_trips(req, res))
+app.get('/gettrips', api_trips.get_all_trips)
 
-app.get('/price', (req, res) => api_trips.get_price(req, res))
-app.get('/finish', (req, res) => api_trips.update_statu(req, res))
+app.get('/price', api_trips.get_price)
+app.get('/finish', api_trips.update_statu)
 
 
-app.get('/book', (req, res) => api_trips.book_trip(req, res))
-app.get('/edit', (req, res) => api_trips.edit_trip(req, res))
+app.get('/book', api_trips.book_trip)
+app.get('/edit', api_trips.edit_trip)
 
-app.get('/gettrip', (req, res) => api_trips.get_trip(req, res))
-app.get('/getsummary', (req, res) => api_trips.get_summary(req, res))
+app.get('/gettrip', api_trips.get_trip)
+app.get('/getsummary', api_trips.get_summary)
 
-app.get('/getip', (req, res) => {
-    exec('curl ip-adresim.app', function (error, stdout, stderr) {
-        if (error)
-            return;
-        res.send(stdout)
-        console.log('your ip is :' + stdout);
-    })
-})
+/////////////////////////////////////////////////////////////////
+//  other api
 
+app.get('/getip', api_other.get_ip)
+app.get('/letter', api_other.letter)
 
 /////////////////////////////////////////////////////////////////
 
