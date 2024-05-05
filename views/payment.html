@@ -14,66 +14,88 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/copy.js"></script>
+
 </head>
 
 <body>
     <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="col-12">
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <img src="/logo/p.png" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Use Paypal</h5>
-                                <p class="card-text">Yilei DIng<br>4254990042<br>Yileiding1990@gmail.com</p>
-                                <p class="card-text" style="text-align: right"><a href="https://paypal.me/yilei1990"
-                                        class="btn btn-primary">Use Paypal</a></p>
+        <div class="row" style="height: 100vh;">
+            <div class="col align-self-center">
+                <div class="row  justify-content-center">
+                    <div class="col-auto">
+                        <div class="card mb-3 bg-primary-subtle" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-4 align-self-center">
+                                    <img src="/logo/p.png" class="img-fluid rounded-start p-3" alt="...">
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Use Paypal</h5>
+                                        <p class="card-text">Yilei Ding<br>4254990042<br>Yileiding1990@gmail.com</p>
+                                        <p class="card-text" style="text-align: right"><a
+                                                href="https://paypal.me/yilei1990" class="btn btn-primary">
+                                                Paypal me</a></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-4">
-                        <img src="/logo/v.png" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Use Venmo</h5>
-                            <p class="card-text">Qianlu Wu<br>4254998847<br>luckyluluwu@gmail.com</p>
-                            <p class="card-text" style="text-align: right"><a
-                                    href="https://venmo.com/code?user_id=3389978881032192653"
-                                    class="btn btn-primary">Use Vemno</a></p>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <div class="card mb-3 bg-info-subtle" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-4 align-self-center">
+                                    <img src="/logo/v3.png" class="img-fluid rounded-start p-3" alt="...">
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Use Venmo</h5>
+                                        <p class="card-text">Qianlu Wu<br>4254998847<br>luckyluluwu@gmail.com</p>
+                                        <p class="card-text" style="text-align: right"><a
+                                                href="https://venmo.com/code?user_id=3389978881032192653"
+                                                class="btn btn-primary">Vemno me</a></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-4">
-                        <img src="/logo/z.png" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Use Zelle</h5>
-                            <p class="card-text">Yilei Ding<br>4254998842<br>--------</p>
-                            <p class="card-text" style="text-align: right"><a class="btn btn-primary">copy phone</a></p>
+                <div class="row justify-content-center">
+
+                    <div class="col-auto">
+                        <div class="card mb-3" style="max-width: 540px;background-color:#d1c4e9">
+                            <div class="row g-0">
+                                <div class="col-4 align-self-center">
+                                    <img src="/logo/z2.png" class="img-fluid rounded-start p-3" alt="...">
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Use Zelle</h5>
+                                        <p class="card-text">Yilei Ding<br>4254998842<br>--------</p>
+                                        <p class="card-text" style="text-align: right"><button onclick="copynumber()"
+                                                class="btn btn-primary">copy
+                                                phone</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
-
     </div>
-    <script>
 
+
+
+    <script>
+        var copynumber = () => {
+            copyToClipboard('4254998842')
+            alert('Zelle accout number: 4254998842 copied!')
+        }
     </script>
 </body>
 
