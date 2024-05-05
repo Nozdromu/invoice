@@ -66,6 +66,9 @@ app.get('/math', pages.math)
 
 /////////////////////////////////////////////////////////////////
 //  trip api
+
+app.get('/reload',api_trips.reload)
+
 app.get('/gettrips', api_trips.get_all_trips)
 
 app.get('/price', api_trips.get_price)

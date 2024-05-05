@@ -10,6 +10,12 @@
             data = results;
         })
     }
+    var reload = (req, res) => {
+        database.get_trips((results) => {
+            data = results;
+            res.send('done')
+        })
+    }
     var book = (newtrip, callback) => {
         var tripid = Date.now();
         var rt = data[tripid]
@@ -177,5 +183,8 @@
     }
     module.exports.set_database = function (_database) {
         return set_database(_database)
+    }
+    module.exports.reload = function (req, res) {
+        return reload(_database)
     }
 })()
