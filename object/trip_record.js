@@ -10,18 +10,19 @@ function trip_record(){
         pickup_time: "",
         trip_type: "",
         flight_num: "",
-        vehicle_type: "",
+        vehicle_type: 0,
         departure_address:"",
         destination_address: "",
-        distance: "",
-        pickup_distance: "",
-        distance_price: "",
-        pickup_distance_price: "",
-        pickup_distance_free: "",
+        distance: 0,
+        pickup_distance: 0,
+        distance_price: 0,
+        pickup_distance_price: 0,
+        pickup_distance_free: 0,
         total: "",
         payment_type: "",
         transID: "",
         state: "",
         note: ""
     }
+    
 }

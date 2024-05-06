@@ -1,24 +1,25 @@
-(function pages() {
-    const path = require('path')
-    var letter = (req, res) => {
-        var l = req.query.letter;
-        res.sendFile('/letter/' + l + '.pdf', { root: path.join(__dirname, '../public') })
-    }
-    var get_ip = (req, res) => {
-        exec('curl ip-adresim.app', function (error, stdout, stderr) {
-            if (error)
-                return;
-            res.send(stdout)
-            console.log('your ip is :' + stdout);
-        })
-    }
 
+const path = require('path')
+const { exec } = require('child_process')
 
+function api_other() {
 
-    module.exports.letter = function (req, res) {
-        return letter(req, res)
+    var api = {
+        letter: (req, res) => {
+            var l = req.query.letter;
+            res.sendFile('/letter/' + l + '.pdf', { root: path.join(__dirname, '../public') })
+        },
+        get_ip: (req, res) => {
+            exec('curl ip-adresim.app', function (error, stdout, stderr) {
+                if (error)
+                    return;
+                res.send(stdout)
+                console.log('your ip is :' + stdout);
+            })
+        }
     }
-    module.exports.get_ip = function (req, res) {
-        return get_ip(req, res)
-    }
-})()
+    return api
+}
+module.exports = api_other
+//     const path = require('path')
+//     const { exec } = require('child_process')

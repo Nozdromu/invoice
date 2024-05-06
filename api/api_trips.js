@@ -1,22 +1,18 @@
-(function api_trips() {
-    const { Client } = require('@googlemaps/google-maps-services-js')
-    const map = new Client({});
+const { Client } = require('@googlemaps/google-maps-services-js')
+const map = new Client({});
 
-    var database;
-    var data = {}
-    var set_database = (_database) => {
-        database = _database;
-        database.get_trips((results) => {
-            data = results;
-        })
-    }
-    var reload = (req, res) => {
-        database.get_trips((results) => {
-            data = results;
-            res.send('done')
-        })
-    }
-    var book = (newtrip, callback) => {
+function api_trips(_database) {
+
+    var api_trip = {}
+    var database = _database;
+
+    // var reload = (req, res) => {
+    //     database.get_trips((results) => {
+    //         data = results;
+    //         res.send('done')
+    //     })
+    // }
+    api_trip.book = (newtrip, callback) => {
         var tripid = Date.now();
         var rt = data[tripid]
         while (rt !== undefined) {
@@ -33,7 +29,7 @@
         newtrip.nickname = newtrip.nickname
         newtrip.state = 1
         //data[tripid] = (newtrip);
-        database.insert_trip(newtrip, (results) => {
+        database.trip_api.insert_trip(newtrip, (results) => {
             callback(results);
         })
     }
@@ -54,65 +50,65 @@
         }
         return scripts
     }
-    var book_trip = (req, res) => {
+    api_trip.book_trip = (req, res) => {
         var newtrip = req.query;
         book(newtrip, (results) => {
-            data[results.invoice] = results;
+            database.data[results.invoice] = results;
             res.send({ statu: 'done', trip: results, summary: makesummary(results) })
         });
 
     }
 
-    var edit_trip = (req, res) => {
+    api_trip.edit_trip = (req, res) => {
         var trip = req.query;
         var datetime = new Date(trip.datetime);
         trip.pickup_time = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
         trip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
         trip.travel_time = datetime.valueOf();
-        database.edit_trip(trip, (results) => {
-            data[results.invoice] = results
+        database.trip_api.edit_trip(trip, (results) => {
+            database.data[results.invoice] = results
             res.send({ statu: 'done', trip: results, summary: makesummary(results) })
         })
 
     }
 
-    var get_summary = (req, res) => {
+    api_trip.get_summary = (req, res) => {
         var tripid = req.query.invoice;
-        var tripInfo = data[tripid];
+        var tripInfo = database.data[tripid];
         var summary = makesummary(tripInfo);
         res.send(summary);
     }
 
-    var get_trip = (req, res) => {
-        res.send({ statu: 'done', trip: data[req.query.trip], summary: makesummary(data[req.query.trip]) })
+    api_trip.get_trip = (req, res) => {
+        res.send({ statu: 'done', trip: database.data[req.query.trip], summary: makesummary(database.data[req.query.trip]) })
     }
 
-    var change_trip_state = (req, res) => {
-        var trip = data[req.query.invoice];
+    api_trip.change_trip_state = (req, res) => {
+        var trip = database.data[req.query.invoice];
         var state = req.query.state;
-        database.change_trip_state(trip.id, state, (results, err) => {
+        database.trip_api.change_trip_state(trip.id, state, (results, err) => {
             if (err) {
 
                 res.send({ state: 'err', message: err })
             } else {
 
-                data[results.invoice] = results
+                database.data[results.invoice] = results
                 res.send({ state: 'success', message: trip })
             }
 
         })
     }
 
-    var get_all_trips = (req, res) => {
+    api_trip.get_all_trips = (req, res) => {
         var trips = []
-        Object.entries(data).forEach(element => {
+        Object.entries(database.data).forEach(element => {
             trips.push(element[1]);
         });
         res.send({ trips: trips })
     }
 
 
-    var get_price = (req, res) => {
+    api_trip.get_price = (req, res) => {
         var data = req.query;
         var origin = '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA';
         var pickup_address = data.start;
@@ -157,34 +153,7 @@
 
 
     }
+    return api_trip
+}
 
-
-
-    module.exports.book_trip = function (req, res) {
-        return book_trip(req, res)
-    }
-    module.exports.edit_trip = function (req, res) {
-        return edit_trip(req, res)
-    }
-    module.exports.update_statu = function (req, res) {
-        return change_trip_state(req, res)
-    }
-    module.exports.get_all_trips = function (req, res) {
-        return get_all_trips(req, res)
-    }
-    module.exports.get_trip = function (req, res) {
-        return get_trip(req, res)
-    }
-    module.exports.get_summary = function (req, res) {
-        return get_summary(req, res)
-    }
-    module.exports.get_price = function (req, res) {
-        return get_price(req, res)
-    }
-    module.exports.set_database = function (_database) {
-        return set_database(_database)
-    }
-    module.exports.reload = function (req, res) {
-        return reload(_database)
-    }
-})()
+module.exports = api_trips

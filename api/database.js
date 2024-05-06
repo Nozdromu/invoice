@@ -1,25 +1,28 @@
-(function database() {
-    var connection
-    var set_connection = (_connection) => {
-        connection = _connection
+function database(pool) {
+    connection = pool
+    var Database = {
+        data: {},
+        trip_api: {}
     }
-    var getalltrips = (callback) => {
+
+    Database.trip_api.getalltrips = (callback) => {
         connection.query('select*from trip_table', (err, results, fields) => {
-            var data = {};
             if (err) {
                 console.log(err)
             } else {
                 results.forEach((row) => {
-                    data[row.invoice] = row
+                    Database.data[row.invoice] = row
                 })
             }
             if (callback !== undefined) {
-                callback(data);
+                callback(Database.data);
             }
         })
     }
-
-    var addrecord = (data, callback) => {
+    Database.trip_api.getalltrips(() => {
+        console.log("data loaded")
+    });
+    Database.trip_api.addrecord = (data, callback) => {
         connection.query("call new_book(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
             data.invoice,
             data.billname,
@@ -53,7 +56,7 @@
         })
     }
 
-    var editrecord = (data, callback) => {
+    Database.trip_api.editrecord = (data, callback) => {
         connection.query("call edit_trips(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
             data.id,
             data.billname,
@@ -87,7 +90,7 @@
         })
     }
 
-    var change_trip_state = (id, state, callback) => {
+    Database.trip_api.change_trip_state = (id, state, callback) => {
         connection.query('call update_trip_state(?,?)', [id, state], (err, results, fields) => {
             if (err) {
                 throw err
@@ -97,20 +100,7 @@
             }
         })
     }
-    module.exports.get_trips = function (callback) {
-        return getalltrips(callback)
-    }
-    module.exports.insert_trip = function (newtrip, callback) {
-        return addrecord(newtrip, callback)
-    }
-    module.exports.edit_trip = function (trip, callback) {
-        return editrecord(trip, callback)
-    }
-    module.exports.change_trip_state = function (id, state, callback) {
-        return change_trip_state(id, state, callback)
-    }
-    module.exports.set_connection = function (connection) {
-        return set_connection(connection);
-    }
+    return Database;
+}
 
-})()
+module.exports = database

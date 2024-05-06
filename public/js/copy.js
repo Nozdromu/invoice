@@ -37,7 +37,7 @@ async function copyToClipboard(text) {
     input.select()
     document.execCommand('copy')
     document.body.removeChild(input)
-    alert(text)
+    //alert(text)
     try {
         await navigator.clipboard.writeText(text);
     } catch (error) {
