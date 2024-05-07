@@ -22,6 +22,10 @@ function Pages() {
     pages.math = (req, res) => {
         res.render('math')
     }
+
+    pages.cal=(req,res)=>{
+        res.render('cal')
+    }
     return pages
 }
 

@@ -3,7 +3,11 @@ const express = require('express');
 const mysql = require('mysql2');
 var session = require('express-session')
 const MySQLStore = require('express-mysql-session')(session);
+// const { readFileSync } = require('fs');
 
+// const { Client } = require('ssh2');
+
+// const conn = new Client();
 
 
 const pages = require('./api/pages')
@@ -64,6 +68,7 @@ app.get('/payment', Pages.payment_page)
 
 app.get('/l', Pages.letters)
 app.get('/math', Pages.math)
+app.get('/cal', Pages.cal)
 
 /////////////////////////////////////////////////////////////////
 //  trip api
