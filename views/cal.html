@@ -5,12 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="/js/cal.js"></script>
+
 </head>
 
 <body>
-    <div class="lg:flex lg:h-full lg:flex-col">
+    <div id="cal" class="lg:flex lg:h-full lg:flex-col">
         <header class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">
+        <h1 class="text-base font-semibold leading-6 text-gray-900">
                 <time datetime="2022-01">January 2022</time>
             </h1>
             <div class="flex items-center">
@@ -38,8 +43,8 @@
                     </button>
                 </div>
                 <div class="hidden md:ml-4 md:flex md:items-center">
-                    <div class="relative">
-                        <button type="button"
+                    <div class="relative" x-data="{ isOpen: false }">
+                        <button type="button" @click="isOpen = !isOpen"
                             class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                             id="menu-button" aria-expanded="false" aria-haspopup="true">
                             Month view
@@ -51,20 +56,16 @@
                             </svg>
                         </button>
 
-                        <!--
-                  Dropdown menu, show/hide based on menu state.
-      
-                  Entering: "transition ease-out duration-100"
-                    From: "transform opacity-0 scale-95"
-                    To: "transform opacity-100 scale-100"
-                  Leaving: "transition ease-in duration-75"
-                    From: "transform opacity-100 scale-100"
-                    To: "transform opacity-0 scale-95"
-                -->
-                        <div class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+
+                        <div x-show="isOpen" x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                             role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                             <div class="py-1" role="none">
-                                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                                 <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
                                     id="menu-item-0">Day view</a>
                                 <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
@@ -81,8 +82,8 @@
                         class="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Add
                         event</button>
                 </div>
-                <div class="relative ml-6 md:hidden">
-                    <button type="button"
+                <div class="relative ml-6 md:hidden" x-data="{ isOpen: false }">
+                    <button type="button" @click="isOpen = !isOpen"
                         class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500"
                         id="menu-0-button" aria-expanded="false" aria-haspopup="true">
                         <span class="sr-only">Open menu</span>
@@ -92,20 +93,16 @@
                         </svg>
                     </button>
 
-                    <!--
-                Dropdown menu, show/hide based on menu state.
-      
-                Entering: "transition ease-out duration-100"
-                  From: "transform opacity-0 scale-95"
-                  To: "transform opacity-100 scale-100"
-                Leaving: "transition ease-in duration-75"
-                  From: "transform opacity-100 scale-100"
-                  To: "transform opacity-0 scale-95"
-              -->
-                    <div class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+
+                    <div x-show="isOpen" x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="menu-0-button" tabindex="-1">
                         <div class="py-1" role="none">
-                            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                             <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
                                 id="menu-0-item-0">Create event</a>
                         </div>
@@ -125,11 +122,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
         </header>
         <div class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">
-            <div
-                class="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">
+            <div class="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">
                 <div class="flex justify-center bg-white py-2">
                     <span>M</span>
                     <span class="sr-only sm:not-sr-only">on</span>
@@ -651,7 +647,10 @@
             </ol>
         </div>
     </div>
-
+    <script>
+        // var h = cal_header();
+        // $('#cal').prepend(h);
+    </script>
 </body>
 
 </html>

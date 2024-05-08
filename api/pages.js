@@ -23,8 +23,12 @@ function Pages() {
         res.render('math')
     }
 
-    pages.cal=(req,res)=>{
+    pages.cal = (req, res) => {
         res.render('cal')
+    }
+
+    pages.test = (req, res) => {
+        res.render('test')
     }
     return pages
 }

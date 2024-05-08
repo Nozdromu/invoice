@@ -69,6 +69,7 @@ app.get('/payment', Pages.payment_page)
 app.get('/l', Pages.letters)
 app.get('/math', Pages.math)
 app.get('/cal', Pages.cal)
+app.get('/test', Pages.test)
 
 /////////////////////////////////////////////////////////////////
 //  trip api
