@@ -177,12 +177,15 @@ var cal_body = (today) => {
     return cal_body
 }
 
-var cal_foot = () => {
+// var cal_foot = () => {
 
-}
+// }
 
-var cal_footer = () => {
+var cal_footer = (allevents) => {
     var cal_footer = $('<div class="px-4 py-10 sm:px-6 lg:hidden">');
+    var foot_ol=$('<ol class="divide-y divide-gray-100 overflow-hidden rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5">')
+
+
     return cal_footer;
 }
 
