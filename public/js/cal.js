@@ -9,8 +9,10 @@ var cal_header = (today) => {
     var header = $('<header class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">');
     var header_h1 = $('<h1 class="text-base font-semibold leading-6 text-gray-900">')
     var time = $('<time datetime="2022-01"></time>')
+    var month_name = ["January", "Febrary", "March", "April", "May", "June", "July", "Auguest", "September", "October", "November", "December"]
+
     time.attr('datetime', today.day.getFullYear() + '-' + (today.day.getMonth() + 1))
-    time.html()
+    time.html(month_name[today.day.getMonth()] + ' ' + today.day.getFullYear())
     header.append(header_h1.append(time));
 
 
@@ -132,7 +134,7 @@ var cal_header = (today) => {
     return header;
 }
 
-var cal_body = () => {
+var cal_body = (today) => {
     cal_body = $('<div class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">');
     cal_body_header = $('<div class="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">')
     cal_body.append(cal_body_header);
@@ -147,17 +149,37 @@ var cal_body = () => {
     });
     var cal_body_body = $('<div class="flex bg-gray-200 text-xs leading-6 text-gray-700 lg:flex-auto">')
     var first_row = $('<div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">')
-
-
+    var count = 0
+    cal_body_body.append(first_row)
+    today.daylist.forEach((element, index) => {
+        var wapper = $('<div class="relative bg-white px-3 py-2">');
+        var day = $('<time>');
+        wapper.append(day)
+        day.attr('datetime', element.value);
+        day.html(element.day)
+        first_row.append(wapper);
+    })
+    var day_btn = $('<div class="isolate grid w-full grid-cols-7 grid-rows-6 gap-px lg:hidden">');
+    today.daylist.forEach((element) => {
+        var btn = $('<button type="button" class="flex h-14 flex-col bg-white px-3 py-2 text-gray-900 hover:bg-gray-100 focus:z-10">');
+        var day = $('<time class="ml-auto">');
+        day.attr('datetime', element.value);
+        day.html(element.day)
+        var span = $('<span class="sr-only">0 events</span>');
+        btn.append(day);
+        btn.append(span)
+        day_btn.append(btn)
+    })
+    cal_body_body.append(day_btn)
 
     cal_body.append(cal_body_header);
     cal_body.append(cal_body_body);
     return cal_body
 }
 
-// var cal_day = () => {
+var cal_foot = () => {
 
-// }
+}
 
 var cal_footer = () => {
     var cal_footer = $('<div class="px-4 py-10 sm:px-6 lg:hidden">');
@@ -165,13 +187,14 @@ var cal_footer = () => {
 }
 
 var cal = () => {
-    var today = {day:new Date(Date.now()),daylist:};
+    var today = { day: new Date(Date.now()), daylist: [] };
     var cal_core = calendar_core();
-    var current = cal_core(today.getFullYear(), today.getMonth() + 1)
+    var current = cal_core(today.day.getFullYear(), today.day.getMonth() + 1)
+    today.daylist = current
     console.log(current)
     var cal = $('<div id="cal" class="lg:flex lg:h-full lg:flex-col">');
-    var header = cal_header(current);
-    var body = cal_body(current);
+    var header = cal_header(today);
+    var body = cal_body(today);
     var footer = cal_footer();
     cal.append(header);
     cal.append(body)
@@ -264,7 +287,7 @@ var calendar_core = () => {
     //     }
     // }
     var get_first_day_of_week = (YYYY, MM) => {
-        var first_day = new Date(YYYY, MM, 1);
+        var first_day = new Date(YYYY, MM - 1, 1);
         return first_day.getDay();
     }
 
