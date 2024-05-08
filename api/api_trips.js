@@ -12,12 +12,12 @@ function api_trips(_database) {
     //         res.send('done')
     //     })
     // }
-    api_trip.book = (newtrip, callback) => {
+    var book = (newtrip, callback) => {
         var tripid = Date.now();
-        var rt = data[tripid]
+        var rt = database.data[tripid]
         while (rt !== undefined) {
             tripid += 1;
-            rt = data[tripid]
+            rt = database.data[tripid]
         }
         var datetime = new Date(newtrip.datetime);
         newtrip.pickup_time = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
@@ -29,7 +29,7 @@ function api_trips(_database) {
         newtrip.nickname = newtrip.nickname
         newtrip.state = 1
         //data[tripid] = (newtrip);
-        database.trip_api.insert_trip(newtrip, (results) => {
+        database.trip_api.addrecord(newtrip, (results) => {
             callback(results);
         })
     }
@@ -65,7 +65,7 @@ function api_trips(_database) {
         trip.pickup_time = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
         trip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
         trip.travel_time = datetime.valueOf();
-        database.trip_api.edit_trip(trip, (results) => {
+        database.trip_api.editrecord(trip, (results) => {
             database.data[results.invoice] = results
             res.send({ statu: 'done', trip: results, summary: makesummary(results) })
         })

@@ -153,7 +153,7 @@ var cal_header = () => {
     return { body: header, update: update, previous: previous, next: next };
 }
 
-var cal_body = (foot,today) => {
+var cal_body = (foot, today) => {
     cal_body = $('<div class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">');
     cal_body_header = $('<div class="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">')
     cal_body.append(cal_body_header);
@@ -192,8 +192,8 @@ var cal_body = (foot,today) => {
                 btn = $('<button type="button" class="flex h-14 flex-col bg-gray-50 px-3 py-2 text-gray-500 hover:bg-gray-100 focus:z-10">');
             var day = $('<time class="ml-auto">');
             day.attr('datetime', element.value);
-            if(element.value===today){
-                btn.addClass('font-semibold text-white' )
+            if (element.value === today) {
+                btn.addClass('font-semibold text-white')
                 day.addClass(' flex h-6 w-6 items-center justify-center rounded-full bg-gray-900')
             }
             day.html(element.day)
@@ -228,23 +228,39 @@ var cal_body = (foot,today) => {
 // }
 
 var cal_footer = () => {
+    var _triptype = ["Airport-Dept", "Airport-Arrival", "pickup", "dropoff"]
+
     var cal_footer = $('<div class="px-4 py-10 sm:px-6 lg:hidden">');
     var foot_ol = $('<ol class="divide-y divide-gray-100 overflow-hidden rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5">')
     function creat_event(e) {
-        var li = $('<li class="group flex p-4 pr-6 focus-within:bg-gray-50 hover:bg-gray-50">')
-        var div = $('<div class="flex-auto">')
+        var li = $('<li class="group flex p-4 pr-6 focus-within:bg-gray-50 hover:bg-gray-50 ">')
+        var div=$('<grid grid-cols-3 gap-4">')
+        //var div_one = $('<div class="flex-auto flex flex-row">')
+        var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"></span>')
         var p = $('<p class="font-semibold text-gray-900"></p>');
-        p.text(e.nickname)
-        var time = $('<time class="mt-2 flex items-center text-gray-700">');
+        p.append(e.nickname)
+        label.html('' + _triptype[e.trip_type])
+        var time = $('<time class="flex text-gray-700">');
         time.attr('datetime', e.datetime)
         var svg = $('<svg class="mr-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>')
-        li.append(div);
-        div.append(p);
-        div.append(time);
+
         time.append(svg);
         time.append(e.pickup_time)
-        var a = $('<a href="#" class="ml-6 flex-none self-center rounded-md bg-white px-3 py-2 font-semibold text-gray-900 opacity-0 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400 focus:opacity-100 group-hover:opacity-100">Edit</a>')
+        //li.append(div_one);
+        div.append($('<div class="col-auto">').append(time));
+        div.append($('<div class="col-auto">').append(label))
+        div.append($('<div class="col-auto">').append(p));
+        //var div_two = $('<div class="flex-auto flex flex-row">')
+        var showaddress = e.departure_address || e.departure;
+        if (e.trip_type === 1 || e.trip_type === 3) {
+            showaddress = e.destination_address
+        }
+        div.append($('<div class="col-auto">').append($('<a>location</a>').attr('href', 'https://maps.google.com/?q=' + showaddress)))
+        div.append($('<div class="col-auto">').append($('<a>Flight</a>').attr('href', 'http://google.com/search?q=' + e.flight_num)));
+        li.append(div)
+        var a = $('<a class="ml-6 flex-none self-center rounded-md bg-white px-3 py-2 font-semibold text-gray-900 opacity-0 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400 focus:opacity-100 group-hover:opacity-100">Edit</a>')
         var span = $('<span class="sr-only">, </span>')
+        a.attr('href', '/trip?trip=' + e.invoice)
         span.append(e.nickname);
         a.append(span);
         li.append(a);
@@ -273,7 +289,7 @@ var c = () => {
     var current_month_list = []
     var header = cal_header();
     var footer = cal_footer();
-    var body = cal_body(footer,todayTostring);
+    var body = cal_body(footer, todayTostring);
     var trips = {}
     var Previous_month = (month, year) => {
         if (month === 1)
