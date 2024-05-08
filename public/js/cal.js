@@ -184,7 +184,9 @@ var cal_body = (today) => {
 var cal_footer = (allevents) => {
     var cal_footer = $('<div class="px-4 py-10 sm:px-6 lg:hidden">');
     var foot_ol=$('<ol class="divide-y divide-gray-100 overflow-hidden rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5">')
-
+    function creat_event(){
+        var li=$('')
+    }
 
     return cal_footer;
 }
