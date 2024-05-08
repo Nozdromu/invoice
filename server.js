@@ -3,11 +3,23 @@ const express = require('express');
 const mysql = require('mysql2');
 var session = require('express-session')
 const MySQLStore = require('express-mysql-session')(session);
+const nodemailer = require("nodemailer");
 // const { readFileSync } = require('fs');
 
 // const { Client } = require('ssh2');
 
 // const conn = new Client();
+
+// let mailTransporter =
+//     nodemailer.createTransport(
+//         {
+//             service: 'gmail',
+//             auth: {
+//                 user: 'xyz@gmail.com',
+//                 pass: '*************'
+//             }
+//         }
+//     );
 
 
 const pages = require('./api/pages')
@@ -15,7 +27,82 @@ const api_trips = require('./api/api_trips')
 const api_other = require('./api/api_other')
 const database = require('./api/database')
 
+///////////////////////////////////////////////////////////////////////////
 
+
+// var Imap = require('imap')
+// var inspect = require('util').inspect;
+
+// var imap = new Imap({
+//     user: 'transservice2024@gmail.com',
+//     password: process.env.gmail_app_password,
+//     host: 'imap.gmail.com',
+//     port: 993,
+//     tls: true,
+//     tlsOptions: { rejectUnauthorized: false }
+// });
+
+// function openInbox(cb) {
+//     imap.openBox('INBOX', true, cb);
+// }
+
+// imap.once('ready', function () {
+
+//openInbox(function (err, box) {
+//if (err) throw err;
+// var f = imap.seq.fetch('1:3', {
+//     bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
+//     struct: true
+// });
+// f.on('message', function (msg, seqno) {
+//     console.log('Message #%d', seqno);
+//     var prefix = '(#' + seqno + ') ';
+//     msg.on('body', function (stream, info) {
+//         var buffer = '';
+//         stream.on('data', function (chunk) {
+//             buffer += chunk.toString('utf8');
+//         });
+//         stream.once('end', function () {
+//             console.log(prefix + 'Parsed header: %s', inspect(Imap.parseHeader(buffer)));
+//         });
+//     });
+//     msg.once('attributes', function (attrs) {
+//         console.log(prefix + 'Attributes: %s', inspect(attrs, false, 8));
+//     });
+//     msg.once('end', function () {
+//         console.log(prefix + 'Finished');
+//     });
+// });
+// f.once('error', function (err) {
+//     console.log('Fetch error: ' + err);
+// });
+// f.once('end', function () {
+//     console.log('Done fetching all messages!');
+//     imap.end();
+// });
+//});
+//     imap.on('mail',(err)=>{
+
+//     })
+// });
+
+// imap.once('error', function (err) {
+//     console.log(err);
+// });
+
+// imap.once('end', function () {
+//     console.log('Connection ended');
+// });
+
+// imap.connect();
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
 
 
 var option = {

@@ -5,14 +5,17 @@
 //     var footer = {};
 // }
 
-var cal_header = (today) => {
+var cal_header = () => {
     var header = $('<header class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">');
     var header_h1 = $('<h1 class="text-base font-semibold leading-6 text-gray-900">')
     var time = $('<time datetime="2022-01"></time>')
-    var month_name = ["January", "Febrary", "March", "April", "May", "June", "July", "Auguest", "September", "October", "November", "December"]
+    var month_name = [0, "January", "Febrary", "March", "April", "May", "June", "July", "Auguest", "September", "October", "November", "December"]
 
-    time.attr('datetime', today.day.getFullYear() + '-' + (today.day.getMonth() + 1))
-    time.html(month_name[today.day.getMonth()] + ' ' + today.day.getFullYear())
+    var update = (year, month) => {
+        time.removeAttr('datetime');
+        time.attr('datetime', year + '-' + month)
+        time.html(month_name[month] + ' ' + year)
+    }
     header.append(header_h1.append(time));
 
 
@@ -24,11 +27,18 @@ var cal_header = (today) => {
 
     Previous_month_btn.append(Previous_month_span)
     Previous_month_btn.append(Previous_month_svg)
+    var previous = (callback) => {
+        previous = callback;
+    }
+    Previous_month_btn.click(function (e) {
+        e.preventDefault();
+        previous()
+    });
 
     var today_btn = $('<button type="button" class="hidden border-y border-gray-300 px-3.5 text-sm font-semibold text-gray-900 hover:bg-gray-50 focus:relative md:block">Today</button>')
     var today_span = $('<span class="relative -mx-px h-5 w-px bg-gray-300 md:hidden"></span>')
 
-    today_btn.append(today_span);
+
 
     var next_month_btn = $('<button type="button" class="flex h-9 w-12 items-center justify-center rounded-r-md border-y border-r border-gray-300 pl-1 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:pl-0 md:hover:bg-gray-50">')
     var next_month_span = $('<span class="sr-only">Next month</span>');
@@ -38,8 +48,17 @@ var cal_header = (today) => {
     next_month_btn.append(next_month_span);
     next_month_btn.append(next_month_svg.append(next_month_path))
 
+    var next = (callback) => {
+        next = callback;
+    }
+    next_month_btn.click(function (e) {
+        e.preventDefault();
+        next();
+    });
+
     month_control.append(Previous_month_btn);
     month_control.append(today_btn);
+    month_control.append(today_span)
     month_control.append(next_month_btn);
 
     var month_view = $('<div class="hidden md:ml-4 md:flex md:items-center">');
@@ -131,10 +150,10 @@ var cal_header = (today) => {
     control.append(open_menu)
 
     header.append(control)
-    return header;
+    return { body: header, update: update, previous: previous, next: next };
 }
 
-var cal_body = (today) => {
+var cal_body = (foot,today) => {
     cal_body = $('<div class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">');
     cal_body_header = $('<div class="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">')
     cal_body.append(cal_body_header);
@@ -148,124 +167,116 @@ var cal_body = (today) => {
         cal_body_header.append(weekdays)
     });
     var cal_body_body = $('<div class="flex bg-gray-200 text-xs leading-6 text-gray-700 lg:flex-auto">')
-    var first_row = $('<div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">')
-    var count = 0
+    var first_row = $('<div class="hidden w-full lg:grid lg:grid-cols-7 lg:gap-px">')
     cal_body_body.append(first_row)
-    today.daylist.forEach((element, index) => {
-        var wapper = $('<div class="relative bg-white px-3 py-2">');
-        var day = $('<time>');
-        wapper.append(day)
-        day.attr('datetime', element.value);
-        day.html(element.day)
-        first_row.append(wapper);
-    })
-    var day_btn = $('<div class="isolate grid w-full grid-cols-7 grid-rows-6 gap-px lg:hidden">');
-    today.daylist.forEach((element) => {
-        var btn = $('<button type="button" class="flex h-14 flex-col bg-white px-3 py-2 text-gray-900 hover:bg-gray-100 focus:z-10">');
-        var day = $('<time class="ml-auto">');
-        day.attr('datetime', element.value);
-        day.html(element.day)
-        var span = $('<span class="sr-only">0 events</span>');
-        btn.append(day);
-        btn.append(span)
-        day_btn.append(btn)
-    })
+    var day_btn = $('<div class="isolate grid w-full grid-cols-7 gap-px lg:hidden">');
     cal_body_body.append(day_btn)
 
+    var addItem = (list) => {
+        day_btn.empty();
+        first_row.empty();
+        first_row.addClass('lg:grid-rows-' + list.length / 7)
+        day_btn.addClass('grid-rows-' + list.length / 7)
+        list.forEach((element) => {
+            var wapper = $('<div class="relative bg-white px-3 py-2">');
+            if (!element.iscurrent)
+                wapper = $('<div class="relative bg-gray-50 px-3 py-2 text-gray-500">')
+            var day = $('<time>');
+            wapper.append(day)
+            day.attr('datetime', element.datetime);
+            day.html(element.day)
+            first_row.append(wapper);
+
+            var btn = $('<button type="button" class="flex h-14 flex-col bg-white px-3 py-2 text-gray-900 hover:bg-gray-100 focus:z-10">');
+            if (!element.iscurrent)
+                btn = $('<button type="button" class="flex h-14 flex-col bg-gray-50 px-3 py-2 text-gray-500 hover:bg-gray-100 focus:z-10">');
+            var day = $('<time class="ml-auto">');
+            day.attr('datetime', element.value);
+            if(element.value===today){
+                btn.addClass('font-semibold text-white' )
+                day.addClass(' flex h-6 w-6 items-center justify-center rounded-full bg-gray-900')
+            }
+            day.html(element.day)
+            var span = $('<span class="sr-only"></span>');
+            btn.append(day);
+            btn.append(span)
+            btn.click(() => {
+                foot.update(element.events)
+            })
+            if (element.events === undefined) {
+                span.html('0 events');
+            }
+            else {
+                var dot_wrap = $('<span class="-mx-0.5 mt-auto flex flex-wrap-reverse">')
+                element.events.forEach(e => {
+                    dot_wrap.append($('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-gray-400"></span>'));
+                })
+                btn.append(dot_wrap)
+
+            }
+
+            day_btn.append(btn)
+        })
+    }
     cal_body.append(cal_body_header);
     cal_body.append(cal_body_body);
-    return cal_body
+    return { body: cal_body, update: addItem }
 }
 
 // var cal_foot = () => {
 
 // }
 
-var cal_footer = (allevents) => {
+var cal_footer = () => {
     var cal_footer = $('<div class="px-4 py-10 sm:px-6 lg:hidden">');
-    var foot_ol=$('<ol class="divide-y divide-gray-100 overflow-hidden rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5">')
-    function creat_event(){
-        var li=$('')
+    var foot_ol = $('<ol class="divide-y divide-gray-100 overflow-hidden rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5">')
+    function creat_event(e) {
+        var li = $('<li class="group flex p-4 pr-6 focus-within:bg-gray-50 hover:bg-gray-50">')
+        var div = $('<div class="flex-auto">')
+        var p = $('<p class="font-semibold text-gray-900"></p>');
+        p.text(e.nickname)
+        var time = $('<time class="mt-2 flex items-center text-gray-700">');
+        time.attr('datetime', e.datetime)
+        var svg = $('<svg class="mr-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>')
+        li.append(div);
+        div.append(p);
+        div.append(time);
+        time.append(svg);
+        time.append(e.pickup_time)
+        var a = $('<a href="#" class="ml-6 flex-none self-center rounded-md bg-white px-3 py-2 font-semibold text-gray-900 opacity-0 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400 focus:opacity-100 group-hover:opacity-100">Edit</a>')
+        var span = $('<span class="sr-only">, </span>')
+        span.append(e.nickname);
+        a.append(span);
+        li.append(a);
+        return li
+    }
+    var _update = (events) => {
+        foot_ol.empty();
+        events.forEach((e) => {
+            foot_ol.append(creat_event(e));
+        })
     }
 
-    return cal_footer;
+    cal_footer.append(foot_ol)
+    return { body: cal_footer, update: _update };
 }
 
-var cal = () => {
-    var today = { day: new Date(Date.now()), daylist: [] };
-    var cal_core = calendar_core();
-    var current = cal_core(today.day.getFullYear(), today.day.getMonth() + 1)
-    today.daylist = current
-    console.log(current)
-    var cal = $('<div id="cal" class="lg:flex lg:h-full lg:flex-col">');
-    var header = cal_header(today);
-    var body = cal_body(today);
-    var footer = cal_footer();
-    cal.append(header);
-    cal.append(body)
-    cal.append(footer);
-    return cal
-}
 
-var calendar_core = () => {
+
+var c = () => {
     var month_o = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     var month_n = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    var month_name = [0, "January", "Febrary", "March", "April", "May", "June", "July", "Auguest", "September", "October", "November", "December"]
-    var week_name_short = ["M", "T", "W", "T", "F", "S", "S"];
-    var week_name_F3 = ["on", "ue", "ed", "hu", "ri", "at", "un"];
-
-
-
-    function create_cal_table(_year, _month) {
-        var days = 42;
-        var cal_days = [];
-        var f = get_first_day_of_week(_year, _month);
-        var l = daysMonth(_month, _year)
-        var last_month_left_start = daysMonth(_month - 1, _year) - f
-        var p_month = Previous_month(_month, _year);
-        var n_month = Next_month(_month, _year);
-        for (var i = 0; i < f; i++) {
-
-            cal_days.push({
-                day: last_month_left_start + i,
-                month: p_month.month,
-                year: p_month.year,
-                value: p_month.year + '-' + p_month.month + '-' + (last_month_left_start + i)
-            })
-            days -= 1;
-        }
-        for (var i = 1; i < l; i++) {
-            cal_days.push({
-                day: i,
-                month: _month,
-                year: _year,
-                value: _year + '-' + _month + '-' + i
-            });
-            days -= 1;
-        }
-        for (var i = 1; i <= days; i++) {
-            cal_days.push({
-                day: i,
-                month: n_month.month,
-                year: n_month.year,
-                value: n_month.year + '-' + n_month.month + '-' + i
-            });
-        }
-
-        return cal_days
-    }
-
-    function daysMonth(month, year) {
-        if (month < 0)
-            month = 11
-        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
-            return month_o[month]
-        } else {
-            return month_n[month]
-        }
-    }
+    var today = new Date(Date.now());
+    var current_month = today.getMonth() + 1;
+    var current_year = today.getFullYear();
+    var todayTostring = current_year + '-' + current_month + '-' + today.getDate()
+    var current_month_list = []
+    var header = cal_header();
+    var footer = cal_footer();
+    var body = cal_body(footer,todayTostring);
+    var trips = {}
     var Previous_month = (month, year) => {
-        if (month === 0)
+        if (month === 1)
             return { year: year - 1, month: 12 }
         else
             return { year: year, month: month - 1 }
@@ -276,46 +287,115 @@ var calendar_core = () => {
         else
             return { year: year, month: month + 1 }
     }
-    // function daysMonth(month, year) {
-    //     if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
-    //         return {
-    //             length: month_olympic[month],
-    //             name: month_name[month],
-    //             first_day_of_week: get_first_day_of_week(year, month)
-    //         };
-    //     } else {
-    //         return {
-    //             length: month_olympic[month],
-    //             name: month_name[month],
-    //             first_day_of_week: get_first_day_of_week(year, month)
-    //         };
-    //     }
-    // }
+    function daysMonth(month, year) {
+        if (month == 0)
+            month = 12
+        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
+            return month_o[month]
+        } else {
+            return month_n[month]
+        }
+    }
     var get_first_day_of_week = (YYYY, MM) => {
         var first_day = new Date(YYYY, MM - 1, 1);
         return first_day.getDay();
     }
-
-    return create_cal_table
-}
-
-
-var c = () => {
-    var x = {
-        core: {
-            year: 0,
-            month: {
-                value: 0,
-                month_next: () => { },
-                month_prev: () => { },
-            },
-            days: [],
-        },
-        surface: cal(core),
-        view: {
-            year: '',
-            month: '',
-            day: ''
+    var Update_month_list = () => {
+        var days = 35;
+        current_month_list = [];
+        var f = get_first_day_of_week(current_year, current_month);
+        var l = daysMonth(current_month, current_year)
+        var p_month = Previous_month(current_month, current_year);
+        var last_month_left_start = daysMonth(p_month.month, p_month.year) - f + 1
+        var n_month = Next_month(current_month, current_year);
+        if (f + l > days)
+            days = 42
+        var tday;
+        for (var i = 1; i < f; i++) {
+            tday = new Date(p_month.year, p_month.month - 1, (last_month_left_start + i)).valueOf()
+            current_month_list.push({
+                day: last_month_left_start + i,
+                month: p_month.month,
+                year: p_month.year,
+                iscurrent: false,
+                events: trips[tday],
+                value: p_month.year + '-' + p_month.month + '-' + (last_month_left_start + i)
+            })
+            days -= 1;
         }
+        for (var i = 1; i < l; i++) {
+            tday = new Date(current_year, current_month - 1, i).valueOf()
+            current_month_list.push({
+                day: i,
+                month: current_month,
+                year: current_year,
+                iscurrent: true,
+                events: trips[tday],
+                value: current_year + '-' + current_month + '-' + i
+            });
+            days -= 1;
+        }
+        for (var i = 1; i <= days; i++) {
+            tday = new Date(n_month.year, n_month.month - 1, i).valueOf()
+
+            current_month_list.push({
+                day: i,
+                month: n_month.month,
+                year: n_month.year,
+                iscurrent: false,
+                events: trips[tday],
+                value: n_month.year + '-' + n_month.month + '-' + i
+            });
+        }
+        body.update(current_month_list);
+        header.update(current_year, current_month)
     }
+    var set_previous_month = () => {
+        set_month(current_month - 1);
+
+    }
+    var set_next_month = () => {
+        set_month(current_month + 1);
+    }
+    var set_month = (_month) => {
+        current_month = _month;
+        if (_month == 0) {
+            current_month = 12;
+            current_year -= 1
+        } else if (_month == 12) {
+            current_month = 1;
+            current_year += 1
+        }
+        Update_month_list();
+    }
+
+    var cal = $('<div id="cal" class="lg:flex lg:h-full lg:flex-col">');
+    var header = cal_header();
+    header.next(set_next_month);
+    header.previous(set_previous_month);
+
+    cal.append(header.body);
+    cal.append(body.body)
+    cal.append(footer.body);
+    $.get("gettrips",
+        function (data, textStatus, jqXHR) {
+            tt = data.trips.sort((a, b) => { return a.travel_time - b.travel_time });
+
+            var ts = 0;
+            tt.forEach((element) => {
+                ts = new Date(element.date).valueOf();
+                if (trips[ts] === undefined) {
+                    trips[ts] = []
+                }
+                trips[ts].push(element);
+            })
+
+            Update_month_list();
+            console.log(trips)
+            console.log(current_month_list)
+        }
+    );
+    //
+
+    return (cal)
 }
