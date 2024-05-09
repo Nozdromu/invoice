@@ -97,8 +97,133 @@ const database = require('./api/database')
 // imap.connect();
 
 
+const { readFileSync } = require('fs');
 
+const { Client } = require('ssh2');
 
+// const conn = new Client();
+// conn.on('ready', () => {
+//   console.log('Client :: ready');
+//   conn.shell((err, stream) => {
+//     if (err) throw err;
+//     stream.on('close', () => {
+//       console.log('Stream :: close');
+//       conn.end();
+//     }).on('data', (data) => {
+//       console.log('OUTPUT: ' + data);
+//     });
+//     //stream.end('ls -l\nexit\n');
+//   });
+// }).connect({
+//   host: '192.168.68.132',
+//   port: 9510,
+//   username: 'lulu0510',
+//   privateKey: readFileSync('./cert/id_ed25519')
+// });
+
+// const conn = new Client();
+// conn.on('ready', () => {
+//     console.log('Client :: ready');
+//     conn.forwardOut('127.0.0.1', 3306, (err) => {
+//         if (err) throw err;
+//         console.log('Listening for connections on server on port 3307!');
+//         Database.trip_api.getalltrips(()=>{
+//             console.log('data loaded')
+//         })
+//     });
+// }).on('tcp connection', (info, accept, reject) => {
+//     console.log('TCP :: INCOMING CONNECTION:');
+//     console.dir(info);
+//     accept().on('close', () => {
+//         console.log('TCP :: CLOSED');
+//     }).on('data', (data) => {
+//         console.log('TCP :: DATA: ' + data);
+//     }).end([
+//         'HTTP/1.1 404 Not Found',
+//         'Date: Thu, 15 Nov 2012 02:07:58 GMT',
+//         'Server: ForwardedConnection',
+//         'Content-Length: 0',
+//         'Connection: close',
+//         '',
+//         ''
+//     ].join('\r\n'));
+// }).connect({
+//     host: 'lulu0510.ddns.net',
+//     port: 9510,
+//     username: 'lulu0510',
+//     privateKey: readFileSync('./cert/id_ed25519')
+// });
+
+var exec = require('child_process');
+// exec.execFileSync('ssh.bat', (error, out, err) => {
+//     if (error) {
+//         throw error
+//         return
+//     } else {
+//         console.log(out);
+//         console.log(err)
+//         Database.trip_api.getalltrips(() => {
+//             console.log('data loaded')
+//         })
+//     }
+
+// })
+// const { spawn } = require('node:child_process');
+// const ls = spawn('ls', ['-lh', '/usr']);
+
+// ls.stdout.on('data', (data) => {
+//   console.log(`stdout: ${data}`);
+// });
+
+// ls.on('close', (code) => {
+//   console.log(`child process close all stdio with code ${code}`);
+// });
+
+// ls.on('exit', (code) => {
+//   console.log(`child process exited with code ${code}`);
+// }); 
+// exec.execSync('ssh -L 3306:127.0.0.1:3306 lulu0510.ddns.net -p 9510 -l lulu0510', { 'shell': 'powershell.exe' }, (err, out, std) => {
+//     if (err) {
+//         throw err
+//     } else {
+//         console.log(out);
+//         console.log(std);
+//         Database.trip_api.getalltrips(() => {
+//             console.log('data loaded')
+//         })
+//     }
+// })
+
+////////////////////////////////////////////////////////////////////////////////
+//  ssh
+
+if (process.env.env == 'outside') {
+    const { spawn } = require('node:child_process');
+    async function cmd() {
+
+        const bat = spawn('powershell.exe', ['ssh -L 3306:127.0.0.1:3306 lulu0510.ddns.net -p 9510 -l lulu0510']);
+        bat.stdout.on('data', (data) => {
+            console.log(data.toString());
+            Database.trip_api.getalltrips(() => {
+                console.log('data loaded')
+            })
+        });
+
+        bat.stderr.on('data', (data) => {
+            console.error(data.toString());
+        });
+
+        bat.on('exit', (code) => {
+            console.log(`Child exited with code ${code}`);
+        });
+        return bat
+    }
+    let ssh = cmd();
+} else {
+    Database.trip_api.getalltrips(() => {
+        console.log('data loaded')
+    })
+}
 
 
 
@@ -106,10 +231,11 @@ const database = require('./api/database')
 
 
 var option = {
-    host: process.env.mysql_host,
+    host: process.env.env=='home'?process.env.mysql_host:process.env.mysql_host_outside,
     user: process.env.mysql_user,
     password: process.env.mysql_password,
-    database: process.env.mysql_database
+    database: process.env.mysql_database,
+    port: 3306
 }
 const connection = mysql.createPool(option);
 const sessionStore = new MySQLStore({}, connection);

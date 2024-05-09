@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "node test",
-    "pro": "PORT=80 node server.js"
+    "pro": "ssh.bat&& node server.js"
   },
   "author": "yilei",
   "license": "ISC",

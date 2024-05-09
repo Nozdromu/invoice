@@ -179,9 +179,8 @@ var cal_body = (foot, today) => {
 
     var addItem = (list) => {
         day_btn.empty();
-        first_row.empty();
-        first_row.addClass('lg:grid-rows-' + list.length / 7)
-        day_btn.addClass('grid-rows-' + list.length / 7)
+        first_row.empty()
+
         list.forEach((element) => {
             var wapper = $('<div class="relative bg-white px-3 py-2">');
             if (!element.iscurrent)
@@ -397,15 +396,13 @@ var c = () => {
         return first_day.getDay();
     }
     var Update_month_list = () => {
-        var days = 35;
+        var days = 42;
         current_month_list = [];
         var f = get_first_day_of_week(current_year, current_month);
         var l = daysMonth(current_month, current_year)
         var p_month = Previous_month(current_month, current_year);
         var last_month_left_start = daysMonth(p_month.month, p_month.year) - f + 1
         var n_month = Next_month(current_month, current_year);
-        if (f + l > days)
-            days = 42
         var tday;
         for (var i = 1; i < f; i++) {
             tday = new Date(p_month.year, p_month.month - 1, (last_month_left_start + i)).valueOf()

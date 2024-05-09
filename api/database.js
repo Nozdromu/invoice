@@ -19,9 +19,9 @@ function database(pool) {
             }
         })
     }
-    Database.trip_api.getalltrips(() => {
-        console.log("data loaded")
-    });
+    // Database.trip_api.getalltrips(() => {
+    //     console.log("data loaded")
+    // });
     Database.trip_api.addrecord = (data, callback) => {
         connection.query("call new_book(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
             data.invoice,
