@@ -63,13 +63,13 @@ var cal_header = () => {
 
     var month_view = $('<div class="hidden md:ml-4 md:flex md:items-center">');
     var month_view_body = $('<div class="relative" x-data="{ isOpen: false }">');
-    var month_view_btn = $('<button type="button" @click="isOpen = !isOpen" class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">Month view</button>')
+    var month_view_btn = $('<button type="button"  @click="isOpen = !isOpen" :aria-checked="isOpen" class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">Month view</button>')
     var month_view_btn_svg = $('<svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>')
 
     month_view.append(month_view_body);
     month_view_body.append(month_view_btn.append(month_view_btn_svg))
 
-    var month_view_dropdown = $('<div class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">')
+    var month_view_dropdown = $('<div @click.outside="isOpen = !isOpen" class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">')
     month_view_dropdown.attr("x-show", "isOpen");
     month_view_dropdown.attr("x-transition:enter", "transition ease-out duration-100");
     month_view_dropdown.attr('x-transition:enter-start', 'transform opacity-0 scale-95');
@@ -102,7 +102,7 @@ var cal_header = () => {
 
     var open_menu = $('<div class="relative ml-6 md:hidden" x-data="{ isOpen: false }"></div>')
 
-    var open_menu_btn = $('<button type="button" @click="isOpen = !isOpen" class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500" id="menu-0-button" aria-expanded="false" aria-haspopup="true">')
+    var open_menu_btn = $('<button type="button"  @click="isOpen = !isOpen" class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500" id="menu-0-button" aria-expanded="false" aria-haspopup="true">')
     var open_menu_btn_span = $('<span class="sr-only">Open menu</span>');
     var open_menu_btn_svg = $('<svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M3 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM8.5 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM15.5 8.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" /></svg>')
 
@@ -110,7 +110,7 @@ var cal_header = () => {
     open_menu_btn.append(open_menu_btn_span)
     open_menu_btn.append(open_menu_btn_svg);
 
-    var open_menu_menu = $($('<div class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"></div>'))
+    var open_menu_menu = $($('<div @click.outside="isOpen = !isOpen" class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"></div>'))
     open_menu_menu.attr('x-show', "isOpen");
     open_menu_menu.attr('x-transition:enter', 'transition ease-out duration-100');
     open_menu_menu.attr('x-transition:enter-start', 'transform opacity-0 scale-95');
@@ -218,13 +218,13 @@ var cal_body = (foot, today) => {
                     //dot_wrap.append($('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-gray-400"></span>'));
                     var label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-green-400"></span>')
                     if (e.trip_type == 1) {
-                         label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-red-400"></span>')
+                        label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-red-400"></span>')
                     } else if (e.trip_type == 2) {
-                         label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-yellow-400"></span>')
+                        label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-yellow-400"></span>')
                     } else if (e.trip_type == 3) {
-                         label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-pink-400"></span>')
+                        label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-pink-400"></span>')
                     }
-                    if(e.state==0){
+                    if (e.state == 0) {
                         label = $('<span class="mx-0.5 mb-1 h-1.5 w-1.5 rounded-full bg-gray-400"></span>')
                     }
                     dot_wrap.append(label)
@@ -246,103 +246,13 @@ var cal_body = (foot, today) => {
 // }
 
 var cal_footer = () => {
-    var _triptype = ["Airport-Dept", "Airport-Arrival", "pickup", "dropoff"]
-
-    var cal_footer = $('<div class="px-4 py-10 sm:px-6 lg:hidden">');
-    var header = $('<h2 class="text-base font-semibold leading-6 text-gray-900"></h2>');
+    var cal_footer = $('<div class="px-4 py-4 sm:px-6 lg:hidden">');
+    var header = $('<h2 class="text-base font-semibold leading-6 text-gray-900 px-4 py-2"></h2>');
     cal_footer.append(header)
     var foot_ol = $('<ol class="divide-y divide-gray-100  rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5">')
-    function creat_event(e) {
-        //var e = event.events
-        var li = $('<li class="group flex p-4 pr-6 focus-within:bg-gray-50 hover:bg-gray-50 ">')
-        li.attr('state', e.state)
-        li.attr('name', 'trip_state')
-        if ($('#state_select').val() != e.state) {
-            li.hide();
-        }
-        var div = $('<div class="grid grid-cols-3 gap-1" style="width:95%">')
-        //var div_one = $('<div class="flex-auto flex flex-row">')
-        var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"></span>')
-        if (e.trip_type == 1) {
-            var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"></span>')
-        } else if (e.trip_type == 2) {
-            var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-yellow-50 px-1.5 py-0.5 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20"></span>')
-        } else if (e.trip_type == 3) {
-            var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-pink-50 px-1.5 py-0.5 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-600/20"></span>')
-        }
-        var p = $('<p class="font-semibold text-gray-900"></p>');
-        p.append(e.nickname)
-        label.html('' + _triptype[e.trip_type])
-        var time = $('<time class="flex text-gray-700">');
-        time.attr('datetime', e.datetime)
-        var svg = $('<svg class="mr-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>')
-
-        time.append(svg);
-        time.append(e.pickup_time)
-        //li.append(div_one);
-        div.append($('<div>').append(time));
-        div.append($('<div>').append(label))
-        div.append($('<div>').append(p));
-        //var div_two = $('<div class="flex-auto flex flex-row">')
-        var showaddress = e.departure_address || e.departure;
-        if (e.trip_type === 1 || e.trip_type === 3) {
-            showaddress = e.destination_address
-        }
-        div.append($('<div>').append($('<a>location</a>').attr('href', 'https://maps.google.com/?q=' + showaddress)))
-        div.append($('<div>').append($('<a>Flight</a>').attr('href', 'http://google.com/search?q=' + e.flight_num)));
-        div.append($('<div>').append($('<p></p>').text(e.car_type == 5 ? 'Camry' : 'Sienna')));
-        li.append(div)
-        // var a = $('<a class="ml-6 flex-none self-center rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400 focus:opacity-100 group-hover:opacity-100">Action</a>')
-        // var span = $('<span class="sr-only">, </span>')
-        // a.attr('href', '/trip?trip=' + e.invoice)
-        // span.append(e.nickname);
-        // a.append(span);
-        // li.append(a);
-        var open_menu = $('<div class="relative ml-6 md:hidden" x-data="{ isOpen: false }"></div>')
-        var action_btn = $('<button type="button" @click="isOpen = !isOpen" class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="action-button" aria-expanded="false" aria-haspopup="true">A</button>')
-        li.append(open_menu);
-        open_menu.append(action_btn)
-
-        var action_dropdown = $('<div class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">')
-        action_dropdown.attr("x-show", "isOpen");
-        action_dropdown.attr("x-transition:enter", "transition ease-out duration-100");
-        action_dropdown.attr('x-transition:enter-start', 'transform opacity-0 scale-95');
-        action_dropdown.attr('x-transition:enter-end', 'transform opacity-100 scale-100');
-        action_dropdown.attr('x-transition:leave', 'transition ease-in duration-75');
-        action_dropdown.attr('x-transition:leave-start', 'transform opacity-100 scale-100');
-        action_dropdown.attr('x-transition:leave-end', 'transform opacity-0 scale-95');
-        action_dropdown.attr('role', 'action');
-        action_dropdown.attr('aria-orientation', 'vertical');
-        action_dropdown.attr('aria-labelledby', 'action-button');
-        action_dropdown.attr('tabindex', '-1');
-
-        var action_menu = $('<div class="py-1" role="none">')
-        var option1 = $('<a class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-0">Edit trip</a>').attr('href', '/trip?trip=' + e.invoice)
-        var option2 = $('<a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-1">Mark done</a>').click(() => {
-            axios.get('/finish', { params: { invoice: data.invoice, state: 0 } }).then((res) => {
-                if (res.data.state === "success") {
-                    alert('change success')
-                    location.reload()
-                } else {
-                    console.log(res.data.message)
-                }
-
-            })
-        })
-        //var option3 = $('<a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-2">Copy info</a>')
-
-        action_menu.append(option1)
-        action_menu.append(option2)
-
-        action_dropdown.append(action_menu)
-        open_menu.append(action_dropdown)
-
-
-        return li
-    }
     var _update = (e) => {
         foot_ol.empty();
-        header.html(e.value)
+        header.html("Reservations at: " + e.value)
         e.events.forEach((e) => {
             foot_ol.append(creat_event(e));
         })
@@ -351,8 +261,101 @@ var cal_footer = () => {
     cal_footer.append(foot_ol)
     return { body: cal_footer, update: _update };
 }
+var foot_next_res = () => {
+    var next_foot = $('<div class="px-4 py-4 sm:px-6 lg:hidden">');
+    var header_next = $('<h2 class="text-base font-semibold leading-6 text-gray-900 px-4 py-2"></h2>');
+    next_foot.append(header_next)
+    var next_ol = $('<ol class="divide-y divide-gray-100  rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5">')
+    next_foot.append(next_ol)
+    //next_ol.append(creat_event(e))
+    var _update = (e) => {
+        next_ol.empty()
+        header_next.html('Next : ' + (new Date(e.travel_time)).toDateString());
+        next_ol.append(creat_event(e))
+    }
+    return { body: next_foot, update: _update }
+}
+
+function creat_event(e) {
+    var _triptype = ["AP-Dept", "AP-Arrival", "pickup", "dropoff"]
+    var li = $('<li class="group flex p-4 pr-6 focus-within:bg-gray-50 hover:bg-gray-50 ">')
+    li.attr('state', e.state)
+    li.attr('name', 'trip_state')
+    if ($('#state_select').val() != e.state) {
+        li.hide();
+    }
+    var div = $('<div class="grid grid-cols-3 gap-1" style="width:95%">')
+    var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"></span>')
+    if (e.trip_type == 1) {
+        var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"></span>')
+    } else if (e.trip_type == 2) {
+        var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-yellow-50 px-1.5 py-0.5 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20"></span>')
+    } else if (e.trip_type == 3) {
+        var label = $('<span class="inline-flex flex-shrink-0 items-center rounded-full bg-pink-50 px-1.5 py-0.5 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-600/20"></span>')
+    }
+    var p = $('<p class="font-semibold text-gray-900"></p>');
+    p.append(e.nickname)
+    label.html('' + _triptype[e.trip_type])
+    var time = $('<time class="flex text-gray-700">');
+    time.attr('datetime', e.datetime)
+    var svg = $('<svg class="mr-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>')
+
+    time.append(svg);
+    time.append(e.pickup_time.length < 8 ? 0 + e.pickup_time : e.pickup_time)
+    div.append($('<div class="grid justify-items-center">').append(time));
+    div.append($('<div class="grid justify-items-center">').append(label))
+    div.append($('<div class="grid justify-items-center">').append(p));
+    var showaddress = e.departure_address || e.departure;
+    if (e.trip_type === 1 || e.trip_type === 3) {
+        showaddress = e.destination_address
+    }
+    div.append($('<div class="grid justify-items-center">').append($('<a class="underline decoration-pink-500">location</a>').attr('href', 'https://maps.google.com/?q=' + showaddress)))
+    div.append($('<div class="grid justify-items-center">').append(e.trip_type == 1 ? $('<a class="underline decoration-indigo-500">Flight</a>').attr('href', 'http://google.com/search?q=' + e.flight_num) : $('<a>')));
+    div.append($('<div class="grid justify-items-center">').append($('<p></p>').text(e.car_type == 5 ? 'Camry' : 'Sienna')));
+    li.append(div)
+
+    var open_menu = $('<div class="relative ml-6 md:hidden" x-data="{ isOpen: false }"></div>')
+    var action_btn = $('<button type="button"  @click="isOpen = !isOpen" class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="action-button" aria-expanded="false" aria-haspopup="true">A</button>')
+    li.append(open_menu);
+    open_menu.append(action_btn)
+
+    var action_dropdown = $('<div @click.outside="isOpen = !isOpen" class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">')
+    action_dropdown.attr("x-show", "isOpen");
+    action_dropdown.attr("x-transition:enter", "transition ease-out duration-100");
+    action_dropdown.attr('x-transition:enter-start', 'transform opacity-0 scale-95');
+    action_dropdown.attr('x-transition:enter-end', 'transform opacity-100 scale-100');
+    action_dropdown.attr('x-transition:leave', 'transition ease-in duration-75');
+    action_dropdown.attr('x-transition:leave-start', 'transform opacity-100 scale-100');
+    action_dropdown.attr('x-transition:leave-end', 'transform opacity-0 scale-95');
+    action_dropdown.attr('role', 'action');
+    action_dropdown.attr('aria-orientation', 'vertical');
+    action_dropdown.attr('aria-labelledby', 'action-button');
+    action_dropdown.attr('tabindex', '-1');
+
+    var action_menu = $('<div class="py-1" role="none">')
+    var option1 = $('<a class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-0">Edit trip</a>').attr('href', '/trip?trip=' + e.invoice)
+    var option2 = $('<a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-1">Mark done</a>').click(() => {
+        axios.get('/finish', { params: { invoice: data.invoice, state: 0 } }).then((res) => {
+            if (res.data.state === "success") {
+                alert('change success')
+                location.reload()
+            } else {
+                console.log(res.data.message)
+            }
+
+        })
+    })
+    //var option3 = $('<a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-2">Copy info</a>')
+
+    action_menu.append(option1)
+    action_menu.append(option2)
+
+    action_dropdown.append(action_menu)
+    open_menu.append(action_dropdown)
 
 
+    return li
+}
 
 var c = () => {
     var month_o = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -364,8 +367,10 @@ var c = () => {
     var current_month_list = []
     var header = cal_header();
     var footer = cal_footer();
+    var next_trip = foot_next_res();
     var body = cal_body(footer, todayTostring);
     var trips = {}
+    var nexttrip;
     var Previous_month = (month, year) => {
         if (month === 1)
             return { year: year - 1, month: 12 }
@@ -467,6 +472,7 @@ var c = () => {
 
     cal.append(header.body);
     cal.append(body.body)
+    cal.append(next_trip.body)
     cal.append(footer.body);
     $.get("gettrips",
         function (data, textStatus, jqXHR) {
@@ -478,10 +484,13 @@ var c = () => {
                 if (trips[ts] === undefined) {
                     trips[ts] = []
                 }
+                if (element.state == 1 && nexttrip == undefined)
+                    nexttrip = element
                 trips[ts].push(element);
             })
 
             Update_month_list();
+            next_trip.update(nexttrip);
             console.log(trips)
             console.log(current_month_list)
         }
