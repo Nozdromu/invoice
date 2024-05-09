@@ -201,7 +201,7 @@ if (process.env.env == 'outside') {
     const { spawn } = require('node:child_process');
     async function cmd() {
 
-        const bat = spawn('powershell.exe', ['ssh -L 3306:127.0.0.1:3306 lulu0510.ddns.net -p 9510 -l lulu0510']);
+        const bat = spawn('powershell.exe', [process.env.ssh]);
         bat.stdout.on('data', (data) => {
             console.log(data.toString());
             Database.trip_api.getalltrips(() => {
