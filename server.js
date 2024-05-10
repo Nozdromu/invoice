@@ -13,36 +13,30 @@ const api_other = require('./api/api_other')
 const database = require('./api/database')
 
 ///////////////////////////////////////////////////////////////////////////
-
-var env = true
+//  check INV
 
 var os = require('os');
 
 var networkInterfaces = os.networkInterfaces();
 
-var ipaddress = ''
-console.log(networkInterfaces);
-if (networkInterfaces['Wi-Fi']) {
-    {
-        ipaddress = networkInterfaces['Wi-Fi'][5].address
-        console.log(ipaddress)
+var ipaddress = (Object.values(networkInterfaces))[0]
 
-    }
-
-} else if (networkInterfaces['Ethernet']) {
-    ipaddress = networkInterfaces['Ethernet'][5].address
-    console.log(ipaddress)
+var get_ipv4 = (Network) => {
+    var ip=''
+    Network.forEach(element => {
+        if (element.family === 'IPv4')
+            ip = element.address
+    });
+    return ip
 }
-ipaddress = ipaddress.substring(0, 10)
-env = ipaddress === '192.168.68'
 
-
-
-
-
+ipaddress = get_ipv4(ipaddress)
+var env = ipaddress.substring(0, 10) === '192.168.68'
 
 
 //////////////////////////////////////////////////////////////////////////
+//  database setup
+
 var option = {
     host: env ? process.env.mysql_host : process.env.mysql_host_outside,
     user: process.env.mysql_user,
@@ -57,7 +51,7 @@ const Database = database(connection);
 ////////////////////////////////////////////////////////////////////////////////
 //  ssh
 
-if (process.env.env == 'outside') {
+if (!env) {
     const { spawn } = require('node:child_process');
     async function cmd() {
 
