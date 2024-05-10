@@ -4,22 +4,7 @@ const mysql = require('mysql2');
 var session = require('express-session')
 const MySQLStore = require('express-mysql-session')(session);
 const nodemailer = require("nodemailer");
-// const { readFileSync } = require('fs');
 
-// const { Client } = require('ssh2');
-
-// const conn = new Client();
-
-// let mailTransporter =
-//     nodemailer.createTransport(
-//         {
-//             service: 'gmail',
-//             auth: {
-//                 user: 'xyz@gmail.com',
-//                 pass: '*************'
-//             }
-//         }
-//     );
 
 
 const pages = require('./api/pages')
@@ -28,8 +13,38 @@ const api_other = require('./api/api_other')
 const database = require('./api/database')
 
 ///////////////////////////////////////////////////////////////////////////
+
+var env = true
+
+var os = require('os');
+
+var networkInterfaces = os.networkInterfaces();
+
+var ipaddress = ''
+console.log(networkInterfaces);
+if (networkInterfaces['Wi-Fi']) {
+    {
+        ipaddress = networkInterfaces['Wi-Fi'][5].address
+        console.log(ipaddress)
+
+    }
+
+} else if (networkInterfaces['Ethernet']) {
+    ipaddress = networkInterfaces['Ethernet'][5].address
+    console.log(ipaddress)
+}
+ipaddress = ipaddress.substring(0, 10)
+env = ipaddress === '192.168.68'
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
 var option = {
-    host: process.env.env=='home'?process.env.mysql_host:process.env.mysql_host_outside,
+    host: env ? process.env.mysql_host : process.env.mysql_host_outside,
     user: process.env.mysql_user,
     password: process.env.mysql_password,
     database: process.env.mysql_database,
