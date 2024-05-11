@@ -186,7 +186,7 @@
                   </div>
                   <div class="row">
                     <h5>支付方式:</h5>
-                    <p>PayPal Venmo Zelle <br><a href="https://lulu0510.ddns.net/payment">https://lulu0510.ddns.net/payment</a></p>
+                    <p>PayPal Venmo Zelle <br><a href="https://lulu0510.ddns.net/pages_payment_page">https://lulu0510.ddns.net/pages_payment_page</a></p>
                     <p></p>
                   </div>
                 </div>
@@ -403,7 +403,7 @@
       })
     }
     function get_dis() {
-      axios.get('/price', { params: { start: departure_address.val(), end: destination_address.val(), type: trip_type.val() } }).then((res) => {
+      axios.get('/api_trips_get_price', { params: { start: departure_address.val(), end: destination_address.val(), type: trip_type.val() } }).then((res) => {
         googleaddress.val(res.data.address1.address)
         distance.val(res.data.dropoff_dis);
         departure_address.val(res.data.address1.address);

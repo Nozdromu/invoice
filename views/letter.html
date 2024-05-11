@@ -74,7 +74,7 @@
     <script>
         var submit = () => {
             console.log('clidked')
-            axios.post('/letter', { params: { letter: $('#select').val() } }).then((res) => {
+            axios.post('/api_other_letter', { params: { letter: $('#select').val() } }).then((res) => {
                 // $('#pdf').append($('<embed>').attr('src',res.data.src))
                 console.log(res);
             })

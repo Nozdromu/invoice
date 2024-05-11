@@ -101,7 +101,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const invoice = urlParams.get('invoice');
         var trip_info;
-        $.get('gettrip', { trip: invoice }, (data, statu) => {
+        $.get('api_trips_get_trip', { trip: invoice }, (data, statu) => {
             console.log(data);
             trip_info = data.trip;
             $('#ICD').html('Invoice #: ' + trip_info.invoice + "<br>Created: " + trip_info.date + '<br>Due: ' + trip_info.date);

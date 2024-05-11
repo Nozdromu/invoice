@@ -310,7 +310,7 @@ function creat_event(e) {
     }
     div.append($('<div class="grid justify-items-center">').append($('<a class="underline decoration-pink-500">location</a>').attr('href', 'https://maps.google.com/?q=' + showaddress)))
     div.append($('<div class="grid justify-items-center">').append(e.trip_type == 1 ? $('<a class="underline decoration-indigo-500">Flight</a>').attr('href', 'http://google.com/search?q=' + e.flight_num) : $('<a>')));
-    div.append($('<div class="grid justify-items-center">').append($('<p></p>').text(e.car_type == 5 ? 'Camry' : 'Sienna')));
+    div.append($('<div class="grid justify-items-center">').append($('<p></p>').text(e.vehicle_type == 5 ? 'Camry' : 'Sienna')));
     li.append(div)
 
     var open_menu = $('<div class="relative ml-6 md:hidden" x-data="{ isOpen: false }"></div>')
@@ -332,9 +332,9 @@ function creat_event(e) {
     action_dropdown.attr('tabindex', '-1');
 
     var action_menu = $('<div class="py-1" role="none">')
-    var option1 = $('<a class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-0">Edit trip</a>').attr('href', '/trip?trip=' + e.invoice)
+    var option1 = $('<a class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-0">Edit trip</a>').attr('href', '/pages_trip_page?trip=' + e.invoice)
     var option2 = $('<a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="actionitem" tabindex="-1" id="action-item-1">Mark done</a>').click(() => {
-        axios.get('/finish', { params: { invoice: data.invoice, state: 0 } }).then((res) => {
+        axios.get('/api_trips_change_trip_state', { params: { invoice: data.invoice, state: 0 } }).then((res) => {
             if (res.data.state === "success") {
                 alert('change success')
                 location.reload()
@@ -416,7 +416,7 @@ var c = () => {
             })
             days -= 1;
         }
-        for (var i = 1; i < l; i++) {
+        for (var i = 1; i < l+1; i++) {
             tday = new Date(current_year, current_month - 1, i).valueOf()
             current_month_list.push({
                 day: i,
@@ -471,7 +471,7 @@ var c = () => {
     cal.append(body.body)
     cal.append(next_trip.body)
     cal.append(footer.body);
-    $.get("gettrips",
+    $.get("api_trips_get_all_trips",
         function (data, textStatus, jqXHR) {
             tt = data.trips.sort((a, b) => { return a.travel_time - b.travel_time });
 
