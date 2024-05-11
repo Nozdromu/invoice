@@ -39,7 +39,7 @@
         var trips = []
         var _triptype = ["Airport-Dept", "Airport-Arrival", "pickup", "dropoff"]
         var t = $('#trips');
-        axios.get('/gettrips').then((res) => {
+        axios.get('/api_trips_get_all_trips').then((res) => {
             console.log(res.data)
             trips = res.data.trips.sort((a, b) => { return a.travel_time - b.travel_time })
             trips.forEach(element => {
@@ -116,10 +116,10 @@
             info.append($('<div>').append(map))
             var activeRow = $('<div class="row justify-content-start">')
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">编辑订单</button>').click(() => {
-                window.location.href = '/trip?trip=' + data.invoice
+                window.location.href = '/pages_trip_page?trip=' + data.invoice
             })));
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">完成订单</button>').click(() => {
-                axios.get('/finish', { params: { invoice: data.invoice, state: 0 } }).then((res) => {
+                axios.get('/api_trips_change_trip_state', { params: { invoice: data.invoice, state: 0 } }).then((res) => {
                     if (res.data.state === "success") {
                         alert('change success')
                         location.reload()
@@ -130,14 +130,14 @@
                 })
             })))
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">复制预约信息</button>').click(() => {
-                axios.get('getsummary', { params: { invoice: trip_info.invoice } }).then((res) => {
+                axios.get('api_trips_get_summary', { params: { invoice: trip_info.invoice } }).then((res) => {
                     navigator.clipboard.writeText(summary);
 
                 })
 
             })))
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">invoice</button>').click(() => {
-                window.location.href = '/invoice?invoice=' + data.invoice
+                window.location.href = '/pages_invoice?invoice=' + data.invoice
             })))
             info.append(activeRow)
             coll_div.append(info)

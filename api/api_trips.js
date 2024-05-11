@@ -3,7 +3,7 @@ const map = new Client({});
 
 function api_trips(_database) {
 
-    var api_trip = {}
+    var api_trip = { all: {}, get: {}, put: {}, delete: {}, post: {} }
     var database = _database;
 
     // var reload = (req, res) => {
@@ -50,7 +50,7 @@ function api_trips(_database) {
         }
         return scripts
     }
-    api_trip.book_trip = (req, res) => {
+    api_trip.get.book_trip = (req, res) => {
         var newtrip = req.query;
         book(newtrip, (results) => {
             database.data[results.invoice] = results;
@@ -59,7 +59,7 @@ function api_trips(_database) {
 
     }
 
-    api_trip.edit_trip = (req, res) => {
+    api_trip.get.edit_trip = (req, res) => {
         var trip = req.query;
         var datetime = new Date(trip.datetime);
         trip.pickup_time = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
@@ -72,18 +72,18 @@ function api_trips(_database) {
 
     }
 
-    api_trip.get_summary = (req, res) => {
+    api_trip.get.get_summary = (req, res) => {
         var tripid = req.query.invoice;
         var tripInfo = database.data[tripid];
         var summary = makesummary(tripInfo);
         res.send(summary);
     }
 
-    api_trip.get_trip = (req, res) => {
+    api_trip.get.get_trip = (req, res) => {
         res.send({ statu: 'done', trip: database.data[req.query.trip], summary: makesummary(database.data[req.query.trip]) })
     }
 
-    api_trip.change_trip_state = (req, res) => {
+    api_trip.get.change_trip_state = (req, res) => {
         var trip = database.data[req.query.invoice];
         var state = req.query.state;
         database.trip_api.change_trip_state(trip.id, state, (results, err) => {
@@ -99,7 +99,7 @@ function api_trips(_database) {
         })
     }
 
-    api_trip.get_all_trips = (req, res) => {
+    api_trip.get.get_all_trips = (req, res) => {
         var trips = []
         Object.entries(database.data).forEach(element => {
             trips.push(element[1]);
@@ -108,7 +108,7 @@ function api_trips(_database) {
     }
 
 
-    api_trip.get_price = (req, res) => {
+    api_trip.get.get_price = (req, res) => {
         var data = req.query;
         var origin = '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA';
         var pickup_address = data.start;

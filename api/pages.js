@@ -1,33 +1,33 @@
 function Pages() {
-    var pages = {}
-    pages.invoice = (req, res) => {
+    var pages = { all: {}, get: {}, put: {}, delete: {}, post: {} }
+    pages.all.invoice = (req, res) => {
         res.render('invoice');
     }
 
-    pages.alltrips = (req, res) => {
+    pages.all.alltrips = (req, res) => {
         res.render('trips');
     }
 
-    pages.trip_page = (req, res) => {
+    pages.all.trip_page = (req, res) => {
         res.render('tripEdit')
     }
-    pages.payment_page = (req, res) => {
+    pages.all.payment_page = (req, res) => {
         res.render('payment')
     }
 
-    pages.letters = (req, res) => {
+    pages.all.letters = (req, res) => {
         res.render('letter');
     }
 
-    pages.math = (req, res) => {
+    pages.all.math = (req, res) => {
         res.render('math')
     }
 
-    pages.cal = (req, res) => {
+    pages.all.cal = (req, res) => {
         res.render('cal')
     }
 
-    pages.test = (req, res) => {
+    pages.all.test = (req, res) => {
         res.render('test')
     }
     return pages

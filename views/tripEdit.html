@@ -248,7 +248,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const trip = urlParams.get('trip');
     var summary = "";
-    var api_url = 'book'
+    var api_url = 'api_trips_book_trip'
     var trip_info = {}
     var flight_num = $('#flight_num');
     var _name = $('#name');
@@ -312,8 +312,8 @@
     }
 
     if (trip !== null) {
-      api_url = 'edit'
-      axios.get('/gettrip', { params: { trip: trip } }).then((res) => {
+      api_url = 'api_trips_edit_trip'
+      axios.get('/api_trips_get_trip', { params: { trip: trip } }).then((res) => {
         var data = res.data.trip
         flight_num.val(data.flight_num);
         _name.val(data.nickname);
@@ -333,7 +333,7 @@
         date = new Date(data.datetime)
         summary = res.data.summary
         makesummary();
-        invoiceLink = window.location.host + '/invoice?invoice=' + trip_info.invoice
+        invoiceLink = window.location.host + '/pages_invoice?invoice=' + trip_info.invoice
         $('#invoiceP').text(invoiceLink)
         $('#invoiceA').attr('href', invoiceLink)
 
@@ -395,7 +395,7 @@
         if (res.data.statu === 'done') {
           summary = res.data.summary
           makesummary();
-          invoiceLink = window.location.host + '/invoice?invoice=' + trip_info.invoice
+          invoiceLink = window.location.host + '/pages_invoice?invoice=' + trip_info.invoice
           $('#invoiceP').text(invoiceLink)
           $('#invoiceA').attr('href', invoiceLink)
           messagebtn.click();

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "node test",
-    "pro": "ssh.bat&& node server.js"
+    "pro": "npm start test.js"
   },
   "author": "yilei",
   "license": "ISC",
