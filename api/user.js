@@ -20,6 +20,7 @@ function user() {
     user.password = "";
     user.password_salt = "";
     user.hash = "";
+    
     function hashPassword(password) {
         var salt = crypto.randomBytes(128).toString('base64');
         var iterations = 10000;
