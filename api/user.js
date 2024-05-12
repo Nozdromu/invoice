@@ -14,20 +14,24 @@ function user() {
     user.username = "";
     user.firstname = "";
     user.lastname = "";
-    user.home = "";
-    function createUser() {
-        function hashPassword(password) {
-            var salt = crypto.randomBytes(128).toString('base64');
-            var iterations = 10000;
-            var hash = pbkdf2(password, salt, iterations);
+    user.email = "";
+    user.phone = "";
+    user.role = "";
+    user.password = "";
+    user.password_salt = "";
+    user.hash = "";
+    function hashPassword(password) {
+        var salt = crypto.randomBytes(128).toString('base64');
+        var iterations = 10000;
+        var hash = pbkdf2(password, salt, iterations);
 
-            return {
-                salt: salt,
-                hash: hash,
-                iterations: iterations
-            };
-        }
+        return {
+            salt: salt,
+            hash: hash,
+            iterations: iterations
+        };
     }
+
     return user
 }
 
