@@ -57,7 +57,7 @@ sessionStore.onReady().then(() => {
     // Something went wrong.
     console.error(error);
 });
-
+Database.query()
 ////////////////////////////////////////////////////////////////////////////////
 //  ssh
 

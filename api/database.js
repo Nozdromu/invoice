@@ -2,10 +2,29 @@ function database(pool) {
     connection = pool
     var Database = {
         data: {},
-        trip_api: {}
+        trip_api: {},
+        user_api: {}
     }
 
-    Database.trip_api.getalltrips = (callback) => {
+    var query=(command,data=[],callback)=>{
+
+    }
+    var query=(command,data=[],callback)=>{
+
+    }
+
+    Database.user_api.create = (newuser, callback = false) => {
+        connection.query('call create_user(?,?,?,?,?,?,?,?,?)', Object.values(newuser), (err, result, field) => {
+            if (err) {
+                console.error(err)
+                throw err
+            } else if (callback) {
+                callback(result)
+            }
+        })
+    }
+
+    Database.trip_api.getalltrips = (callback=false) => {
         connection.query('select*from trip_table', (err, results, fields) => {
             if (err) {
                 console.log(err)
@@ -14,7 +33,7 @@ function database(pool) {
                     Database.data[row.invoice] = row
                 })
             }
-            if (callback !== undefined) {
+            if (callback) {
                 callback(Database.data);
             }
         })

@@ -1,6 +1,5 @@
 const api_other = require('./api_other');
 const api_trips = require('./api_trips');
-const database = require('./database');
 const pages = require('./pages');
 
 function controller(_database) {
