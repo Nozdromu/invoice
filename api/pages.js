@@ -30,6 +30,9 @@ function Pages() {
     pages.all.test = (req, res) => {
         res.render('test')
     }
+    pages.all.register = (req, res) => {
+        res.render('register')
+    }
     return pages
 }
 

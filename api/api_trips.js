@@ -5,7 +5,7 @@ function api_trips(_database) {
 
     var api_trip = { all: {}, get: {}, put: {}, delete: {}, post: {} }
     var database = _database;
-
+    var alltrips = database.data.trips;
     // var reload = (req, res) => {
     //     database.get_trips((results) => {
     //         data = results;
@@ -14,10 +14,10 @@ function api_trips(_database) {
     // }
     var book = (newtrip, callback) => {
         var tripid = Date.now();
-        var rt = database.data[tripid]
+        var rt = alltrips[tripid]
         while (rt !== undefined) {
             tripid += 1;
-            rt = database.data[tripid]
+            rt = alltrips[tripid]
         }
         var datetime = new Date(newtrip.datetime);
         newtrip.pickup_time = datetime.toLocaleString(['en-US'], { timeStyle: 'short', hour12: true })
@@ -53,7 +53,7 @@ function api_trips(_database) {
     api_trip.get.book_trip = (req, res) => {
         var newtrip = req.query;
         book(newtrip, (results) => {
-            database.data[results.invoice] = results;
+            alltrips[results.invoice] = results;
             res.send({ statu: 'done', trip: results, summary: makesummary(results) })
         });
 
@@ -66,7 +66,7 @@ function api_trips(_database) {
         trip.date = datetime.toLocaleDateString(['en-US'], { dateStyle: 'short' })
         trip.travel_time = datetime.valueOf();
         database.trip_api.editrecord(trip, (results) => {
-            database.data[results.invoice] = results
+            alltrips[results.invoice] = results
             res.send({ statu: 'done', trip: results, summary: makesummary(results) })
         })
 
@@ -74,17 +74,17 @@ function api_trips(_database) {
 
     api_trip.get.get_summary = (req, res) => {
         var tripid = req.query.invoice;
-        var tripInfo = database.data[tripid];
+        var tripInfo = alltrips[tripid];
         var summary = makesummary(tripInfo);
         res.send(summary);
     }
 
     api_trip.get.get_trip = (req, res) => {
-        res.send({ statu: 'done', trip: database.data[req.query.trip], summary: makesummary(database.data[req.query.trip]) })
+        res.send({ statu: 'done', trip: alltrips[req.query.trip], summary: makesummary(alltrips[req.query.trip]) })
     }
 
     api_trip.get.change_trip_state = (req, res) => {
-        var trip = database.data[req.query.invoice];
+        var trip = alltrips[req.query.invoice];
         var state = req.query.state;
         database.trip_api.change_trip_state(trip.id, state, (results, err) => {
             if (err) {
@@ -92,7 +92,7 @@ function api_trips(_database) {
                 res.send({ state: 'err', message: err })
             } else {
 
-                database.data[results.invoice] = results
+                alltrips[results.invoice] = results
                 res.send({ state: 'success', message: trip })
             }
 
@@ -101,7 +101,7 @@ function api_trips(_database) {
 
     api_trip.get.get_all_trips = (req, res) => {
         var trips = []
-        Object.entries(database.data).forEach(element => {
+        Object.entries(alltrips).forEach(element => {
             trips.push(element[1]);
         });
         res.send({ trips: trips })

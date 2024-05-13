@@ -11,7 +11,7 @@ const nodemailer = require("nodemailer");
 // const api_trips = require('./api/api_trips')
 // const api_other = require('./api/api_other')
 const database = require('./api/database')
-const Controllers = require('./api/callback')
+const Controllers = require('./api/controller')
 ///////////////////////////////////////////////////////////////////////////
 //  check INV
 
@@ -57,7 +57,7 @@ sessionStore.onReady().then(() => {
     // Something went wrong.
     console.error(error);
 });
-Database.query()
+//Database.query()
 ////////////////////////////////////////////////////////////////////////////////
 //  ssh
 
@@ -68,9 +68,7 @@ if (!env) {
         const bat = spawn('powershell.exe', [process.env.ssh]);
         bat.stdout.on('data', (data) => {
             console.log(data.toString());
-            Database.trip_api.getalltrips(() => {
-                console.log('data loaded')
-            })
+            Database.load()
         });
 
         bat.stderr.on('data', (data) => {
@@ -84,9 +82,7 @@ if (!env) {
     }
     let ssh = cmd();
 } else {
-    Database.trip_api.getalltrips(() => {
-        console.log('data loaded')
-    })
+    Database.load()
 }
 
 
@@ -106,6 +102,8 @@ var users = {
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+var bodyParser = require('body-parser');
+app.use(bodyParser.json())
 app.set('trust proxy', 1)
 app.use(session({
     secret: 'trip',

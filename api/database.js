@@ -1,40 +1,61 @@
+const userlist = require('./userlist')
 function database(pool) {
     connection = pool
     var Database = {
-        data: {},
+        data: { trips: {}, users: new userlist(this) },
         trip_api: {},
         user_api: {}
     }
-
-    var query=(command,data=[],callback)=>{
-
-    }
-    var query=(command,data=[],callback)=>{
-
-    }
-
-    Database.user_api.create = (newuser, callback = false) => {
-        connection.query('call create_user(?,?,?,?,?,?,?,?,?)', Object.values(newuser), (err, result, field) => {
-            if (err) {
+    /**
+    * templay of query.
+    *
+    * @param {String} command
+    * @param {Array} data
+    * @param {Function} callback
+    * @private
+    */
+    var query = (command, data = [], callback = false) => {
+        var params = data
+        if (typeof (data) !== Array)
+            params = Object.values(data)
+        connection.query(command, params, (err, result, field) => {
+            if (err)
                 console.error(err)
-                throw err
-            } else if (callback) {
-                callback(result)
-            }
+            else if (callback)
+                callback(result, field)
         })
     }
+    var load = (data) => {
+        data[0].forEach(e => {
+            Database.data.trips[e.invoice] = e
+        })
+        data[1].forEach(e => {
+            Database.data.users.list[e.id] = e
+        })
+        console.log(Database.data)
+    }
 
-    Database.trip_api.getalltrips = (callback=false) => {
+    Database.user_api.create = (newuser, callback) => {
+        query('call create_user(?,?,?,?,?,?,?,?,?)', newuser, callback)
+    }
+    Database.user_api.update = (user, callback) => {
+        query('call update_user(?,?,?,?,?,?,?,?,?)', user, callback)
+    }
+    Database.load = () => {
+        query('call load_data()', [], load)
+    }
+
+    Database.trip_api.getalltrips = (callback = false) => {
         connection.query('select*from trip_table', (err, results, fields) => {
             if (err) {
                 console.log(err)
             } else {
                 results.forEach((row) => {
-                    Database.data[row.invoice] = row
+                    Database.data.trips[row.invoice] = row
                 })
             }
             if (callback) {
-                callback(Database.data);
+                callback(Database.data.trips);
             }
         })
     }
@@ -121,5 +142,6 @@ function database(pool) {
     }
     return Database;
 }
+
 
 module.exports = database
