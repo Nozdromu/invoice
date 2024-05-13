@@ -24,14 +24,26 @@
         <label for="password">password</label>
         <input id="password" type="password">
     </div>
-    <button type="button" onclick="cl()">submit</button>
+    <button type="button" onclick="cl()">login</button>
+    <button type="button" onclick="lo()">logout</button>
+    <button type="button" onclick="gi()">info</button>
     <script>
         var cl = () => {
             // $.get('/login',{username:$('#username').val(),password:$('#password').val()},(data)=>{
             // console.log(data);
             //})
-            axios.get('/login', { params: { username: $('#username').val(), password: $('#password').val() } }, (data) => {
+            axios.post('/api_users_login', { username: $('#username').val(), password: $('#password').val() }).then((data) => {
                 console.log(data);
+            })
+        }
+        var lo = () => {
+            $.get('/api_users_logout', (data) => {
+                console.log(data)
+            })
+        }
+        var gi = () => {
+            $.get('/api_users_get_user_info',(data)=>{
+                console.log(data)
             })
         }
 

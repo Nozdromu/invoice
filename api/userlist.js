@@ -3,25 +3,11 @@ const crypto = require('crypto');
 function userlist(_database) {
     var database = _database
     var query = database.user_api;
-    var userlist = { list: {} }
+    var userlist = { list_ID: {}, list_UN: {} }
     function hashPassword(password) {
         var salt = crypto.randomBytes(128).toString('base64');
         var iterations = 10000;
         var hash = crypto.pbkdf2Sync(password, salt, iterations, 64, 'sha512').toString('hex')
-        // var hash = crypto.pbkdf2(password, salt, iterations,64,'sha512',(err,derivedKey)=>{
-        //     if(err)
-        //         console.error(err)
-        //     else{
-        //         console.log(derivedKey)
-        //         console.log(derivedKey.toString('hex'))
-        //         return {
-        //             salt: salt,
-        //             hash: hash,
-        //             iterations: derivedKey.toString('hex')
-        //         };
-        //     }
-        // });
-
         return {
             salt: salt,
             hash: hash,
@@ -42,18 +28,18 @@ function userlist(_database) {
         user.phone = phone
         user.role = role
         user.toArray = () => {
-            return [0,
-                username,
-                firstname,
-                lastname,
-                password,
-                email,
-                phone,
-                role,
-                password,
-                password_salt,
-                hash
+            var list = [0,
+                user.username,
+                user.firstname,
+                user.lastname,
+                user.password,
+                user.email,
+                user.phone,
+                user.role,
+                user.password_salt,
+                user.hash
             ]
+            return list
         }
         user.save = () => {
             if (user.id === 0)
@@ -62,14 +48,14 @@ function userlist(_database) {
                 update(user)
         }
         user.update = (_user) => {
-            this.username = _user.username;
-            this.firstname = _user.firstname;
-            this.lastname = _user.lastname;
-            this.password = _user.password;
-            this.email = _user.email;
-            this.phone = _user.phone;
-            this.role = _user.role;
-            this.save();
+            user.username = _user.username;
+            user.firstname = _user.firstname;
+            user.lastname = _user.lastname;
+            user.password = _user.password;
+            user.email = _user.email;
+            user.phone = _user.phone;
+            user.role = _user.role;
+            user.save();
         }
         return user
     }
@@ -77,9 +63,10 @@ function userlist(_database) {
         console.log(newuser.toArray())
         query.create(newuser.toArray(), (data) => {
             console.log(data);
-            userlist.list[data[0].id] = data[0]
+            userlist.list_ID[data[0].id] = data[0]
+            userlist.list_ID[data[0].username] = data[0]
             if (callback)
-                callback(userlist.list[data[0].id]);
+                callback(userlist.list_ID[data[0].id]);
         })
     }
     var update = (user) => {

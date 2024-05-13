@@ -33,6 +33,9 @@ function Pages() {
     pages.all.register = (req, res) => {
         res.render('register')
     }
+    pages.all.login = (req, res) => {
+        res.render('login')
+    }
     return pages
 }
 

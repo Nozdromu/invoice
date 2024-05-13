@@ -15,7 +15,7 @@ function controller(_database) {
             Object.keys(callbacks[type]).forEach((key) => {
                 var pathname = '/' + name + '_' + key
                 Controllers[pathname] = {
-                    login_require: true,
+                    login_require: false,
                     path: pathname,
                     callback: callbacks[type][key],
                     type: type
@@ -29,7 +29,9 @@ function controller(_database) {
     config(Pages, 'pages');
     config(Api_trips, 'api_trips')
     config(Api_other, 'api_other')
-    config(Api_users,'api_users')
+    config(Api_users, 'api_users')
+
+
 
     return Controllers;
 }

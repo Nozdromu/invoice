@@ -2,10 +2,11 @@ const userlist = require('./userlist')
 function database(pool) {
     connection = pool
     var Database = {
-        data: { trips: {}, users: new userlist(this) },
+        data: { trips: {} },
         trip_api: {},
         user_api: {}
     }
+    Database.data.users = userlist(Database)
     /**
     * templay of query.
     *
@@ -30,35 +31,36 @@ function database(pool) {
             Database.data.trips[e.invoice] = e
         })
         data[1].forEach(e => {
-            Database.data.users.list[e.id] = e
+            Database.data.users.list_ID[e.id] = e
+            Database.data.users.list_UN[e.username] = e
         })
         console.log(Database.data)
     }
 
     Database.user_api.create = (newuser, callback) => {
-        query('call create_user(?,?,?,?,?,?,?,?,?)', newuser, callback)
+        query('call create_user(?,?,?,?,?,?,?,?,?,?)', newuser, callback)
     }
     Database.user_api.update = (user, callback) => {
-        query('call update_user(?,?,?,?,?,?,?,?,?)', user, callback)
+        query('call update_user(?,?,?,?,?,?,?,?,?,?)', user, callback)
     }
     Database.load = () => {
         query('call load_data()', [], load)
     }
 
-    Database.trip_api.getalltrips = (callback = false) => {
-        connection.query('select*from trip_table', (err, results, fields) => {
-            if (err) {
-                console.log(err)
-            } else {
-                results.forEach((row) => {
-                    Database.data.trips[row.invoice] = row
-                })
-            }
-            if (callback) {
-                callback(Database.data.trips);
-            }
-        })
-    }
+    // Database.trip_api.getalltrips = (callback = false) => {
+    //     connection.query('select*from trip_table', (err, results, fields) => {
+    //         if (err) {
+    //             console.log(err)
+    //         } else {
+    //             results.forEach((row) => {
+    //                 Database.data.trips[row.invoice] = row
+    //             })
+    //         }
+    //         if (callback) {
+    //             callback(Database.data.trips);
+    //         }
+    //     })
+    // }
     // Database.trip_api.getalltrips(() => {
     //     console.log("data loaded")
     // });

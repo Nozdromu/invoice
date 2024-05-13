@@ -121,19 +121,27 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 var homepage = '/pages_alltrips'
-controller['/'] = controller[homepage]
+//controller['/'] = controller[homepage]
 var checklogin = function (req, res, next) {
-    if (req.path === '/')
-        res.redirect(homepage)
+    // if (req.path === '/')
+    //     res.redirect(homepage)
     if (controller[req.path])
         if (controller[req.path].login_require || req.session.user) {
             next();
         } else {
-            res.redirect('/loginpage')
+            res.redirect('/pages_login')
         }
     else
         res.send('404')
 }
+var old_path = (req, res, next) => {
+    if (old[req.path]) {
+        res.redirect(old[req.path]);
+    } else {
+        next()
+    }
+}
+app.use(old_path)
 app.use(checklogin)
 
 // const Pages = pages();
@@ -144,8 +152,25 @@ const port = 3000;
 /////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+//////////////////////////////////////////////////////
+
 trip_state = ["Await", "Complete", "Deleted"]
 payment_state = ["Unpaid", "Paid"]
+var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login','/pages_payment_page']
+unneed.forEach(e => {
+    controller[e].login_require = true
+})
+var old = {
+    '/loginpage': '/pages_login',
+    '/invoice': '/pages_invoice',
+    '/geitrip': '/api_trips_get_trip',
+    '/login': '/api_users_login',
+    '/': '/pages_alltrips',
+}
 // var allPath = {
 //     '/loginpage': {
 //         allow: true,
