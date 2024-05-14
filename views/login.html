@@ -1,33 +1,201 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full bg-white">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <script src="/js/copy.js"></script>
 </head>
 
-<body>
-    <div>
-        <label for="username">username</label>
-        <input id="username" type="text">
+<body class="h-full">
+    <div id="signin" class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your
+                account</h2>
+        </div>
+
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+            <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+                <form class="space-y-6" action="/api_users_login" method="POST">
+                    <div>
+                        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username / Email
+                            address</label>
+                        <div class="mt-2">
+                            <input id="username" name="username" type="text" autocomplete="email" required
+                                class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                        <div class="mt-2">
+                            <input id="password" name="password" type="password" autocomplete="current-password"
+                                required
+                                class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+
+                        </div>
+
+                        <div class="text-sm leading-6">
+                            <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign
+                            in</button>
+                    </div>
+                </form>
+
+                <div>
+                    <div class="relative mt-10">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm font-medium leading-6">
+                            <span class="bg-white px-6 text-gray-900">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-4">
+                        <button onclick="switch_login()"
+                            class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent">
+
+                            <span class="text-sm font-semibold leading-6">Register</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="password">password</label>
-        <input id="password" type="password">
+    <div id="Register" class=" flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 hidden">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register your
+                account</h2>
+        </div>
+
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+            <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+                <form class="space-y-6" action="/api_users_create" method="POST">
+                    <div>
+                        <label for="r_username"
+                            class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                        <div class="mt-2">
+                            <input id="r_username" name="email" type="email" autocomplete="email" required
+                                class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="r_password"
+                            class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                        <div class="mt-2">
+                            <input id="r_password" name="password" type="password" autocomplete="current-password"
+                                required
+                                class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="r_firstname"
+                                class="block text-sm font-medium leading-6 text-gray-900">Firstname</label>
+                            <div class="mt-2">
+                                <input id="r_firstname" name="firstname" type="text" autocomplete="given-name"
+                                    class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="r_lastname"
+                                class="block text-sm font-medium leading-6 text-gray-900">Lastname</label>
+                            <div class="mt-2">
+                                <input id="r_lastname" name="lastname" type="text" autocomplete="family-name"
+                                    class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="r_email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+                        <div class="mt-2">
+                            <input id="r_email" name="email" type="email" autocomplete="email"
+                                class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="r_phone" class="block text-sm font-medium leading-6 text-gray-900">Phone</label>
+                        <div class="mt-2">
+                            <input id="r_phone" name="phone" type="tel" autocomplete="tel"
+                                class="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <button type="submit"
+                            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Submit</button>
+                    </div>
+                </form>
+
+                <div>
+                    <div class="relative mt-10">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm font-medium leading-6">
+                            <span class="bg-white px-6 text-gray-900">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-4">
+                        <button onclick="switch_login()"
+                            class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent">
+
+                            <span class="text-sm font-semibold leading-6">login</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <button type="button" onclick="cl()">login</button>
-    <button type="button" onclick="lo()">logout</button>
-    <button type="button" onclick="gi()">info</button>
     <script>
+        var data = {
+            isopen: false,
+            open: true
+        }
+        var Register = $('#Register');
+        var login = $('#signin')
+        var show = true
+        var switch_login = () => {
+            if (show) {
+                login.fadeOut(300, () => {
+                    Register.fadeIn(300)
+                    show = false
+                })
+            } else {
+                Register.fadeOut(300, () => {
+                    login.fadeIn(300)
+                    show = true
+                })
+            }
+        }
         var cl = () => {
             // $.get('/login',{username:$('#username').val(),password:$('#password').val()},(data)=>{
             // console.log(data);
@@ -42,7 +210,7 @@
             })
         }
         var gi = () => {
-            $.get('/api_users_get_user_info',(data)=>{
+            $.get('/api_users_get_user_info', (data) => {
                 console.log(data)
             })
         }

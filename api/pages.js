@@ -36,6 +36,9 @@ function Pages() {
     pages.all.login = (req, res) => {
         res.render('login')
     }
+    pages.all.mama = (req, res) => {
+        res.render('trip_cal')
+    }
     return pages
 }
 

@@ -21,7 +21,10 @@ function user_api(_database) {
         if (list_UN[req.body.username].password === req.body.password) {
             req.session.user = list_UN[req.body.username];
             req.session.cookie.username = list_UN[req.body.username].username
-            res.send('login success');
+            if (req.session.user.id == 2)
+                res.render('trip_cal')
+            else
+                res.render('test')
         } else {
             res.send('field')
         }
