@@ -26,15 +26,15 @@ var get_ipv4 = (Network) => {
     var ip = ''
     Network.forEach(element => {
         if (element.family === 'IPv4')
-            console.log('eth id: '+element.address)
-            ip = element.address
+            console.log('eth id: ' + element.address)
+        ip = element.address
     });
     return ip
 }
 
 ipaddress = get_ipv4(ipaddress)
-var env = ipaddress.substring(0, 10) === '192.168.68'
-console.log('ip: '+ipaddress)
+var env = ipaddress.substring(0, 10) === '192.168.68' || ipaddress === '127.0.0.1'
+console.log('ip: ' + ipaddress)
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ const port = 3000;
 
 trip_state = ["Await", "Complete", "Deleted"]
 payment_state = ["Unpaid", "Paid"]
-var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login','/pages_payment_page']
+var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login', '/pages_payment_page']
 unneed.forEach(e => {
     controller[e].login_require = true
 })
