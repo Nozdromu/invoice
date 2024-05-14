@@ -33,6 +33,7 @@ var get_ipv4 = (Network) => {
 }
 
 ipaddress = get_ipv4(ipaddress)
+console.log(ipaddress)
 var env = ipaddress.substring(0, 10) === '192.168.68' || ipaddress === '127.0.0.1'
 console.log(env)
 
