@@ -25,9 +25,11 @@ var ipaddress = (Object.values(networkInterfaces))[0]
 var get_ipv4 = (Network) => {
     var ip = ''
     Network.forEach(element => {
-        if (element.family === 'IPv4')
+        if (element.family === 'IPv4') {
             console.log('eth id: ' + element.address)
-        ip = element.address
+            ip = element.address
+        }
+
     });
     return ip
 }
