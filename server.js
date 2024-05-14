@@ -175,6 +175,7 @@ var old = {
     '/geitrip': '/api_trips_get_trip',
     '/login': '/api_users_login',
     '/': '/pages_alltrips',
+    '/payment':'/pages_payment_page'
 }
 // var allPath = {
 //     '/loginpage': {
