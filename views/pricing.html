@@ -271,8 +271,8 @@
             label_pickup.text('(' + pickup_distance.val() + '-' + pickup_distance_free + ') * ' + pickup_distance_price + ' = ');
             label_distance.text(distance.val() + ' * ' + dis_price + ' = ');
             label_base.text(cartype.val()+' * 1 =')
-            label_pickup_t.text(dis_price * distance.val())
-            label_distance_t.text((pickup_distance.val() - pickup_distance_free > 0 ? pickup_distance.val() - pickup_distance_free : 0) * pickup_distance_price)
+            label_distance_t.text(dis_price * distance.val())
+            label_pickup_t.text((pickup_distance.val() - pickup_distance_free > 0 ? pickup_distance.val() - pickup_distance_free : 0) * pickup_distance_price)
             label_base_t.text(cartype.val())
             label_total_t.text(price.val())
         }
