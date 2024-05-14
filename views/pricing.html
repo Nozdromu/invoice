@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trip Info</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/copy.js"></script>
+</head>
+
+<body>
+    <div class="container" style="height: 100vh;">
+        <div class="row align-items-center justify-content-center" style="height: 100vh;">
+            <div class="col-auto align-self-center">
+                <div class="card " style="max-width: 26rem;">
+                    <div class="card-body">
+                        <textarea hidden class="summaryTaxtarea">rrrrr</textarea>
+                        <form id="book" class="g-3 needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="cartype" aria-label="Car type">
+                                            <option value="5" selected>Sedan - Camry 4 Seat</option>
+                                            <option value="10">MiniVan - Sienna 7 Seat</option>
+                                        </select>
+                                        <label for="cartype">Car type</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <div class="input-group">
+                                        <div class="form-floating">
+                                            <input type="address" class="form-control" id="address" name="address"
+                                                required>
+                                            <label for="address" class="form-label">pickup address</label>
+                                        </div>
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">AP</button>
+                                        <ul class="dropdown-menu">
+                                            <li><button type="button" class="dropdown-item"
+                                                    onclick="ulclick_departure(this)">SEA</button></li>
+                                            <li><button type="button" class="dropdown-item"
+                                                    onclick="ulclick_departure(this)">PAE</button></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="form-floating">
+                                        <input name="googleaddress" type="address" class="form-control"
+                                            id="googleaddress" name="googleaddress" readonly required>
+                                        <label for="googleaddress" class="form-label">Address(google)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-auto mb-3"><button type="button" class="btn btn-outline-dark"
+                                        onclick="switch_address()">switch</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3 ">
+                                    <div class="input-group">
+                                        <div class="form-floating">
+                                            <input type="address" class="form-control" id="destination_address"
+                                                name="destination_address" required>
+                                            <label for="destination_address" class="form-label">destination_address
+                                                address</label>
+                                        </div>
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">AP</button>
+                                        <ul class="dropdown-menu">
+                                            <li><button type="button" class="dropdown-item"
+                                                    onclick="ulclick_destination(this)">SEA</button></li>
+                                            <li><button type="button" class="dropdown-item"
+                                                    onclick="ulclick_destination(this)">PAE</button></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="form-floating">
+                                        <input type="address" class="form-control" id="googledestination"
+                                            name="googledestination" readonly required>
+                                        <label for="googledestination" class="form-label">destination_address
+                                            address(google)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3 d-grid gap-2"><button type="submit"
+                                        class="btn btn-primary">Calculate</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 mb-3">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="distance" value="0"
+                                            name="distance">
+                                        <label for="distance" class="form-label">Distance</label>
+                                    </div>
+                                </div>
+                                <div class="col mb-3">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="pickup_distance" value="0"
+                                            name="pickup_distance">
+                                        <label for="pickup_distance" class="form-label">
+                                            pickup_distance</label>
+                                    </div>
+                                </div>
+                                <div class="col-3 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="price" name="price" value="0">
+                                        <label for="price" class="form-label">Price</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-end">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div>
+                                                pickup:
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div>
+                                                distance:
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div>
+                                                base:
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div>
+                                                total:
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_pickup">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_dropoff">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_base">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_total">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <div class="row text-start">
+                                        <div class="col">
+                                            <div id="label_pickup_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_dropoff_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_base_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_total_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    } else {
+                        event.preventDefault();
+                        get_dis();
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+
+        var googleaddress = $('#googleaddress')
+        var distance = $('#distance')
+        var departure_address = $('#address')
+        var pickup_distance = $('#pickup_distance')
+        var googledestination = $('#googledestination')
+        var destination_address = $('#destination_address')
+        var cartype = $('#cartype')
+        var price = $('#price')
+        var pickup_distance_free = 6
+        var dis_price = 2
+        var pickup_distance_price = 0.5
+
+        var label_pickup = $('#label_pickup')
+        var label_distance = $('#label_dropoff')
+        var label_base = $('#label_base')
+        var label_total = $('#label_total')
+        var label_pickup_t = $('#label_pickup_t')
+        var label_distance_t = $('#label_dropoff_t')
+        var label_base_t = $('#label_base_t')
+        var label_total_t = $('#label_total_t')
+
+
+        var getprice = () => {
+            var _total = 0;
+            var pickup_total = pickup_distance.val() - pickup_distance_free
+            _total = dis_price * distance.val() + (pickup_total > 0 ? pickup_total : 0) * pickup_distance_price + parseInt(cartype.val());
+            price.val(_total)
+            showdetial()
+        }
+
+        var showdetial = () => {
+            label_pickup.text('(' + pickup_distance.val() + '-' + pickup_distance_free + ') * ' + pickup_distance_price + ' = ');
+            label_distance.text(distance.val() + ' * ' + dis_price + ' = ');
+            label_base.text(cartype.val()+' * 1 =')
+            label_pickup_t.text(dis_price * distance.val())
+            label_distance_t.text((pickup_distance.val() - pickup_distance_free > 0 ? pickup_distance.val() - pickup_distance_free : 0) * pickup_distance_price)
+            label_base_t.text(cartype.val())
+            label_total_t.text(price.val())
+        }
+        showdetial()
+
+        distance.keyup(getprice);
+        pickup_distance.keyup(getprice);
+        cartype.change(getprice);
+
+        var ulclick_destination = (e) => {
+            console.log(e.firstChild.data)
+            if (e.firstChild.data === 'SEA') {
+                destination_address.val('17801 International Blvd, Seattle, WA 98158')
+            } else {
+                destination_address.val('3220 100th St SW, Everett, WA 98204')
+            }
+        }
+        var ulclick_departure = (e) => {
+            console.log(e.firstChild.data)
+            if (e.firstChild.data === 'SEA') {
+                departure_address.val('17801 International Blvd, Seattle, WA 98158')
+            } else {
+                departure_address.val('3220 100th St SW, Everett, WA 98204')
+            }
+        }
+
+
+
+
+        function get_dis() {
+            axios.get('/api_trips_get_price', { params: { start: departure_address.val(), end: destination_address.val(), type: 0 } }).then((res) => {
+                googleaddress.val(res.data.address1.address)
+                distance.val(res.data.dropoff_dis);
+                departure_address.val(res.data.address1.address);
+                pickup_distance.val(res.data.pickup_dis)
+                googledestination.val(res.data.address2.address)
+                destination_address.val(res.data.address2.address)
+                getprice();
+            })
+        }
+
+        var switch_address = () => {
+            var a = departure_address.val();
+            var b = googleaddress.val();
+            departure_address.val(destination_address.val())
+            googleaddress.val(googledestination.val())
+            destination_address.val(a);
+            googledestination.val(b)
+        }
+
+    </script>
+</body>
+
+</html>

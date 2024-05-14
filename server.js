@@ -168,7 +168,7 @@ const port = 3000;
 
 trip_state = ["Await", "Complete", "Deleted"]
 payment_state = ["Unpaid", "Paid"]
-var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login', '/pages_payment_page']
+var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login', '/pages_payment_page','/pages_pricing','/api_trips_get_price']
 unneed.forEach(e => {
     controller[e].login_require = true
 })
