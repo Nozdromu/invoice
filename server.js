@@ -141,7 +141,10 @@ var checklogin = function (req, res, next) {
 }
 var old_path = (req, res, next) => {
     if (old[req.path]) {
-        res.redirect(old[req.path]);
+        res.redirect(url.format({
+            pathname: old[req.path],
+            query: req.query
+        }));
     } else {
         next()
     }
@@ -172,10 +175,10 @@ unneed.forEach(e => {
 var old = {
     '/loginpage': '/pages_login',
     '/invoice': '/pages_invoice',
-    '/geitrip': '/api_trips_get_trip',
+    '/geitrip': '/api_trips_get_trip?trip=',
     '/login': '/api_users_login',
     '/': '/pages_alltrips',
-    '/payment':'/pages_payment_page'
+    '/payment': '/pages_payment_page'
 }
 // var allPath = {
 //     '/loginpage': {
