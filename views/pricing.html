@@ -494,6 +494,9 @@
 
         function get_dis() {
             axios.get('/api_trips_get_price', { params: { start: departure_address.val(), end: destination_address.val(), type: 0 } }).then((res) => {
+                if (typeof res.data === 'string') {
+                    return alert(res.data);
+                }
                 googleaddress.val(res.data.address1.address)
                 distance.val(res.data.dropoff_dis);
                 departure_address.val(res.data.address1.address);
