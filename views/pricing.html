@@ -39,8 +39,8 @@
                                 <div class="col-12 mb-3">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="address" autocomplete="address-line1" class="form-control" id="address" name="address"
-                                                required>
+                                            <input type="address" autocomplete="address-line1" class="form-control"
+                                                id="address" name="address" required>
                                             <label for="address" class="form-label">pickup address</label>
                                         </div>
                                         <button class="btn btn-outline-secondary dropdown-toggle" type="button"
@@ -73,7 +73,8 @@
                                         <div class="form-floating">
                                             <input type="address" class="form-control" id="destination_address"
                                                 name="destination_address" required>
-                                            <label for="destination_address" autocomplete="address-line1" class="form-label">destination 
+                                            <label for="destination_address" autocomplete="address-line1"
+                                                class="form-label">destination
                                                 address</label>
                                         </div>
                                         <button class="btn btn-outline-secondary dropdown-toggle" type="button"
@@ -91,7 +92,8 @@
                                     <div class="form-floating">
                                         <input type="address" class="form-control" id="googledestination"
                                             name="googledestination" readonly required>
-                                        <label for="googledestination" class="form-label">destination address(google)</label>
+                                        <label for="googledestination" class="form-label">destination
+                                            address(google)</label>
                                     </div>
                                 </div>
                             </div>
@@ -128,6 +130,13 @@
                                     <div class="row">
                                         <div class="col">
                                             <div>
+                                                #
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div>
                                                 pickup:
                                             </div>
                                         </div>
@@ -139,7 +148,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row ">
                                         <div class="col">
                                             <div>
                                                 base:
@@ -154,33 +163,103 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-auto">
+
+                                <div class="col-auto px-0 text-center">
+                                    <div class="row">
+                                        <div class="col">Unit</div>
+                                    </div>
                                     <div class="row">
                                         <div class="col">
-                                            <div id="label_pickup">
-                                            </div>
+                                            <div id="label_pickup_1"></div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <div id="label_dropoff">
-                                            </div>
+                                            <div id="label_dropoff_1"></div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row border-bottom border-black">
                                         <div class="col">
-                                            <div id="label_base">
-                                            </div>
+                                            <div id="label_base_1"></div>
                                         </div>
+
+
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            <div id="label_total">
-                                            </div>
-                                        </div>
+                                        <div class="col"></div>
+
+
                                     </div>
                                 </div>
-                                <div class="col-auto ps-0">
+                                <div class="col-auto px-0 text-center">
+                                    <div class="row">
+                                        <div class="col">-</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">*</div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">*</div>
+
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col">*</div>
+
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                </div>
+                                <div class="col-auto px-0 text-center">
+                                    <div class="row">
+                                        <div class="col">price</div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_pickup_2"></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_dropoff_2"></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row border-bottom border-black">
+                                        <div class="col">1</div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col"></div>
+
+                                    </div>
+                                </div>
+                                <div class="col-auto px-0 text-center">
+                                    <div class="row">
+                                        <div class="col-1">. </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">=</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">=</div>
+                                    </div>
+                                    <div class="row border-bottom border-black">
+                                        <div class="col">=</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                    </div>
+                                </div>
+                                <div class="col-auto" ps-0 text-center>
+                                    <div class="row">
+                                        <div class="col">
+                                            Tot:
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div class="col">
                                             <div id="label_pickup_t">
@@ -193,19 +272,120 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row border-bottom border-black">
                                         <div class="col">
                                             <div id="label_base_t">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row ">
                                         <div class="col">
                                             <div id="label_total_t">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!-- <div class="col-auto">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row text-center">
+                                                <div class="col">
+                                                    Unit
+                                                </div>
+                                                <div class="col  p-0">
+
+                                                </div>
+                                                <div class="col">
+                                                    Price
+                                                </div>
+                                                <div class="col  p-0">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-auto  p-0">
+                                            <div id="label_pickup_1"></div>
+                                        </div>
+                                        <div class="col  p-0">
+                                            *
+                                        </div>
+                                        <div class="col">
+                                            <div id="label_pickup_2"></div>
+                                        </div>
+                                        <div class="col  p-0">
+                                            =
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div id="label_dropoff_1"></div>
+                                        </div>
+                                        <div class="col  p-0">
+                                            *
+                                        </div>
+                                        <div class="col">
+                                            <div id="label_dropoff_2"></div>
+                                        </div>
+                                        <div class="col  p-0">
+                                            =
+                                        </div>
+                                    </div>
+                                    <div class="row border-bottom border-black">
+                                        <div class="col-auto">
+                                            <div id="label_base_1"></div>
+                                        </div>
+                                        <div class="col p-0">
+                                            *
+                                        </div>
+                                        <div class="col">
+                                            <div id="label_base_2">1</div>
+                                        </div>
+                                        <div class="col  p-0">
+                                            =
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_total">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto ps-0 text-end">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div>
+                                                T
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_pickup_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="label_dropoff_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row border-bottom border-black">
+                                        <div class="col">
+                                            <div id="label_base_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col">
+                                            <div id="label_total_t">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div>
                         </form>
                     </div>
@@ -248,9 +428,15 @@
         var dis_price = 2
         var pickup_distance_price = 0.5
 
-        var label_pickup = $('#label_pickup')
-        var label_distance = $('#label_dropoff')
-        var label_base = $('#label_base')
+        var label_pickup_1 = $('#label_pickup_1')
+        var label_pickup_2 = $('#label_pickup_2')
+
+        var label_distance_1 = $('#label_dropoff_1')
+        var label_distance_2 = $('#label_dropoff_2')
+
+        var label_base_1 = $('#label_base_1')
+        var label_base_2 = $('#label_base_2')
+
         var label_total = $('#label_total')
         var label_pickup_t = $('#label_pickup_t')
         var label_distance_t = $('#label_dropoff_t')
@@ -267,9 +453,14 @@
         }
 
         var showdetial = () => {
-            label_pickup.text('(' + pickup_distance.val() + '-' + pickup_distance_free + ') * ' + pickup_distance_price + ' = ');
-            label_distance.text(distance.val() + ' * ' + dis_price + ' = ');
-            label_base.text(cartype.val()+' * 1 =')
+            label_pickup_1.text('(' + pickup_distance.val() + '-' + pickup_distance_free + ')');
+            label_pickup_2.text(pickup_distance_price);
+
+            label_distance_1.text(distance.val());
+            label_distance_2.text(dis_price);
+
+            label_base_1.text(cartype.val())
+
             label_distance_t.text(dis_price * distance.val())
             label_pickup_t.text((pickup_distance.val() - pickup_distance_free > 0 ? pickup_distance.val() - pickup_distance_free : 0) * pickup_distance_price)
             label_base_t.text(cartype.val())
