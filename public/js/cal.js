@@ -252,8 +252,8 @@ var cal_footer = () => {
     var _update = (e) => {
         foot_ol.empty();
         header.html("Reservations at: " + e.value)
-        e.events.forEach((e) => {
-            foot_ol.append(creat_event(e));
+        e.events.forEach((element) => {
+            foot_ol.append(creat_event(element));
         })
     }
 
