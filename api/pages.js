@@ -1,5 +1,6 @@
 function Pages() {
     var pages = { all: {}, get: {}, put: {}, delete: {}, post: {} }
+
     pages.all.invoice = (req, res) => {
         res.render('invoice');
     }
@@ -38,6 +39,9 @@ function Pages() {
     }
     pages.all.mama = (req, res) => {
         res.render('trip_cal')
+    }
+    pages.all.pricing = (req, res) => {
+        res.render('pricing')
     }
     return pages
 }

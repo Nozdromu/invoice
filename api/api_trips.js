@@ -109,6 +109,23 @@ function api_trips(_database) {
 
 
     api_trip.get.get_price = (req, res) => {
+        if (req.session.user == undefined) {
+            if (req.session.price == undefined) {
+                req.session.price = {
+                    time: (new Date(Date.now()).valueOf()),
+                    count: 0
+                }
+            }
+            var t = (new Date(Date.now())).valueOf() - req.session.price.time
+            if (t > 1000 * 60 * 5) {
+                req.session.price.time = new Date(Date.now()).valueOf()
+                req.session.price.count = 0
+            }
+            if (req.session.price.count > 4 && t < 1000 * 60 * 5) {
+                return res.send('out of max in 5 mins, ' + ((60 * 5) - (t / 1000)) + 's left')
+            }
+            req.session.price.count += 1;
+        }
         var data = req.query;
         var origin = '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA';
         var pickup_address = data.start;
