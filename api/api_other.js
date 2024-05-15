@@ -6,7 +6,7 @@ function api_other() {
 
     var api = { all: {}, get: {}, put: {}, delete: {}, post: {} }
 
-    api.post.letter = (req, res) => {
+    api.get.letter = (req, res) => {
         var l = req.query.letter;
         res.sendFile('/letter/' + l + '.pdf', { root: path.join(__dirname, '../public') })
     }

@@ -19,7 +19,7 @@
             <div class="col-sm-9 align-self-center">
                 <div class="card">
                     <div class="card-body">
-                        <form action="./letter">
+                        <form action="./api_other_letter" method="get">
                             <div class="mb-3">
                                 <select id="select" name="letter" class="form-select"
                                     aria-label="Default select example">
@@ -72,13 +72,13 @@
         <!-- <button type="button" class="btn" onclick="submit()">Submit</button> -->
     </div>
     <script>
-        var submit = () => {
-            console.log('clidked')
-            axios.post('/api_other_letter', { params: { letter: $('#select').val() } }).then((res) => {
-                // $('#pdf').append($('<embed>').attr('src',res.data.src))
-                console.log(res);
-            })
-        }
+        // var submit = () => {
+        //     console.log('clidked')
+        //     axios.post('/api_other_letter', { params: { letter: $('#select').val() } }).then((res) => {
+        //         // $('#pdf').append($('<embed>').attr('src',res.data.src))
+        //         console.log(res);
+        //     })
+        // }
 
     </script>
 </body>
