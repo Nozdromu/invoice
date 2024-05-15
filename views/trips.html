@@ -28,11 +28,51 @@
             <div class="col-auto">
                 <a class="btn btn-primary" href="/pages_trip_page">新预约</a>
             </div>
+            <div class="col-auto"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#aaa">
+                    test
+                </button></div>
         </div>
         <div class="accordion accordion-flush" id="trips">
 
         </div>
 
+        <div class="modal fade" tabindex="-1" aria-hidden="true" id="aaa">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form action="/api_trips_edit_trip" method="get">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="payment_type" aria-label="Payment_type" required>
+                                            <option value="Venmo">Venmo</option>
+                                            <option value="Paypal">Paypal</option>
+                                            <option value="Zelle">Zelle</option>
+                                            <option value="Cash">Cash</option>
+                                        </select>
+                                        <label for="Payment_type">Payment type</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input name="transID" type="text" class="form-control" id="transID"
+                                            name="transID" readonly required value="none">
+                                        <label for="transID" class="form-label">TransID</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary" type="submit">update</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
