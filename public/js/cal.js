@@ -252,9 +252,10 @@ var cal_footer = () => {
     var _update = (e) => {
         foot_ol.empty();
         header.html("Reservations at: " + e.value)
-        e.events.forEach((element) => {
-            foot_ol.append(creat_event(element));
-        })
+        if (e.events)
+            e.events.forEach((element) => {
+                foot_ol.append(creat_event(element));
+            })
     }
 
     cal_footer.append(foot_ol)
@@ -416,7 +417,7 @@ var c = () => {
             })
             days -= 1;
         }
-        for (var i = 1; i < l+1; i++) {
+        for (var i = 1; i < l + 1; i++) {
             tday = new Date(current_year, current_month - 1, i).valueOf()
             current_month_list.push({
                 day: i,
