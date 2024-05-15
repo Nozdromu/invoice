@@ -7,9 +7,6 @@ const nodemailer = require("nodemailer");
 const url = require('url');
 
 
-// const pages = require('./api/pages')
-// const api_trips = require('./api/api_trips')
-// const api_other = require('./api/api_other')
 const database = require('./api/database')
 const Controllers = require('./api/controller')
 ///////////////////////////////////////////////////////////////////////////

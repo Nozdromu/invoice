@@ -1,6 +1,16 @@
 const { Client } = require('@googlemaps/google-maps-services-js')
 const map = new Client({});
-
+const fs = require('node:fs');
+var mapinfo = require('./map.json')
+// fs.readFile('./api/map.json', 'utf8', (err, data) => {
+//     if (err) {
+//         console.error(err);
+//         return;
+//     }
+//     mapinfo = data;
+//     console.log(data);
+// });
+console.log(mapinfo)
 function api_trips(_database) {
 
     var api_trip = { all: {}, get: {}, put: {}, delete: {}, post: {} }
@@ -136,6 +146,10 @@ function api_trips(_database) {
         }
         map.directions({ params: { key: process.env.google_map_api_key, destination: destination_address, origin: origin, waypoints: [pickup_address] } }).then((mapres) => {
             console.log(mapres)
+            mapinfo.test = mapres.data
+            var fs = require('fs');
+            console.log(mapinfo)
+            fs.writeFile('./map.json', JSON.stringify(mapinfo), () => { });
             var G_pickup = {
                 address: mapres.data.routes[0].legs[0].end_address,
                 lat: mapres.data.routes[0].legs[1].end_location.lat,
