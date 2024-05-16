@@ -17,7 +17,7 @@
     <div classname="container">
         <div class="row">
             <div class="col-auto">
-                <select aria-label="label for the select" class="form-select">
+                <select aria-label="label for the select" class="form-select" id="finished">
                     <option value="1" selected>未完成预约</option>
                     <option value="0">已完成预约</option>
                 </select>
@@ -41,11 +41,20 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form action="/api_trips_edit_trip" method="get">
+                        <form class="g-3 needs-validation" novalidate>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <select class="form-select" id="payment_type" aria-label="Payment_type" required>
+                                        <input name="id" type="text" readonly class="form-control" id="id" name="id"
+                                            readonly required value="none">
+                                        <label for="id" class="form-label">ID</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="payment_type" aria-label="Payment_type"
+                                            required>
+                                            <option value="Not yet paid">Not yet paid</option>
                                             <option value="Venmo">Venmo</option>
                                             <option value="Paypal">Paypal</option>
                                             <option value="Zelle">Zelle</option>
@@ -57,7 +66,7 @@
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <input name="transID" type="text" class="form-control" id="transID"
-                                            name="transID" readonly required value="none">
+                                            name="transID" required value="none">
                                         <label for="transID" class="form-label">TransID</label>
                                     </div>
                                 </div>
@@ -76,6 +85,29 @@
     </div>
 
     <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    } else {
+                        event.preventDefault();
+                        $.post('/api_trips_update_payment', { id: mid, payment_type: $('#payment_type').val(), transID: $('#transID').val() }, (data) => {
+                            console.log(data)
+                        })
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
         var trips = []
         var _triptype = ["Airport-Dept", "Airport-Arrival", "pickup", "dropoff"]
         var t = $('#trips');
@@ -87,7 +119,7 @@
             });
             $('div[name="0"]').hide()
         })
-        $('.form-select').change((e) => {
+        $('#finished').change((e) => {
             $('div[class="accordion-item"]').hide()
             $('div[name="' + e.target.value + '"]').show()
         })
@@ -95,6 +127,7 @@
         var feeInfo = () => {
             copyToClipboard(fee_info)
         }
+        var mid = 0;
         var week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"]
         var createtrip = (data) => {
             var item = $('<div name=' + data.state + ' class="accordion-item">');
@@ -176,8 +209,11 @@
                 })
 
             })))
-            activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">invoice</button>').click(() => {
-                window.location.href = '/pages_invoice?invoice=' + data.invoice
+            activeRow.append($('<div class="col">').append($('<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#aaa">payment</button>').click(() => {
+                mid = data.id;
+                $('#id').val(data.id)
+                $('#payment_type').val(data.payment_type)
+                $('#transID').val(data.transID);
             })))
             info.append(activeRow)
             coll_div.append(info)

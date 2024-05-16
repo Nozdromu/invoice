@@ -1,7 +1,7 @@
 const { Client } = require('@googlemaps/google-maps-services-js')
 const map = new Client({});
 const fs = require('node:fs');
-var mapinfo = require('./map.json')
+var mapinfo;
 // fs.readFile('./api/map.json', 'utf8', (err, data) => {
 //     if (err) {
 //         console.error(err);
@@ -10,7 +10,6 @@ var mapinfo = require('./map.json')
 //     mapinfo = data;
 //     console.log(data);
 // });
-console.log(mapinfo)
 function api_trips(_database) {
 
     var api_trip = { all: {}, get: {}, put: {}, delete: {}, post: {} }
@@ -116,6 +115,15 @@ function api_trips(_database) {
         });
         res.send({ trips: trips })
     }
+    api_trip.post.update_payment = (req, res) => {
+        //console.log(req)
+        //res.send(req.body)
+        database.trip_api.update_payment(req.body, (data) => {
+            console.log(data);
+            alltrips[data[0][0].invoice] = data[0][0]
+            res.send(data[0][0]);
+        })
+    }
 
 
     api_trip.get.get_price = (req, res) => {
@@ -140,16 +148,18 @@ function api_trips(_database) {
         var origin = '6835 SE Cougar Mountain Way, Bellevue, WA 98006, USA';
         var pickup_address = data.start;
         var destination_address = data.end
+        pickup_address = pickup_address.replaceAll('(', '')
+        pickup_address = pickup_address.replaceAll(')', '')
         if (data.type === "1") {
             pickup_address = data.end
             destination_address = data.start
         }
         map.directions({ params: { key: process.env.google_map_api_key, destination: destination_address, origin: origin, waypoints: [pickup_address] } }).then((mapres) => {
-            console.log(mapres)
-            mapinfo.test = mapres.data
-            var fs = require('fs');
-            console.log(mapinfo)
-            fs.writeFile('./map.json', JSON.stringify(mapinfo), () => { });
+            // console.log(mapres)
+            // mapinfo.test = mapres.data
+            // var fs = require('fs');
+            // console.log(mapinfo)
+            // fs.writeFile('./map.json', JSON.stringify(mapinfo), () => { });
             var G_pickup = {
                 address: mapres.data.routes[0].legs[0].end_address,
                 lat: mapres.data.routes[0].legs[1].end_location.lat,

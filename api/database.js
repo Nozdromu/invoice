@@ -4,7 +4,8 @@ function database(pool) {
     var Database = {
         data: { trips: {} },
         trip_api: {},
-        user_api: {}
+        user_api: {},
+        address_api: {}
     }
     Database.data.users = userlist(Database)
     /**
@@ -45,6 +46,9 @@ function database(pool) {
     }
     Database.load = () => {
         query('call load_data()', [], load)
+    }
+    Database.trip_api.update_payment = (data, callback) => {
+        query('call update_payment(?,?,?)', data, callback)
     }
 
     // Database.trip_api.getalltrips = (callback = false) => {
