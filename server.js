@@ -23,7 +23,7 @@ var get_ipv4 = (Network) => {
     var ip = ''
     Network.forEach(element => {
         if (element.family === 'IPv4') {
-            console.log('eth id: ' + element.address)
+            //console.log('eth id: ' + element.address)
             ip = element.address
         }
 
@@ -32,9 +32,9 @@ var get_ipv4 = (Network) => {
 }
 
 ipaddress = get_ipv4(ipaddress)
-console.log(ipaddress)
+//console.log(ipaddress)
 var env = ipaddress.substring(0, 10) === '192.168.68' || ipaddress === '127.0.0.1'
-console.log(env)
+//console.log(env)
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,12 +69,12 @@ if (!env) {
 
         const bat = spawn('powershell.exe', [process.env.ssh]);
         bat.stdout.on('data', (data) => {
-            console.log(data.toString());
+            //console.log(data.toString());
             Database.load()
         });
 
         bat.stderr.on('data', (data) => {
-            console.error(data.toString());
+            //console.error(data.toString());
         });
 
         bat.on('exit', (code) => {
@@ -262,7 +262,7 @@ Object.values(controller).forEach(item => {
 // })
 
 app.get('/login', (req, res) => {
-    console.log(req.session)
+    //console.log(req.session)
     if (users[req.query.username] && users[req.query.username].password === req.query.password) {
         req.session.cookie.user = users[req.query.username]
         req.session.user = users[req.query.username]

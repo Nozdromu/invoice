@@ -119,7 +119,7 @@ function api_trips(_database) {
         //console.log(req)
         //res.send(req.body)
         database.trip_api.update_payment(req.body, (data) => {
-            console.log(data);
+            //console.log(data);
             alltrips[data[0][0].invoice] = data[0][0]
             res.send(data[0][0]);
         })

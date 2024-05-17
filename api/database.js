@@ -35,7 +35,7 @@ function database(pool) {
             Database.data.users.list_ID[e.id] = e
             Database.data.users.list_UN[e.username] = e
         })
-        console.log(Database.data)
+        //console.log(Database.data)
     }
 
     Database.user_api.create = (newuser, callback) => {
