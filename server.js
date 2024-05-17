@@ -314,7 +314,7 @@ app.get('/logout', (req, res) => {
 
 // var mailListener = new MailListener({
 //   username: "transservice2024@gmail.com",
-//   password: "ciumrupupccdmwvz",
+//   password: "",
 //   host: "imap.gmail.com",
 //   port: 993, // imap port
 //   tls: true,
