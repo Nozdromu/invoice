@@ -305,9 +305,11 @@ async function runSample() {
     console.log(res.data);
     return res.data;
 }
-runSample().catch(console.error);
+runSample().catch(console.error).then(() => {
+    app.listen(port, function () {
+        console.log('listening to port: ' + port)
+    })
+});
 
-// const server = app.listen(port, function () {
-//     console.log('listening to port: ' + port)
-// });
+
 
