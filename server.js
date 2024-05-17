@@ -279,37 +279,90 @@ app.get('/logout', (req, res) => {
 })
 
 
-const { google } = require('googleapis')
-const { authenticate } = require('@google-cloud/local-auth');
+// const { google } = require('googleapis')
+// const { authenticate } = require('@google-cloud/local-auth');
 
-gmail = google.gmail({ version: 'v1' })
-async function runSample() {
-    const auth = await authenticate({
-        keyfilePath: path.join('./OAuth/oauth.json'),
-        scopes: [
-            'https://mail.google.com/',
-            'https://www.googleapis.com/auth/gmail.metadata',
-            'https://www.googleapis.com/auth/gmail.modify',
-            'https://www.googleapis.com/auth/gmail.readonly',
-        ],
-    });
-    google.options({ auth });
+// gmail = google.gmail({ version: 'v1' })
+// async function runSample() {
+//     const auth = await authenticate({
+//         keyfilePath: path.join('./OAuth/oauth.json'),
+//         scopes: [
+//             'https://mail.google.com/',
+//             'https://www.googleapis.com/auth/gmail.metadata',
+//             'https://www.googleapis.com/auth/gmail.modify',
+//             'https://www.googleapis.com/auth/gmail.readonly',
+//         ],
+//     });
+//     google.options({ auth });
 
-    const res = await gmail.users.watch({
-        userId: 'me',
-        requestBody: {
-            // Replace with `projects/${PROJECT_ID}/topics/${TOPIC_NAME}`
-            topicName: 'projects/festive-post-366509/topics/gmail',
-        },
-    });
-    console.log(res.data);
-    return res.data;
-}
-runSample().catch(console.error).then(() => {
-    app.listen(port, function () {
-        console.log('listening to port: ' + port)
-    })
-});
+//     const res = await gmail.users.watch({
+//         userId: 'me',
+//         requestBody: {
+//             // Replace with `projects/${PROJECT_ID}/topics/${TOPIC_NAME}`
+//             topicName: 'projects/festive-post-366509/topics/gmail',
+//         },
+//     });
+//     console.log(res.data);
+//     return res.data;
+// }
+// runSample().catch(console.error).then(() => {
+//     app.listen(port, function () {
+//         console.log('listening to port: ' + port)
+//     })
+// });
+// var MailListener = require("mail-listener2");
 
+// var mailListener = new MailListener({
+//   username: "transservice2024@gmail.com",
+//   password: "ciumrupupccdmwvz",
+//   host: "imap.gmail.com",
+//   port: 993, // imap port
+//   tls: true,
+//   connTimeout: 10000, // Default by node-imap
+//   authTimeout: 5000, // Default by node-imap,
+//   //debug: console.log, // Or your custom function with only one incoming argument. Default: null
+//   tlsOptions: { rejectUnauthorized: false },
+//   mailbox: "INBOX", // mailbox to monitor
+//   searchFilter: ["UNSEEN"], // the search filter being used after an IDLE notification has been retrieved
+//   markSeen: true, // all fetched email willbe marked as seen and not fetched next time
+//   fetchUnreadOnStart: true, // use it only if you want to get all unread email on lib start. Default is `false`,
+//   mailParserOptions: {streamAttachments: true}, // options to be passed to mailParser lib.
+//   attachments: true, // download attachments as they are encountered to the project directory
+//   attachmentOptions: { directory: "attachments/" } // specify a download directory for attachments
+// });
 
+// mailListener.start(); // start listening
+
+// // stop listening
+// //mailListener.stop();
+
+// mailListener.on("server:connected", function(){
+//   console.log("imapConnected");
+// });
+
+// mailListener.on("server:disconnected", function(){
+//   console.log("imapDisconnected");
+// });
+
+// mailListener.on("error", function(err){
+//   console.log(err);
+// });
+
+// mailListener.on("mail", function(mail, seqno, attributes){
+//   // do something with mail object including attachments
+//   console.log("emailParsed", mail);
+//   // mail processing code goes here
+// });
+// //mailListener.on()
+
+// mailListener.on("attachment", function(attachment){
+//   console.log(attachment.path);
+// });
+
+// it's possible to access imap object from node-imap library for performing additional actions. E.x.
+//mailListener.imap.move(:msguids, :mailboxes, function(){})
+
+app.listen(port, function () {
+    console.log('listening to port: ' + port)
+})
 
