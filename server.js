@@ -165,7 +165,7 @@ const port = 3000;
 
 trip_state = ["Await", "Complete", "Deleted"]
 payment_state = ["Unpaid", "Paid"]
-var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login', '/pages_payment_page','/pages_pricing','/api_trips_get_price']
+var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login', '/pages_payment_page', '/pages_pricing', '/api_trips_get_price']
 unneed.forEach(e => {
     controller[e].login_require = true
 })
@@ -279,7 +279,35 @@ app.get('/logout', (req, res) => {
 })
 
 
-const server = app.listen(port, function () {
-    console.log('listening to port: ' + port)
-});
+const { google } = require('googleapis')
+const { authenticate } = require('@google-cloud/local-auth');
+
+gmail = google.gmail({ version: 'v1' })
+async function runSample() {
+    const auth = await authenticate({
+        keyfilePath: path.join('./OAuth/oauth.json'),
+        scopes: [
+            'https://mail.google.com/',
+            'https://www.googleapis.com/auth/gmail.metadata',
+            'https://www.googleapis.com/auth/gmail.modify',
+            'https://www.googleapis.com/auth/gmail.readonly',
+        ],
+    });
+    google.options({ auth });
+
+    const res = await gmail.users.watch({
+        userId: 'me',
+        requestBody: {
+            // Replace with `projects/${PROJECT_ID}/topics/${TOPIC_NAME}`
+            topicName: 'projects/festive-post-366509/topics/gmail',
+        },
+    });
+    console.log(res.data);
+    return res.data;
+}
+runSample().catch(console.error);
+
+// const server = app.listen(port, function () {
+//     console.log('listening to port: ' + port)
+// });
 
