@@ -23,6 +23,50 @@
         <div class="row" style="height: 100vh;">
             <div class="col align-self-center">
                 <div class="row  justify-content-center">
+                    <div class="col-12">
+                        <div class="row justify-content-around">
+                            <div class="col">
+                                <p id="invoice">Invocie: none</p>
+                            </div>
+                            <div class="col  text-end">
+                                <p id="total"> Total: $0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="card mb-3 bg-secondary-subtle" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-4 align-self-center">
+                                    <img src="/logo/card.png" class="img-fluid rounded-start p-3" alt="...">
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="card-title">Use Card by Paypal</h5>
+                                                <p class="card-text">Yilei's
+                                                    transport<br>4254367812<br>transservice2024@gmail.com
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-end">
+                                            <div class="col">
+                                                5% service fee
+                                            </div>
+                                            <div class="col-auto align-self-end">
+                                                <p class="card-text" style="text-align: right"><a id="card_link"
+                                                        class="btn btn-primary">
+                                                        Go Page</a></p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row  justify-content-center">
                     <div class="col-auto">
                         <div class="card mb-3 bg-primary-subtle" style="max-width: 540px;">
                             <div class="row g-0">
@@ -32,7 +76,7 @@
                                 <div class="col-8">
                                     <div class="card-body">
                                         <h5 class="card-title">Use Paypal</h5>
-                                        <p class="card-text">Yilei Ding<br>4254990042<br>Yileiding1990@gmail.com</p>
+                                        <p class="card-text">Yilei Ding<br>4254998842<br>Yileiding1990@gmail.com</p>
                                         <p class="card-text" style="text-align: right"><a
                                                 href="https://paypal.me/yilei1990" class="btn btn-primary">
                                                 Paypal me</a></p>
@@ -96,6 +140,13 @@
             copyToClipboard('4254998842')
             alert('Zelle accout number: 4254998842 copied!')
         }
+        const urlParams = new URLSearchParams(window.location.search);
+        const trip = urlParams.get('invoice');
+        $.get('/api_trips_get_trip', { trip: trip }, (data) => {
+            $('#invoice').html('<h5>invoice#:</h5>' + data.trip.invoice)
+            $('#total').html('<h5>Total:</h5>$' + (data.trip.total * 1.05).toFixed(2))
+            $('#card_link').attr('href','/pages_paypal?invoice='+data.trip.invoice)
+        })
     </script>
 </body>
 

@@ -6,15 +6,25 @@ function api_paypal(_database) {
 
     var api = { all: {}, get: {}, put: {}, delete: {}, post: {} }
     var trips = _database.data.trips
-    const { paypal_api_key_sandbox, paypal_api_secret_sandbox } = process.env;
+    // const { paypal_api_key_live, paypal_api_secret_live } = process.env;
+    // if (process.env.env == 'dev')
+    //     { paypal_api_key_sandbox, paypal_api_secret_sandbox } = process.env;
+
+    var api_key = process.env.paypal_api_key_live;
+    var api_secret = process.env.paypal_api_secret_live
+    if (process.env.INV == 'dev') {
+        api_key = process.env.paypal_api_key_sandbox;
+        api_secret = process.env.paypal_api_secret_sandbox
+    }
+
     const base = "https://api-m.sandbox.paypal.com";
     const generateAccessToken = async () => {
         try {
-            if (!paypal_api_key_sandbox || !paypal_api_secret_sandbox) {
+            if (!api_key || !api_secret) {
                 throw new Error("MISSING_API_CREDENTIALS");
             }
             const auth = Buffer.from(
-                paypal_api_key_sandbox + ":" + paypal_api_secret_sandbox
+                api_key + ":" + api_secret
             ).toString("base64");
             const response = await fetch(`${base}/v1/oauth2/token`, {
                 method: "POST",
@@ -128,7 +138,7 @@ function api_paypal(_database) {
     }
 
     api.get.evn = (req, res) => {
-        var _url = 'https://www.paypal.com/sdk/js?client-id=' + (process.env.INV == 'dev' ? process.env.paypal_api_key_sandbox : process.env.paypal_api_key_live);
+        var _url = 'https://www.paypal.com/sdk/js?client-id=' + api_key;
         res.send({ url: _url })
     }
 
