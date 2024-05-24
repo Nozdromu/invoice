@@ -105,6 +105,7 @@ var users = {
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 var bodyParser = require('body-parser');
+const api_paypal = require('./api/api_paypal');
 app.use(bodyParser.json())
 app.set('trust proxy', 1)
 app.use(session({
@@ -165,7 +166,18 @@ const port = 3000;
 
 trip_state = ["Await", "Complete", "Deleted"]
 payment_state = ["Unpaid", "Paid"]
-var unneed = ['/pages_login', '/pages_invoice', '/api_trips_get_trip', '/api_users_login', '/pages_payment_page', '/pages_pricing', '/api_trips_get_price']
+var unneed = [
+    '/api_paypal_evn',
+    '/pages_login',
+    '/pages_paypal',
+    '/pages_invoice',
+    '/api_paypal_orders',
+    '/api_paypal_capture',
+    '/api_trips_get_trip',
+    '/api_users_login',
+    '/pages_payment_page',
+    '/pages_pricing',
+    '/api_trips_get_price']
 unneed.forEach(e => {
     controller[e].login_require = true
 })
@@ -177,38 +189,7 @@ var old = {
     '/': '/pages_alltrips',
     '/payment': '/pages_payment_page'
 }
-// var allPath = {
-//     '/loginpage': {
-//         allow: true,
-//         path: '/loginpage',
-//         callback: Pages.login
-//     },
-//     '/invoice': {
-//         allow: true,
-//         path: '/invoice',
-//         callback: Pages.invoice
-//     },
-//     '/geitrip': {
-//         allow: true,
-//         path: '/geitrip',
-//         callback: Pages.get_trip
-//     },
-//     '/login': {
-//         allow: true,
-//         path: '/login',
-//         callback: Pages.login
-//     },
-//     '/': {
-//         allow: false,
-//         path: '/',
-//         callback: Pages.alltrips
-//     },
-//     '/gettrips': {
-//         allow: false,
-//         path: '/gettrips',
-//         callback: Api_trip.get_all_trips
-//     }
-// }
+
 
 /////////////////////////////////////////////////////////////////
 //  pages
@@ -218,48 +199,7 @@ Object.values(controller).forEach(item => {
     console.log('api: ' + item.type + " path: " + item.path)
 })
 
-// trip page
-// app.get('/', Pages.alltrips);
-// app.get('/invoice', Pages.invoice)
-// app.get('/trip', Pages.trip_page)
-// app.get('/payment', Pages.payment_page)
 
-// other page
-
-// app.get('/l', Pages.letters)
-// app.get('/math', Pages.math)
-// app.get('/cal', Pages.cal)
-// app.get('/test', Pages.test)
-
-/////////////////////////////////////////////////////////////////
-//  trip api
-
-// app.get('/reload', Api_trip.reload)
-
-// app.get('/gettrips', Api_trip.get_all_trips)
-
-// app.get('/price', Api_trip.get_price)
-// app.get('/finish', Api_trip.change_trip_state)
-
-
-// app.get('/book', Api_trip.book_trip)
-// app.get('/edit', Api_trip.edit_trip)
-
-// app.get('/gettrip', Api_trip.get_trip)
-// app.get('/getsummary', Api_trip.get_summary)
-
-/////////////////////////////////////////////////////////////////
-//  other api
-
-// app.get('/getip', Api_other.get_ip)
-// app.get('/letter', Api_other.letter)
-
-/////////////////////////////////////////////////////////////////
-
-// app.get('/loginpage', (req, res) => {
-//     console.log(req)
-//     res.render('login')
-// })
 
 app.get('/login', (req, res) => {
     //console.log(req.session)
@@ -278,89 +218,12 @@ app.get('/logout', (req, res) => {
     })
 })
 
+/////////////////////////////////////////////////////////////
+//  paypal
 
-// const { google } = require('googleapis')
-// const { authenticate } = require('@google-cloud/local-auth');
 
-// gmail = google.gmail({ version: 'v1' })
-// async function runSample() {
-//     const auth = await authenticate({
-//         keyfilePath: path.join('./OAuth/oauth.json'),
-//         scopes: [
-//             'https://mail.google.com/',
-//             'https://www.googleapis.com/auth/gmail.metadata',
-//             'https://www.googleapis.com/auth/gmail.modify',
-//             'https://www.googleapis.com/auth/gmail.readonly',
-//         ],
-//     });
-//     google.options({ auth });
 
-//     const res = await gmail.users.watch({
-//         userId: 'me',
-//         requestBody: {
-//             // Replace with `projects/${PROJECT_ID}/topics/${TOPIC_NAME}`
-//             topicName: 'projects/festive-post-366509/topics/gmail',
-//         },
-//     });
-//     console.log(res.data);
-//     return res.data;
-// }
-// runSample().catch(console.error).then(() => {
-//     app.listen(port, function () {
-//         console.log('listening to port: ' + port)
-//     })
-// });
-// var MailListener = require("mail-listener2");
 
-// var mailListener = new MailListener({
-//   username: "transservice2024@gmail.com",
-//   password: "",
-//   host: "imap.gmail.com",
-//   port: 993, // imap port
-//   tls: true,
-//   connTimeout: 10000, // Default by node-imap
-//   authTimeout: 5000, // Default by node-imap,
-//   //debug: console.log, // Or your custom function with only one incoming argument. Default: null
-//   tlsOptions: { rejectUnauthorized: false },
-//   mailbox: "INBOX", // mailbox to monitor
-//   searchFilter: ["UNSEEN"], // the search filter being used after an IDLE notification has been retrieved
-//   markSeen: true, // all fetched email willbe marked as seen and not fetched next time
-//   fetchUnreadOnStart: true, // use it only if you want to get all unread email on lib start. Default is `false`,
-//   mailParserOptions: {streamAttachments: true}, // options to be passed to mailParser lib.
-//   attachments: true, // download attachments as they are encountered to the project directory
-//   attachmentOptions: { directory: "attachments/" } // specify a download directory for attachments
-// });
-
-// mailListener.start(); // start listening
-
-// // stop listening
-// //mailListener.stop();
-
-// mailListener.on("server:connected", function(){
-//   console.log("imapConnected");
-// });
-
-// mailListener.on("server:disconnected", function(){
-//   console.log("imapDisconnected");
-// });
-
-// mailListener.on("error", function(err){
-//   console.log(err);
-// });
-
-// mailListener.on("mail", function(mail, seqno, attributes){
-//   // do something with mail object including attachments
-//   console.log("emailParsed", mail);
-//   // mail processing code goes here
-// });
-// //mailListener.on()
-
-// mailListener.on("attachment", function(attachment){
-//   console.log(attachment.path);
-// });
-
-// it's possible to access imap object from node-imap library for performing additional actions. E.x.
-//mailListener.imap.move(:msguids, :mailboxes, function(){})
 
 app.listen(port, function () {
     console.log('listening to port: ' + port)

@@ -43,6 +43,9 @@ function Pages() {
     pages.all.pricing = (req, res) => {
         res.render('pricing')
     }
+    pages.all.paypal = (req, res) => {
+        res.render('checkout')
+    }
     return pages
 }
 
