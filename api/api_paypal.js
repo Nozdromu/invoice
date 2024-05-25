@@ -6,18 +6,15 @@ function api_paypal(_database) {
 
     var api = { all: {}, get: {}, put: {}, delete: {}, post: {} }
     var trips = _database.data.trips
-    // const { paypal_api_key_live, paypal_api_secret_live } = process.env;
-    // if (process.env.env == 'dev')
-    //     { paypal_api_key_sandbox, paypal_api_secret_sandbox } = process.env;
-
+    const base = "https://api-m.paypal.com"
     var api_key = process.env.paypal_api_key_live;
     var api_secret = process.env.paypal_api_secret_live
     if (process.env.INV == 'dev') {
         api_key = process.env.paypal_api_key_sandbox;
         api_secret = process.env.paypal_api_secret_sandbox
+        base = "https://api-m.sandbox.paypal.com";
     }
 
-    const base = "https://api-m.sandbox.paypal.com";
     const generateAccessToken = async () => {
         try {
             if (!api_key || !api_secret) {
@@ -68,7 +65,7 @@ function api_paypal(_database) {
                 {
                     amount: {
                         currency_code: "USD",
-                        value: trip.total
+                        value: trip.total * 1.05
                     },
                     reference_id: trip.invoice
                 },
