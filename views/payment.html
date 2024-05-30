@@ -144,7 +144,7 @@
         const trip = urlParams.get('invoice');
         $.get('/api_trips_get_trip', { trip: trip }, (data) => {
             $('#invoice').html('<h5>invoice#:</h5>' + data.trip.invoice)
-            $('#total').html('<h5>Total:</h5>$' + (data.trip.total * 1.05).toFixed(2))
+            $('#total').html('<h5>Total:</h5>$' + (data.trip.total).toFixed(2))
             $('#card_link').attr('href','/pages_paypal?invoice='+data.trip.invoice)
         })
     </script>
