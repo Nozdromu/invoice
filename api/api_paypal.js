@@ -6,7 +6,8 @@ function api_paypal(_database) {
 
     var api = { all: {}, get: {}, put: {}, delete: {}, post: {} }
     var trips = _database.data.trips
-    const base = "https://api-m.paypal.com"
+    var database=_database;
+    var base = "https://api-m.paypal.com"
     var api_key = process.env.paypal_api_key_live;
     var api_secret = process.env.paypal_api_secret_live
     if (process.env.INV == 'dev') {
@@ -63,11 +64,11 @@ function api_paypal(_database) {
             intent: "CAPTURE",
             purchase_units: [
                 {
+                    reference_id: trip.invoice,
                     amount: {
                         currency_code: "USD",
                         value: trip.total * 1.05
-                    },
-                    reference_id: trip.invoice
+                    }
                 },
             ],
         };
@@ -127,7 +128,18 @@ function api_paypal(_database) {
         try {
             const { orderID } = req.query;
             const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
-            res.status(httpStatusCode).json(jsonResponse);
+            var invoice = jsonResponse.purchase_units[0].reference_id;
+            var trip = trips[invoice];
+            trip.payment_type = 'Paypal Bussiness'
+            trip.transID = jsonResponse.id
+            trip.PP_fee = jsonResponse.purchase_units[0].payments.captures[0].seller_receivable_breakdown.paypal_fee.value;
+            trip.total = jsonResponse.purchase_units[0].payments.captures[0].seller_receivable_breakdown.net_amount.value;
+            trip.final_price = jsonResponse.purchase_units[0].payments.captures[0].seller_receivable_breakdown.gross_amount.value;
+            database.trip_api.editrecord(trip, (results) => {
+                trips[results.invoice] = results
+                res.status(httpStatusCode).json({ statu: 'done', trip: results })
+            })
+           // res.status(httpStatusCode).json(jsonResponse);
         } catch (error) {
             console.error("Failed to create order:", error);
             res.status(500).json({ error: "Failed to capture order." });
