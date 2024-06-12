@@ -103,7 +103,7 @@ function database(pool) {
     }
 
     Database.trip_api.editrecord = (data, callback) => {
-        connection.query("call edit_trips(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
+        connection.query("call edit_trips(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
             data.id,
             data.billname,
             data.nickname,
@@ -125,7 +125,9 @@ function database(pool) {
             data.payment_type,
             data.transID,
             data.state,
-            ""
+            "",
+            0,
+            data.total
         ], (err, results, fields) => {
             if (err) {
                 throw err
