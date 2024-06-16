@@ -28,6 +28,9 @@
             <div class="col-auto">
                 <a class="btn btn-primary" href="/pages_trip_page">新预约</a>
             </div>
+            <div class="col-auto">
+                <a class="btn btn-primary" href="/pages_mama">日历</a>
+            </div>
             <div class="col-auto"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#aaa">
                     test
@@ -175,18 +178,21 @@
             item.append(head);
             item.append(coll_div);
             head.append(button);
-            var showaddress = data.departure_address || data.departure;
-            if (data.trip_type === 1 || data.trip_type === 3) {
-                showaddress = data.destination_address
-            }
+            // var showaddress = data.departure_address || data.departure;
+            // if (data.trip_type === 1 || data.trip_type === 3) {
+            //     showaddress = data.destination_address
+            // }
             var info = $('<div class="accordion-body container text-center">');
-            var map = $('<a>').attr('href', 'https://maps.google.com/?q=' + showaddress).text(showaddress)
+            var map_from = $('<a>').attr('href', 'https://maps.google.com/?q=' + data.departure_address).text('from: ' + data.departure_address)
+            var map_to = $('<a>').attr('href', 'https://maps.google.com/?q=' + data.destination_address).text("to: " + data.destination_address)
+
             var type = data.vehicle_type == 5 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
             if (data.trip_type === 1) {
                 info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight_num).text(data.flight_num)))
             }
-            info.append($('<div>').append(map))
+            info.append($('<div class="text-truncate">').append(map_from))
+            info.append($('<div class="text-truncate">').append(map_to))
             var activeRow = $('<div class="row justify-content-start">')
             activeRow.append($('<div class="col">').append($('<button class="btn btn-warning">编辑订单</button>').click(() => {
                 window.location.href = '/pages_trip_page?trip=' + data.invoice
