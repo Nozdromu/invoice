@@ -118,7 +118,8 @@
             console.log(res.data)
             trips = res.data.trips.sort((a, b) => { return a.travel_time - b.travel_time })
             trips.forEach(element => {
-                t.append(createtrip(element))
+                if (element.state !== 10)
+                    t.append(createtrip(element))
             });
             $('div[name="0"]').hide()
         })
