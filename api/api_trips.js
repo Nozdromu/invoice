@@ -154,6 +154,10 @@ function api_trips(_database) {
             pickup_address = data.end
             destination_address = data.start
         }
+        if (pickup_address === "17801 International Blvd, Seattle, WA 98158, USA") {
+            pickup_address = data.end
+            destination_address = data.start
+        }
         map.directions({ params: { key: process.env.google_map_api_key, destination: destination_address, origin: origin, waypoints: [pickup_address] } }).then((mapres) => {
             // console.log(mapres)
             // mapinfo.test = mapres.data
