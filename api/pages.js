@@ -25,7 +25,7 @@ function Pages() {
     }
 
     pages.all.cal = (req, res) => {
-        res.render('cal')
+        res.render('new_pricing')
     }
 
     pages.all.test = (req, res) => {

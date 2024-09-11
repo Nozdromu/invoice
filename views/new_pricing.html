@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trip Info</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/copy.js"></script>
+</head>
+
+<body>
+    <div class="container" style="height: 100vh;">
+        <div class="row align-items-center justify-content-center" style="height: 100vh;">
+            <div class="col-auto align-self-center">
+                <div class="card" style="min-width: 20rem;">
+                    <!-- 声明 -->
+                    <div id="s0" class="card-body">
+                        <h5>
+                            声明
+                        </h5>
+                        <button onclick="next()" class="btn btn-primary"> Start </button>
+                    </div>
+
+                    <!-- 出发地址 -->
+                    <div id="s1" class="card-body" style="display: none;">
+                        <div class="row">
+                            <h5>出发地址:</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="Ridetype" aria-label="Ride type">
+                                        <option value="0"> Select a Ride type</option>
+                                        <option value="4">Airport-Departure</option>
+                                        <option value="5">Airport-Arrival</option>
+                                        <option value="6">Other</option>
+                                    </select>
+                                    <label for="cartype">Ride Type</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="display: none;" id="AirportRow">
+                            <div class="col mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="Airport" aria-label="Airport">
+                                        <option>Select a Airport</option>
+                                        <option value="7">Seatac - SEA</option>
+                                        <option value="8">Paine field - PAE</option>
+                                    </select>
+                                    <label for="cartype">Choose Airport</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="display: none;" id="start">
+                            <div class="col mb-3">
+
+                                <div class="input-group">
+                                    <div class="form-floating">
+                                        <input type="address" autocomplete="address-line1" class="form-control"
+                                            id="address" name="address" required>
+                                        <label for="address" class="form-label">pickup address</label>
+                                    </div>
+                                    <button type="button" onclick="getlocation()" class="btn btn-outline-secondary"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-crosshair" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8.5.5a.5.5 0 0 0-1 0v.518A7 7 0 0 0 1.018 7.5H.5a.5.5 0 0 0 0 1h.518A7 7 0 0 0 7.5 14.982v.518a.5.5 0 0 0 1 0v-.518A7 7 0 0 0 14.982 8.5h.518a.5.5 0 0 0 0-1h-.518A7 7 0 0 0 8.5 1.018zm-6.48 7A6 6 0 0 1 7.5 2.02v.48a.5.5 0 0 0 1 0v-.48a6 6 0 0 1 5.48 5.48h-.48a.5.5 0 0 0 0 1h.48a6 6 0 0 1-5.48 5.48v-.48a.5.5 0 0 0-1 0v.48A6 6 0 0 1 2.02 8.5h.48a.5.5 0 0 0 0-1zM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                                        </svg></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="display: none;" id="end">
+                            <div class="col mb-3">
+
+                                <div class="input-group">
+                                    <div class="form-floating">
+                                        <input type="address" autocomplete="address-line1" class="form-control"
+                                            id="dropoff" name="dropoff" required>
+                                        <label for="dropoff" class="form-label">dropoff address</label>
+                                    </div>
+                                    <button type="button" onclick="getlocation()" class="btn btn-outline-secondary"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-crosshair" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8.5.5a.5.5 0 0 0-1 0v.518A7 7 0 0 0 1.018 7.5H.5a.5.5 0 0 0 0 1h.518A7 7 0 0 0 7.5 14.982v.518a.5.5 0 0 0 1 0v-.518A7 7 0 0 0 14.982 8.5h.518a.5.5 0 0 0 0-1h-.518A7 7 0 0 0 8.5 1.018zm-6.48 7A6 6 0 0 1 7.5 2.02v.48a.5.5 0 0 0 1 0v-.48a6 6 0 0 1 5.48 5.48h-.48a.5.5 0 0 0 0 1h.48a6 6 0 0 1-5.48 5.48v-.48a.5.5 0 0 0-1 0v.48A6 6 0 0 1 2.02 8.5h.48a.5.5 0 0 0 0-1zM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                                        </svg></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn">back</button>
+                            <button type="button" class="btn" disabled>next</button>
+
+                        </div>
+                    </div>
+
+                    <!-- <div id="s1" class="card-body" style="display: none;">
+                        <div class="row">
+                            <h5>
+                                出发地址
+                            </h5>
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input type="address" autocomplete="address-line1" class="form-control" id="address"
+                                        name="address" required>
+                                    <label for="address" class="form-label">pickup address</label>
+                                </div>
+                                <button type="button" onclick="getlocation()" class="btn btn-outline-secondary"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-crosshair" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8.5.5a.5.5 0 0 0-1 0v.518A7 7 0 0 0 1.018 7.5H.5a.5.5 0 0 0 0 1h.518A7 7 0 0 0 7.5 14.982v.518a.5.5 0 0 0 1 0v-.518A7 7 0 0 0 14.982 8.5h.518a.5.5 0 0 0 0-1h-.518A7 7 0 0 0 8.5 1.018zm-6.48 7A6 6 0 0 1 7.5 2.02v.48a.5.5 0 0 0 1 0v-.48a6 6 0 0 1 5.48 5.48h-.48a.5.5 0 0 0 0 1h.48a6 6 0 0 1-5.48 5.48v-.48a.5.5 0 0 0-1 0v.48A6 6 0 0 1 2.02 8.5h.48a.5.5 0 0 0 0-1zM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                                    </svg></button>
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">AP</button>
+                                <ul class="dropdown-menu">
+                                    <li><button type="button" class="dropdown-item"
+                                            onclick="ulclick_departure(this)">SEA</button></li>
+                                    <li><button type="button" class="dropdown-item"
+                                            onclick="ulclick_departure(this)">PAE</button></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <button onclick="prev()" class="btn btn-primary"> prev </button>
+                        <button onclick="next()" class="btn btn-primary"> next </button>
+                    </div> -->
+                    <!-- 抵达地址 -->
+                    <div id="s2" class="card-body" style="display: none;">
+                        <h5>
+                            抵达地址
+                        </h5>
+                        <button onclick="prev()" class="btn btn-primary"> prev </button>
+                        <button onclick="next()" class="btn btn-primary"> next </button>
+                    </div>
+                    <!-- 结果 -->
+                    <div id="s3" class="card-body" style="display: none;">
+                        <h5>
+                            结果
+                        </h5>
+                        <button onclick="prev()" class="btn btn-primary"> prev </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        divID = 0;
+        var next = () => {
+            $('#s' + divID).fadeOut(500, () => {
+                divID += 1;
+                $('#s' + divID).fadeIn()
+            });
+        }
+        var prev = () => {
+            $('#s' + divID).fadeOut(500, () => {
+                divID -= 1;
+                $('#s' + divID).fadeIn()
+            });
+        }
+        var Airport = $("#AirportRow")
+        // document.querySelector("#Ridetype").addEventListener('change', (e) => {
+        //     //console.log(e.target.value);
+
+        // })
+
+        $('#Ridetype').on('change', () => {
+            var value = $('#Ridetype').val();
+            console.log(value)
+            if (value === '4') {
+                $('#start').fadeOut();
+                $('#end').fadeOut();
+                Airport.fadeIn();
+            } else if (value === '5') {
+                $('#start').fadeOut();
+                $('#end').fadeOut();
+                Airport.fadeIn();
+            } else if (value === '6') {
+                Airport.fadeOut(500, () => {
+                    $('#start').fadeIn();
+                    $('#end').fadeIn();
+                });
+            }
+        })
+        $('#Airport').on('change', () => {
+            var value = $('#Airport').val();
+            if (value === '7') {
+                $('#end').fadeOut(500, ()=>$('#start').fadeIn());
+            } else if (value === '8') {
+                $('#start').fadeOut(500, ()=>$('#end').fadeIn());
+            }
+        })
+        var getlocation = () => {
+            //departure_address.addClass('disabled placeholder')
+            navigator.geolocation.getCurrentPosition((pos) => {
+                //alert(pos.coords.latitude + ',' + pos.coords.longitude);
+                departure_address.val(pos.coords.latitude + ',' + pos.coords.longitude)
+                console.log(pos)
+                //departure_address.removeClass('disabled placeholder')
+            })
+        }
+    </script>
+</body>
+
+</html>
