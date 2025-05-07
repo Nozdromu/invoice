@@ -45,8 +45,8 @@ function api_trips(_database) {
 
     var makesummary = (trip) => {
         var car = {
-            5: " 灰色 Toyota Camry ",
-            10: " 黑色 Toyota Sienna "
+            15: " 灰色 Toyota Camry ",
+            20: " 黑色 Toyota Sienna "
         }
         var scripts = "";
         var script2 = " ,一般会提前5分钟左右抵达上车地点"
