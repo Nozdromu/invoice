@@ -15,33 +15,17 @@ const Controllers = require('./api/controller')
 var os = require('os');
 const path = require('path');
 
-var networkInterfaces = os.networkInterfaces();
 
-var ipaddress = (Object.values(networkInterfaces))[0]
-
-var get_ipv4 = (Network) => {
-    var ip = ''
-    Network.forEach(element => {
-        if (element.family === 'IPv4') {
-            //console.log('eth id: ' + element.address)
-            ip = element.address
-        }
-
-    });
-    return ip
-}
-
-ipaddress = get_ipv4(ipaddress)
-//console.log(ipaddress)
-var env = ipaddress.substring(0, 10) === '192.168.68' || ipaddress === '127.0.0.1'
-//console.log(env)
-
-
-//////////////////////////////////////////////////////////////////////////
-//  database setup
+// var option = {
+//     host: process.env.INV === 'dev' ? process.env.mysql_host_dev : process.env.mysql_host,
+//     user: process.env.INV === 'dev' ? process.env.mysql_user_dev : process.env.mysql_user,
+//     password: process.env.INV === 'dev' ? process.env.mysql_password_dev : process.env.mysql_password,
+//     database: process.env.INV === 'dev' ? process.env.mysql_database_dev : process.env.mysql_database,
+//     port: 3306
+// }
 
 var option = {
-    host: env ? process.env.mysql_host : process.env.mysql_host_outside,
+    host: process.env.mysql_host,
     user: process.env.mysql_user,
     password: process.env.mysql_password,
     database: process.env.mysql_database,
@@ -59,35 +43,9 @@ sessionStore.onReady().then(() => {
     // Something went wrong.
     console.error(error);
 });
-//Database.query()
-////////////////////////////////////////////////////////////////////////////////
-//  ssh
-
-if (!env) {
-    const { spawn } = require('node:child_process');
-    async function cmd() {
-
-        const bat = spawn('powershell.exe', [process.env.ssh]);
-        bat.stdout.on('data', (data) => {
-            //console.log(data.toString());
-            Database.load()
-        });
-
-        bat.stderr.on('data', (data) => {
-            //console.error(data.toString());
-        });
-
-        bat.on('exit', (code) => {
-            console.log(`Child exited with code ${code}`);
-        });
-        return bat
-    }
-    let ssh = cmd();
-} else {
-    Database.load()
-}
 
 
+Database.load()
 
 ///////////////////////////////////////////////////////////////////////////
 
