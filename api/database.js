@@ -2,7 +2,14 @@ const userlist = require('./userlist')
 function database(pool) {
     connection = pool
     var Database = {
-        data: { trips: {} },
+        data: {
+            trips: {},
+            car: {
+                car_made: {},
+                car_model: {},
+                car_type: {}
+            }
+        },
         trip_api: {},
         user_api: {},
         address_api: {}
@@ -28,14 +35,43 @@ function database(pool) {
         })
     }
     var load = (data) => {
-        data[0].forEach(e => {
+        load_trips(data[0]);
+        load_user(data[1]);
+        load_car_info(data[4], data[5], data[6], data[7])
+        console.log(Database.data)
+    }
+    var load_trips = (trips) => {
+        trips.forEach(e => {
             Database.data.trips[e.invoice] = e
         })
-        data[1].forEach(e => {
+    }
+    var load_user = (users) => {
+        users.forEach(e => {
+            e.car = [];
             Database.data.users.list_ID[e.id] = e
             Database.data.users.list_UN[e.username] = e
+
         })
-        //console.log(Database.data)
+    }
+    var load_car_info = (car, car_made, car_model, car_type) => {
+        car_made.forEach(e => {
+            Database.data.car.car_made[e.car_made_id] = e;
+        })
+        car_model.forEach(e => {
+            Database.data.car.car_model[e.car_model_id] = e;
+        })
+        car_type.forEach(e => {
+            Database.data.car.car_type[e.car_type_id] = e;
+        })
+
+        car.forEach(e => {
+            // e.model_name = Database.data.car.car_model[e.car_model_id].;
+            // e.car_made=Database.data.car.car_made[e.car_made_id];
+            // e.car_type=
+
+            Database.data.users.list_ID[e.user].car.push(e);
+        })
+        //
     }
 
     Database.user_api.create = (newuser, callback) => {

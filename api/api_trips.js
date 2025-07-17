@@ -198,6 +198,9 @@ function api_trips(_database) {
 
 
     }
+    api_trip.get.get_car_info = (req, res) => {
+        res.send({ basic: database.data.car, car: database.data.users.list_ID[1].car });
+    }
     return api_trip
 }
 

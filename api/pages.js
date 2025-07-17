@@ -47,7 +47,7 @@ function Pages() {
         res.render('checkout')
     }
     pages.all.bpm=(req,res)=>{
-        res.render('bpm')
+        res.render('testpage')
     }
     return pages
 }
