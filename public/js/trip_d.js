@@ -99,7 +99,43 @@ var get_info = () => {
             e.model = data.basic.car_model[e.model];
             e.made = data.basic.car_made[e.model.car_made_id];
             e.type = data.basic.car_type[e.model.car_type];
+            cartype.append($('<option>', { value: e.price, text: e.model.model_name + ' - ' + e.model.seat + ' seat' }));
+
         })
+        cartype.val(data.car[0].price.toString()).change();
+
         console.log(data);
+        done.S = true;
+        //         data.car.forEach(e => {
+        //             e.model = data.basic.car_model[e.model];
+        //             e.made = data.basic.car_made[e.model.car_made_id];
+        //             e.type = data.basic.car_type[e.model.car_type];
+        //             cartype.append($('<option>', { value: e.price, text: e.model.model_name + ' - ' + e.model.seat + ' seat' }));
+        //         })
+        //         distance.keyup(getprice);
+        //         pickup_distance.keyup(getprice);
+        //         cartype.change(getprice);
+        //         cartype.val(data.car[0].price.toString()).change();
+        //         console.log(data);
     })
+}
+$(document).ready(() => { get_info() });
+
+var done = {
+    s: false,
+    fun: [],
+    get S() { return s },
+    set S(value) {
+        this.s = value;
+        this.fun.forEach(e => {
+            e();
+        })
+    },
+    listen: (f) => {
+        if (this.s) {
+            f();
+        } else {
+            this.fun.push(f)
+        }
+    }
 }
