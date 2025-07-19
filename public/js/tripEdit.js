@@ -2,7 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const trip = urlParams.get('trip');
 var summary = "";
 var api_url = 'api_trips_book_trip'
-var trip_info = {}
+
 var flight_num = $('#flight_num');
 var _name = $('#name');
 var billname = $('#billname');
@@ -16,7 +16,27 @@ var messagebtn = $('#message')
 var maplink = 'http://maps.google.com/?q=';
 
 
+(() => {
+    'use strict'
 
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            } else {
+                event.preventDefault();
+                sendData();
+            }
+
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
 
 
 trip_type.change(function (e) {
@@ -97,38 +117,8 @@ var getsummary = () => {
     })
 }
 
-var sendData = () => {
-    trip_info.departure_address = googleaddress.val();
-    trip_info.distance = distance.val();
-    trip_info.pickup_distance = pickup_distance.val();
-    trip_info.distance_price = dis_price;
-    trip_info.pickup_distance_price = pickup_distance_price;
-    trip_info.pickup_distance_free = pickup_distance_free;
-    trip_info.vehicle_type = cartype.val();
-    trip_info.total = price.val();
-    trip_info.trip_type = trip_type.val();
-    trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });
-    trip_info.flight_num = flight_num.val();
-    trip_info.billname = billname.val();
-    trip_info.nickname = _name.val();
-    trip_info.destination_address = googledestination.val();
-    axios.get(api_url, {
-        params: trip_info
-    }
-    ).then((res) => {
-        console.log(res)
-        trip_info = res.data.trip;
-        if (res.data.statu === 'done') {
-            summary = res.data.summary
-            makesummary();
-            invoiceLink = window.location.host + '/pages_invoice?invoice=' + trip_info.invoice
-            $('#invoiceP').text(invoiceLink)
-            $('#invoiceA').attr('href', invoiceLink)
-            messagebtn.click();
-        }
-    })
-}
-done.listen(sendData)
+
+done.listen(load)
 
 
 var xx = () => {

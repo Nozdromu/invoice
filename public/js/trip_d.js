@@ -1,25 +1,5 @@
 
-(() => {
-    'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
-
-    // Loop over them and prevent submission
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            } else {
-                event.preventDefault();
-                sendData();
-            }
-
-            form.classList.add('was-validated')
-        }, false)
-    })
-})()
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -106,17 +86,38 @@ var get_info = () => {
 
         console.log(data);
         done.S = true;
-        //         data.car.forEach(e => {
-        //             e.model = data.basic.car_model[e.model];
-        //             e.made = data.basic.car_made[e.model.car_made_id];
-        //             e.type = data.basic.car_type[e.model.car_type];
-        //             cartype.append($('<option>', { value: e.price, text: e.model.model_name + ' - ' + e.model.seat + ' seat' }));
-        //         })
-        //         distance.keyup(getprice);
-        //         pickup_distance.keyup(getprice);
-        //         cartype.change(getprice);
-        //         cartype.val(data.car[0].price.toString()).change();
-        //         console.log(data);
+    })
+}
+var trip_info = {}
+var sendData = () => {
+    trip_info.departure_address = googleaddress.val();
+    trip_info.distance = distance.val();
+    trip_info.pickup_distance = pickup_distance.val();
+    trip_info.distance_price = dis_price;
+    trip_info.pickup_distance_price = pickup_distance_price;
+    trip_info.pickup_distance_free = pickup_distance_free;
+    trip_info.vehicle_type = cartype.val();
+    trip_info.total = price.val();
+    trip_info.trip_type = trip_type.val();
+    trip_info.datetime = (new Date(datetime.val())).toLocaleString({ timestyle: 'short', hour12: false });
+    trip_info.flight_num = flight_num.val();
+    trip_info.billname = billname.val();
+    trip_info.nickname = _name.val();
+    trip_info.destination_address = googledestination.val();
+    axios.get(api_url, {
+        params: trip_info
+    }
+    ).then((res) => {
+        console.log(res)
+        trip_info = res.data.trip;
+        if (res.data.statu === 'done') {
+            summary = res.data.summary
+            makesummary();
+            invoiceLink = window.location.host + '/pages_invoice?invoice=' + trip_info.invoice
+            $('#invoiceP').text(invoiceLink)
+            $('#invoiceA').attr('href', invoiceLink)
+            messagebtn.click();
+        }
     })
 }
 $(document).ready(() => { get_info() });
@@ -131,11 +132,11 @@ var done = {
             e();
         })
     },
-    listen: (f) => {
-        if (this.s) {
+    listen(f) {
+        if (done.s) {
             f();
         } else {
-            this.fun.push(f)
+            done.fun.push(f)
         }
     }
 }
