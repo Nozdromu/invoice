@@ -187,7 +187,7 @@
             var map_from = $('<a>').attr('href', 'https://maps.google.com/?q=' + data.departure_address).text('from: ' + data.departure_address)
             var map_to = $('<a>').attr('href', 'https://maps.google.com/?q=' + data.destination_address).text("to: " + data.destination_address)
 
-            var type = data.vehicle_type == 15 ? 'Camry' : 'Sienna'
+            var type = data.vehicle_type == 0 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
             if (data.trip_type === 1) {
                 info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight_num).text(data.flight_num)))
