@@ -52,6 +52,7 @@ var load = () => {
         api_url = 'api_trips_edit_trip'
         axios.get('/api_trips_get_trip', { params: { trip: trip } }).then((res) => {
             var data = res.data.trip
+            console.log(data);
             flight_num.val(data.flight_num);
             _name.val(data.nickname);
             billname.val(data.billname)
@@ -63,7 +64,7 @@ var load = () => {
             datetime.val(t);
             price.val(data.total);
             var x = 0;
-            if (data.vehicle_type == 5 || data.vehicle_type == 15 || data.vehicle_type == 0) {
+            if (data.vehicle_type == 0) {
                 x = 0;
             } else {
                 x = 5

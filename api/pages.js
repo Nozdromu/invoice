@@ -49,6 +49,9 @@ function Pages() {
     pages.all.bpm=(req,res)=>{
         res.render('testpage')
     }
+    pages.all.ai=(req,res)=>{
+        res.render('ttt')
+    }
     return pages
 }
 
