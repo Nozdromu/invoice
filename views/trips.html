@@ -190,7 +190,7 @@
             var type = data.vehicle_type == 0 ? 'Camry' : 'Sienna'
             info.append($('<div>').text(type));
             if (data.trip_type === 1) {
-                info.append($('<div>').append($('<a>').attr('href', 'http://google.com/search?q=' + data.flight_num).text(data.flight_num)))
+                info.append($('<div>').append($('<a>').attr('href', 'https://google.com/search?q=' + data.flight_num).text(data.flight_num)))
             }
             info.append($('<div class="text-truncate">').append(map_from))
             info.append($('<div class="text-truncate">').append(map_to))

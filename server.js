@@ -83,6 +83,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', './views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
+app.set('trust proxy', 1)
 
 var homepage = '/pages_alltrips'
 //controller['/'] = controller[homepage]
