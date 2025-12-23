@@ -73,7 +73,8 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        //secure: true,
+        domain: process.env.domain,
+        secure: true,
         //sameSite: 'none'
     }
 }))
