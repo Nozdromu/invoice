@@ -17,7 +17,11 @@ window.paypal
           // like product ids and quantities
           body: JSON.stringify({
             invoice: trip
-          }),
+          }).then(function(res) {
+            return res.json();
+          }).then(function (data) {
+            return data.trip.invoice; // the data is the order object returned from the api call, its not the BrainTree.Response object
+          })
         });
 
         const orderData = await response.json();

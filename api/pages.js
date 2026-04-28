@@ -46,6 +46,9 @@ function Pages() {
     pages.all.paypal = (req, res) => {
         res.render('checkout')
     }
+    pages.all.npaypal = (req, res) => {
+        res.render('newcheckout')
+    }
     pages.all.bpm=(req,res)=>{
         res.render('testpage')
     }

@@ -32,6 +32,9 @@
                   <p id="dropoff_address"></p>
                   <p id="price"></p>
                   <p id="paypal_fee"></p>
+                  <div>
+                    <p>Extra:</p><input type="number" name="extra" id="extra" value="0" min="0" step="0.5">
+                  </div>
                   <p id="total"></p>
                 </div>
               </div>
@@ -39,46 +42,216 @@
           </div>
         </div>
       </div>
-      <div class="col-12 align-self-end">
-        <div class="row p-2 text-center justify-content-center">
-          <div class="col-lg-6 col-xs-12 col-md-12 col-sm-12">
-            <div id="paypal-button-container"></div>
-          </div>
+    </div>
+    <div class="col-12 align-self-end">
+      <div class="row p-2 text-center justify-content-center">
+        <div class="col-lg-6 col-xs-12 col-md-12 col-sm-12">
+          <div id="paypal-button-container"></div>
         </div>
       </div>
-
     </div>
+
+  </div>
 
   </div>
 
   <!-- Initialize the JS-SDK -->
 
-  <!-- <script
-    src="https://www.paypal.com/sdk/js?client-id=AWoJ8gPQOwO7U1wdpN0DjLA1RXQ12xeab1B5e8dSeXwLm09t07F3zS9Wo1ZpsH1PMDTJPY2vX94k_EK3"></script> -->
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=AWoJ8gPQOwO7U1wdpN0DjLA1RXQ12xeab1B5e8dSeXwLm09t07F3zS9Wo1ZpsH1PMDTJPY2vX94k_EK3">
+    </script>
   <script id="sc"></script>
 
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const trip = urlParams.get('invoice');
+    var extra = 0
+    var newTotal = 0
+    var tripData = null;
+    var addextra = function () {
+      extra = parseFloat($('#extra').val()) || 0;
+      console.log(extra)
+      newTotal = (tripData.total * 1.05 + extra);
+      $('#total').html('Total:<br>$' + newTotal.toFixed(2))
+    }
     $.ajaxSetup({
       cache: true
     });
-    $.get('/api_paypal_evn', (data) => {
-      $.getScript(data.url, () => {
-        console.log(data.url)
-        $.getScript("./js/app.js");
-      })
-    })
+
     $.get('/api_trips_get_trip', { trip: trip }, (data) => {
       $('#invoice').html('<h5>invoice#:</h5>' + data.trip.invoice)
       $('#datetime').html('DateTime:<br>' + data.trip.datetime)
       $('#pickup_address').html('From:<br>' + data.trip.departure_address)
       $('#dropoff_address').html('To:<br>' + data.trip.destination_address)
       $('#price').html('Total:<br>$' + data.trip.total)
-      $('#paypal_fee').html('Paypal service fee -> 5%:<br>$'+(data.trip.total*0.05).toFixed(2));
-      $('#total').html('Total:<br>$'+(data.trip.total*1.05).toFixed(2))
-    })
+      $('#paypal_fee').html('Paypal service fee -> 5%:<br>$' + (data.trip.total * 0.05).toFixed(2));
+      $('#total').html('Total:<br>$' + (data.trip.total * 1.05).toFixed(2))
+      $('#extra').on('input', addextra);
+      tripData = data.trip;
+    });
+    paypal.Buttons({
+      async createOrder() {
+        try {
+          const response = await fetch("/api_paypal_orders", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // use the "body" param to optionally pass additional order information
+            // like product ids and quantities
+            body: JSON.stringify({
+              cart: [
+                {
+                  id: trip, // trip.invoice
+                  extra: extra,
+                },
+              ],
+            }),
+          });
+
+          const orderData = await response.json();
+
+          if (orderData.id) {
+            return orderData.id;
+          }
+          const errorDetail = orderData?.details?.[0];
+          const errorMessage = errorDetail
+            ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+            : JSON.stringify(orderData);
+
+          throw new Error(errorMessage);
+        } catch (error) {
+          console.error(error);
+          // resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+        }
+      },
+      // Finalize the transaction on the server after payer approval
+      async onApprove(data, actions) {
+        try {
+          const response = await fetch(
+            `/api_paypal_capture`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                orderID: data.orderID,
+                invoice: urlParams.get('invoice'),
+                extra: extra,
+              }),
+            }
+          );
+
+          const orderData = await response.json();
+          // Three cases to handle:
+          //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+          //   (2) Other non-recoverable errors -> Show a failure message
+          //   (3) Successful transaction -> Show confirmation or thank you message
+
+          const errorDetail = orderData?.details?.[0];
+
+          if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
+            // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+            // recoverable state, per
+            // https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
+            return actions.restart();
+          } else if (errorDetail) {
+            // (2) Other non-recoverable errors -> Show a failure message
+            throw new Error(
+              `${errorDetail.description} (${orderData.debug_id})`
+            );
+          } else if (!orderData.purchase_units) {
+            throw new Error(JSON.stringify(orderData));
+          } else {
+            // (3) Successful transaction -> Show confirmation or thank you message
+            // Or go to another URL:  actions.redirect('thank_you.html');
+            const transaction =
+              orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
+              orderData?.purchase_units?.[0]?.payments
+                ?.authorizations?.[0];
+            resultMessage(
+              `Transaction ${transaction.status}: ${transaction.id}<br>
+          <br>See console for all available details`
+            );
+            console.log(
+              "Capture result",
+              orderData,
+              JSON.stringify(orderData, null, 2)
+            );
+          }
+        } catch (error) {
+          console.error(error);
+          resultMessage(
+            `Sorry, your transaction could not be processed...<br><br>${error}`
+          );
+        }
+      },
+    }).render('#paypal-button-container');
+    function resultMessage(message) {
+      const container = document.querySelector("#result-message");
+      alert(message);
+      window.location.replace('/payment?invoice=' + urlParams.get('invoice'));
+    }
+    //paypal.Buttons({
+    //     async createOrder() {
+    //       try {
+    //         const response = await fetch("/api_paypal_orders", {
+    //           method: "POST",
+    //           headers: {
+    //             "Content-Type": "application/json",
+    //           },
+    //           // use the "body" param to optionally pass additional order information
+    //           // like product ids and quantities
+    //           body: JSON.stringify({
+    //             cart: [
+    //               {
+    //                 id: data.trip.invoice,
+    //                 quantity: "1",
+    //               },
+    //             ],
+    //           }),
+    //         });
+
+    //         const orderData = await response.json();
+
+    //         if (orderData.id) {
+    //           return orderData.id;
+    //         }
+    //         const errorDetail = orderData?.details?.[0];
+    //         const errorMessage = errorDetail
+    //           ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+    //           : JSON.stringify(orderData);
+
+    //         throw new Error(errorMessage);
+    //       } catch (error) {
+    //         console.error(error);
+    //         // resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+    //       }
+    //     },
+    //     // Finalize the transaction on the server after payer approval
+    //     onApprove(data) {
+    //       return fetch("/api_paypal_orders", {
+    //         method: "POST",
+    //         body: JSON.stringify({
+    //           orderID: data.orderID
+    //         })
+    //       })
+    //         .then((response) => response.json())
+    //         .then((orderData) => {
+    //           // Successful capture! For dev/demo purposes:
+    //           console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+    //           const transaction = orderData.purchase_units[0].payments.captures[0];
+    //           alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+    //           // When ready to go live, remove the alert and show a success message within this page. For example:
+    //           // const element = document.getElementById('paypal-button-container');
+    //           // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+    //           // Or go to another URL:  window.location.href = 'thank_you.html';
+    //         });
+    //     }
+    //   }).render('#paypal-button-container');
+    // })
   </script>
   <!-- <script src="./js/app.js"></script> -->
 </body>

@@ -5,7 +5,7 @@ var session = require('express-session')
 const MySQLStore = require('express-mysql-session')(session);
 const nodemailer = require("nodemailer");
 const url = require('url');
-
+var fs = require('fs');
 
 const database = require('./api/database')
 const Controllers = require('./api/controller')
@@ -14,7 +14,7 @@ const Controllers = require('./api/controller')
 
 var os = require('os');
 const path = require('path');
-
+//var sslkey = fs.readFileSync('/ssl/');
 
 // var option = {
 //     host: process.env.INV === 'dev' ? process.env.mysql_host_dev : process.env.mysql_host,
@@ -72,9 +72,9 @@ app.use(session({
     store: sessionStore,
     saveUninitialized: true,
     cookie: {
-        httpOnly: true,
-        domain: process.env.domain,
-        secure: true,
+        httpOnly: false,
+        // domain: process.env.domain,
+        // secure: true,
         //sameSite: 'none'
     }
 }))
@@ -129,9 +129,10 @@ const port = 3000;
 trip_state = ["Await", "Complete", "Deleted"]
 payment_state = ["Unpaid", "Paid"]
 var unneed = [
-    '/api_paypal_evn',
+    //'/api_paypal_evn',
     '/pages_login',
     '/pages_paypal',
+    '/pages_npaypal',
     '/pages_invoice',
     '/api_paypal_orders',
     '/api_paypal_capture',
