@@ -72,9 +72,9 @@ app.use(session({
     store: sessionStore,
     saveUninitialized: false,
     cookie: {
-        httpOnly: true,
-        domain: process.env.domain,
-        secure: true,
+        httpOnly: false,
+        //domain: process.env.domain,
+        //secure: true,
         //sameSite: 'none'
     }
 }))

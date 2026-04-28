@@ -20,7 +20,7 @@ const client = new Client({
         oAuthClientSecret: process.env.paypal_api_secret_live,
     },
     timeout: 0,
-    environment: Environment.Sandbox,
+    environment: Environment.Production,
     logging: {
         logLevel: LogLevel.Info,
         logRequest: { logBody: true },
