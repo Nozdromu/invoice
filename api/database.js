@@ -38,7 +38,7 @@ function database(pool) {
         load_trips(data[0]);
         load_user(data[1]);
         load_car_info(data[4], data[5], data[6], data[7])
-        console.log(Database.data)
+        //console.log(Database.data)
     }
     var load_trips = (trips) => {
         trips.forEach(e => {

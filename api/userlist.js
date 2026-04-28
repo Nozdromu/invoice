@@ -60,9 +60,9 @@ function userlist(_database) {
         return user
     }
     var create = (newuser, callback = false) => {
-        console.log(newuser.toArray())
+        //console.log(newuser.toArray())
         query.create(newuser.toArray(), (data) => {
-            console.log(data);
+            //console.log(data);
             userlist.list_ID[data[0].id] = data[0]
             userlist.list_ID[data[0].username] = data[0]
             if (callback)
@@ -71,7 +71,7 @@ function userlist(_database) {
     }
     var update = (user) => {
         query.update(user.toArray(), (data) => {
-            console.log(data);
+            //console.log(data);
         })
     }
     var login = () => {

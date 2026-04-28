@@ -5,7 +5,8 @@ var session = require('express-session')
 const MySQLStore = require('express-mysql-session')(session);
 const nodemailer = require("nodemailer");
 const url = require('url');
-
+// const fs = require('fs');
+// var https = require('https');
 
 const database = require('./api/database')
 const Controllers = require('./api/controller')
@@ -70,12 +71,12 @@ app.use(session({
     secret: 'trip',
     resave: false,
     store: sessionStore,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-        httpOnly: true,
-        domain: process.env.domain,
-        secure: true,
-        //sameSite: 'none'
+        httpOnly: false,
+        // domain: process.env.domain,
+        // secure: true,
+        // sameSite: 'none'
     }
 }))
 
@@ -83,7 +84,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', './views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.set('trust proxy', 1)
+
 
 var homepage = '/pages_alltrips'
 //controller['/'] = controller[homepage]
@@ -158,7 +159,7 @@ var old = {
 
 Object.values(controller).forEach(item => {
     app[item.type](item.path, item.callback);
-    console.log('api: ' + item.type + " path: " + item.path)
+    //console.log('api: ' + item.type + " path: " + item.path)
 })
 
 
@@ -192,3 +193,7 @@ app.listen(port, function () {
     console.log('listening to port: ' + port)
 })
 
+// var httpsServer = https.createServer(app);
+// httpsServer.listen(port, function () {
+//     console.log('listening to port: ' + port)
+// })
