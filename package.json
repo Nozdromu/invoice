@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.1",
     "@googlemaps/google-maps-services-js": "^3.3.42",
+    "@paypal/paypal-server-sdk": "^2.3.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
