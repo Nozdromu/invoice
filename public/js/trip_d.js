@@ -13,8 +13,8 @@ var cartype = $('#cartype')
 var price = $('#price')
 var basic_price = 15;
 var pickup_distance_free = 6
-var dis_price = 1.75
-var pickup_distance_price = 0.5
+var dis_price = 1.85
+var pickup_distance_price = 0.6
 
 var ulclick_destination = (e) => {
     console.log(e.firstChild.data)
