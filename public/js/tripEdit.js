@@ -67,7 +67,7 @@ var load = () => {
             if (data.vehicle_type == 0) {
                 x = 0;
             } else {
-                x = 5
+                x = 7
             }
             cartype.val(x)
             trip_type.val(data.trip_type)
