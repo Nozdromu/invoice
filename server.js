@@ -72,10 +72,12 @@ app.use(session({
     store: sessionStore,
     saveUninitialized: false,
     cookie: {
-        httpOnly: false,
-        //domain: process.env.domain,
-        //secure: true,
-        //sameSite: 'none'
+        httpOnly: true,
+        domain: process.env.domain,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
+        maxAge: 30 * 24 * 60 * 60 * 1000, 
     }
 }))
 
