@@ -477,7 +477,7 @@
 
             label_base_1.text(cartype.val())
 
-            label_distance_t.text(dis_price * distance.val())
+            label_distance_t.text((dis_price * distance.val()).toFixed(2))
             label_pickup_t.text((pickup_distance.val() - pickup_distance_free > 0 ? pickup_distance.val() - pickup_distance_free : 0) * pickup_distance_price)
             label_base_t.text(cartype.val())
             label_total_t.text(price.val())
